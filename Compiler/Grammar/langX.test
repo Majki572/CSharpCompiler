@@ -1,2 +1,2 @@
-string a="awdawdawd";
+int a = 5 + 3;
 write a;

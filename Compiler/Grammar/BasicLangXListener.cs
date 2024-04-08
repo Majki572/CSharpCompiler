@@ -102,7 +102,7 @@ public class BasicLangXListener : LangXBaseListener
         
         if (left.type != right.type)
         {
-            throw new Exception("Type mismatch at sub");
+            throw new Exception("Type mismatch at mul");
         }
         
         var type = left.type;
@@ -117,7 +117,7 @@ public class BasicLangXListener : LangXBaseListener
         
         if (left.type != right.type)
         {
-            throw new Exception("Type mismatch at sub");
+            throw new Exception("Type mismatch at div");
         }
         
         var type = left.type;

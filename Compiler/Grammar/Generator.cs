@@ -34,7 +34,7 @@ public class Generator
     {
         if (variable.type == VariableType.INT)
         {
-            _code += $"%{Reg} = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* {IOTypes.WRITE_INT.name}, i32 0, i32 0), i32 %{id})\n";
+            _code += $"%{Reg} = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* {IOTypes.WRITE_INT.name}, i32 0, i32 0), i32 {id})\n";
         }
         else if (variable.type == VariableType.FLOAT)
         {
@@ -44,7 +44,7 @@ public class Generator
         } else if (variable.type == VariableType.STRING)
         {
             var str = (StringVariable) variable;
-            _code += $"%{Reg} = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([{str.length} x i8], [{str.length} x i8]* {IOTypes.WRITE_STRING.name}, i64 0, i64 0), i8* %{id})";
+            _code += $"%{Reg} = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([{str.length} x i8], [{str.length} x i8]* {IOTypes.WRITE_STRING.name}, i64 0, i64 0), i8* {id})";
         }
         Reg++;
     }

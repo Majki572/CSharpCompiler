@@ -11,6 +11,5 @@ define dso_local i32 @main() #0 {
 %1 = add i32 5, 3
 %a = alloca i32, align 4
 store i32 %1, i32* %a, align 4
-%2 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 %1)
 ret i32 0
 }
