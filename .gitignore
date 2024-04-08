@@ -1,3 +1,7 @@
-Compiler/.idea/
-Compiler/Grammar/Antlr
-Compiler/Grammar/output.exe
+**Antlr**
+**.antlr**
+**bin**
+**obj**
+**.idea**
+**.vs**
+**output.exe
