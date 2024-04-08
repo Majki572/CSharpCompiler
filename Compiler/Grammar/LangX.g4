@@ -5,13 +5,13 @@ start: ( stat? ';' NEWLINE)*;
 stat: assign | write | read;
 
 assign:
-	TYPE WS ID '=' expr0 # expr; // nie używamy bo jest ogarnięte z automatu
+	TYPE ID '=' expr0 # expr; // nie używamy bo jest ogarnięte z automatu
 
 reassign: ID '=' expr0;
 
-write: WRITE WS expr0;
+write: WRITE expr0;
 
-read: READ WS ID;
+read: READ ID;
 
 // dodawanie i odejmowanie
 expr0: expr1 | expr1 op1*;
@@ -50,4 +50,4 @@ FLOAT: '0' ..'9'+ '.' '0' ..'9'+;
 
 NEWLINE: '\r'? '\n';
 
-WS: (' ' | '\t')+;
+WS: [ \t\r\n]+ -> skip;
