@@ -1,7 +1,10 @@
+using System.Diagnostics;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
+using Compiler.Grammar;
+using Compiler.Grammar.src;
 
-namespace Compiler.Grammar;
+namespace AntlrCSharp;
 
 public class Program()
 {
@@ -21,6 +24,16 @@ public class Program()
         ParseTreeWalker.Default.Walk(listener, parseTree);
 
         // create file from generated code
-        File.WriteAllText("output.ll", listener.GenerateCode());
-    }
+        // save the file as output.ll in Grammar directory
+        var outputFile = @"C:\Users\jakub\Documents\CSharpCompiler\Compiler\Grammar\output.ll";
+        File.WriteAllText(outputFile, listener.GenerateCode());
+        Console.WriteLine("File generated successfully");
+        
+        // compile the file
+        var process = new Process();
+        process.StartInfo.FileName = @"C:\Program Files\LLVM\bin\clang++.exe";
+        process.StartInfo.Arguments = $"-o {outputFile.Replace(".ll", ".exe")} {outputFile}";
+        process.Start();
+        process.WaitForExit();
+    }   
 }

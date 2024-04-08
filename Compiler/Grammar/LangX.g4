@@ -5,9 +5,9 @@ start: ( stat? ';' NEWLINE)*;
 stat: assign | write | read;
 
 assign:
-	TYPE ID '=' expr0 # expr; // nie używamy bo jest ogarnięte z automatu
-
-reassign: ID '=' expr0;
+	TYPE ID '=' expr0 # expr // nie używamy bo jest ogarnięte z automatu
+	| 'string' ID '=' STRING # stringConst
+	; 
 
 write: WRITE expr0;
 
@@ -27,7 +27,6 @@ expr2:
 	INT				# int
 	| FLOAT			# float
 	| ID			# id
-	| STRING		# string
 	| '(' expr0 ')'	# exprInParens;
 
 // Wyrażenia

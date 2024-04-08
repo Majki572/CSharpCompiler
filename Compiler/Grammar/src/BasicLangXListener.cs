@@ -1,10 +1,10 @@
 using Antlr4.Runtime.Misc;
 
-namespace Compiler.Grammar;
+namespace Compiler.Grammar.src;
 
 public class BasicLangXListener : LangXBaseListener
 {
-    private readonly Generator _generator = new Generator();
+    private readonly IGeneratorActions _generator = new Generator();
     private readonly Dictionary<string, Variable> _variables = new Dictionary<string, Variable>();
     private readonly Stack<Variable> _stack = new Stack<Variable>();
 
@@ -60,9 +60,17 @@ public class BasicLangXListener : LangXBaseListener
         _stack.Push(_variables[id]);
     }
 
-    public override void ExitString(LangXParser.StringContext context)
+    // public override void ExitString(LangXParser.StringContext context)
+    // {
+    //     _stack.Push(new StringVariable(context.STRING().GetText(), context.STRING().GetText().Length));
+    // }
+
+    public override void ExitStringConst(LangXParser.StringConstContext context)
     {
-        _stack.Push(new Variable(context.STRING().GetText(), VariableType.STRING));
+        var id = context.ID().GetText();
+        var value = context.STRING().GetText().Substring(1, context.STRING().GetText().Length - 2);
+        _variables.Add(id, new StringVariable(id, value.Length));
+        _generator.CreateConstantString(id, value);
     }
 
     public override void ExitAdd(LangXParser.AddContext context)
@@ -74,7 +82,7 @@ public class BasicLangXListener : LangXBaseListener
         {
             throw new Exception("Type mismatch at add");
         }
-
+        
         var Type = left.Type;
         _generator.Add(left.Name, right.Name, Type);
         _stack.Push(new Variable($"%{Generator.Reg - 1}", Type));
@@ -102,7 +110,7 @@ public class BasicLangXListener : LangXBaseListener
 
         if (left.Type != right.Type)
         {
-            throw new Exception("Type mismatch at sub");
+            throw new Exception("Type mismatch at mul");
         }
 
         var Type = left.Type;
@@ -117,7 +125,7 @@ public class BasicLangXListener : LangXBaseListener
 
         if (left.Type != right.Type)
         {
-            throw new Exception("Type mismatch at sub");
+            throw new Exception("Type mismatch at div");
         }
 
         var Type = left.Type;
