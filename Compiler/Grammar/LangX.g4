@@ -5,9 +5,8 @@ start: ( stat? ';' NEWLINE)*;
 stat: assign | write | read;
 
 assign:
-	TYPE ID '=' expr0 # expr // nie używamy bo jest ogarnięte z automatu
-	| 'string' ID '=' STRING # stringConst
-	; 
+	TYPE ID '=' expr0			# expr // nie używamy bo jest ogarnięte z automatu
+	| 'string' ID '=' STRING	# stringConst;
 
 write: WRITE expr0;
 
