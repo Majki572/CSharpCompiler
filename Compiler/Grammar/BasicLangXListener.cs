@@ -1,6 +1,7 @@
 using Antlr4.Runtime.Misc;
+using AntlrCSharp;
 
-namespace AntlrCSharp;
+namespace Compiler.Grammar;
 
 public class BasicLangXListener : LangXBaseListener
 {
@@ -12,7 +13,7 @@ public class BasicLangXListener : LangXBaseListener
     {
         var id = context.ID().GetText();
         var value = _stack.Pop();
-        
+
         _variables.Add(id, value);
         _generator.Allocate(id, value);
         _generator.Store(id, value);
@@ -21,7 +22,7 @@ public class BasicLangXListener : LangXBaseListener
     public override void ExitWrite([NotNull] LangXParser.WriteContext context)
     {
         var variable = _stack.Pop();
-        if (_variables.ContainsKey(variable.name))
+        if (_variables.ContainsKey(variable.Name))
         {
             _generator.Load(variable);
             var id = (Generator.Reg - 1).ToString();
@@ -29,11 +30,11 @@ public class BasicLangXListener : LangXBaseListener
         }
         else
         {
-            _generator.Printf(variable.name, variable);
+            _generator.Printf(variable.Name, variable);
         }
-        
+
     }
-    
+
     public override void ExitRead([NotNull] LangXParser.ReadContext context)
     {
         var id = context.ID().GetText();
@@ -41,14 +42,14 @@ public class BasicLangXListener : LangXBaseListener
         {
             throw new Exception("Variable not declared");
         }
-        _generator.Scanf(id, _variables[id].type);
+        _generator.Scanf(id, _variables[id].Type);
     }
 
     public override void ExitInt(LangXParser.IntContext context)
     {
         _stack.Push(new Variable(context.INT().GetText(), VariableType.INT));
     }
-    
+
     public override void ExitFloat(LangXParser.FloatContext context)
     {
         _stack.Push(new Variable(context.FLOAT().GetText(), VariableType.FLOAT));
@@ -64,65 +65,65 @@ public class BasicLangXListener : LangXBaseListener
     {
         _stack.Push(new Variable(context.STRING().GetText(), VariableType.STRING));
     }
-    
+
     public override void ExitAdd(LangXParser.AddContext context)
     {
         var right = _stack.Pop();
         var left = _stack.Pop();
-        
-        if (left.type != right.type)
+
+        if (left.Type != right.Type)
         {
             throw new Exception("Type mismatch at add");
         }
 
-        var type = left.type;
-        _generator.Add(left.name, right.name, type);
-        _stack.Push(new Variable($"%{Generator.Reg - 1}", type));
+        var Type = left.Type;
+        _generator.Add(left.Name, right.Name, Type);
+        _stack.Push(new Variable($"%{Generator.Reg - 1}", Type));
     }
 
     public override void ExitSub(LangXParser.SubContext context)
     {
         var right = _stack.Pop();
         var left = _stack.Pop();
-        
-        if (left.type != right.type)
+
+        if (left.Type != right.Type)
         {
             throw new Exception("Type mismatch at sub");
         }
-        
-        var type = left.type;
-        _generator.Sub(left.name, right.name, type);
-        _stack.Push(new Variable($"%{Generator.Reg - 1}", type));
+
+        var Type = left.Type;
+        _generator.Sub(left.Name, right.Name, Type);
+        _stack.Push(new Variable($"%{Generator.Reg - 1}", Type));
     }
-    
+
     public override void ExitMul(LangXParser.MulContext context)
     {
         var right = _stack.Pop();
         var left = _stack.Pop();
-        
-        if (left.type != right.type)
+
+        if (left.Type != right.Type)
         {
             throw new Exception("Type mismatch at mul");
         }
-        
-        var type = left.type;
-        _generator.Mul(left.name, right.name, type);
-        _stack.Push(new Variable($"%{Generator.Reg - 1}", type));
+
+        var Type = left.Type;
+        _generator.Mul(left.Name, right.Name, Type);
+        _stack.Push(new Variable($"%{Generator.Reg - 1}", Type));
     }
 
     public override void ExitDiv(LangXParser.DivContext context)
     {
         var right = _stack.Pop();
         var left = _stack.Pop();
-        
-        if (left.type != right.type)
+
+        if (left.Type != right.Type)
         {
             throw new Exception("Type mismatch at div");
         }
-        
-        var type = left.type;
-        _generator.Div(left.name, right.name, type);
-        _stack.Push(new Variable($"%{Generator.Reg - 1}", type));
+
+        var Type = left.Type;
+        _generator.Div(left.Name, right.Name, Type);
+        _stack.Push(new Variable($"%{Generator.Reg - 1}", Type));
     }
 
     public string GenerateCode()

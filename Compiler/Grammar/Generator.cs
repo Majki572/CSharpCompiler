@@ -1,4 +1,5 @@
 using System.Globalization;
+using Compiler.Grammar;
 
 namespace AntlrCSharp;
 
@@ -32,19 +33,19 @@ public class Generator
     
     public void Printf(String id, Variable variable)
     {
-        if (variable.type == VariableType.INT)
+        if (variable.Type == VariableType.INT)
         {
             _code += $"%{Reg} = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* {IOTypes.WRITE_INT.name}, i32 0, i32 0), i32 {id})\n";
         }
-        else if (variable.type == VariableType.FLOAT)
+        else if (variable.Type == VariableType.FLOAT)
         {
             _code += $"%{Reg} = fpext float %{id} to double\n";
             Reg++;
             _code += $"%{Reg} = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* {IOTypes.WRITE_FLOAT.name}, i64 0, i64 0), double %{Reg-1})\n";
-        } else if (variable.type == VariableType.STRING)
+        } else if (variable.Type == VariableType.STRING)
         {
             var str = (StringVariable) variable;
-            _code += $"%{Reg} = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([{str.length} x i8], [{str.length} x i8]* {IOTypes.WRITE_STRING.name}, i64 0, i64 0), i8* {id})";
+            _code += $"%{Reg} = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([{str.Length} x i8], [{str.Length} x i8]* {IOTypes.WRITE_STRING.name}, i64 0, i64 0), i8* {id})";
         }
         Reg++;
     }
@@ -71,32 +72,32 @@ public class Generator
 
     public void Allocate(string id, Variable variable)
     {
-        if (variable.type == VariableType.INT)
+        if (variable.Type == VariableType.INT)
         {
             _code += $"%{id} = alloca i32, align 4\n";
         }
-        else if (variable.type == VariableType.FLOAT)
+        else if (variable.Type == VariableType.FLOAT)
         {
             _code += $"%{id} = alloca float, align 4\n";
         }
-        else if (variable.type == VariableType.STRING)
+        else if (variable.Type == VariableType.STRING)
         {
             var str = (StringVariable) variable;
-            _code += $"%{id} = alloca [{str.length+1} x i8]\n";
+            _code += $"%{id} = alloca [{str.Length+1} x i8]\n";
         }
     }
     
     public void Store(string id, Variable variable)
     {
-        if (variable.type == VariableType.INT)
+        if (variable.Type == VariableType.INT)
         {
-            _code += $"store i32 {variable.name}, i32* %{id}, align 4\n";
+            _code += $"store i32 {variable.Name}, i32* %{id}, align 4\n";
         }
-        else if (variable.type == VariableType.FLOAT)
+        else if (variable.Type == VariableType.FLOAT)
         {
-            _code += $"store float {variable.name}, float* %{id}, align 4\n";
+            _code += $"store float {variable.Name}, float* %{id}, align 4\n";
         }
-        else if (variable.type == VariableType.STRING)
+        else if (variable.Type == VariableType.STRING)
         {
             _code += $"store i8* %{Reg-1}, i8** %{id}\n";
         }
@@ -104,19 +105,19 @@ public class Generator
 
     public void Load(Variable variable)
     {
-        if (variable.type == VariableType.INT)
+        if (variable.Type == VariableType.INT)
         {
-            _code += $"%{Reg} = load i32, i32* {variable.name}, align 4\n";
+            _code += $"%{Reg} = load i32, i32* {variable.Name}, align 4\n";
             Reg++;
         }
-        else if (variable.type == VariableType.FLOAT)
+        else if (variable.Type == VariableType.FLOAT)
         {
-            _code += $"%{Reg} = load float, float* {variable.name}, align 4\n";
+            _code += $"%{Reg} = load float, float* {variable.Name}, align 4\n";
             Reg++;
         }
-        else if (variable.type == VariableType.STRING)
+        else if (variable.Type == VariableType.STRING)
         {
-            _code += $"%{Reg} = load i8*, i8** %{variable.name}\n";
+            _code += $"%{Reg} = load i8*, i8** %{variable.Name}\n";
             Reg++;
         }
     }

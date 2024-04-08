@@ -12,20 +12,4 @@
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="Grammar\.antlr\LangX.interp" />
-    <Content Include="Grammar\.antlr\LangX.tokens" />
-    <Content Include="Grammar\.antlr\LangXLexer.interp" />
-    <Content Include="Grammar\.antlr\LangXLexer.tokens" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Grammar\.antlr\LangXBaseListener.cs" />
-    <Compile Include="Grammar\.antlr\LangXBaseVisitor.cs" />
-    <Compile Include="Grammar\.antlr\LangXLexer.cs" />
-    <Compile Include="Grammar\.antlr\LangXListener.cs" />
-    <Compile Include="Grammar\.antlr\LangXParser.cs" />
-    <Compile Include="Grammar\.antlr\LangXVisitor.cs" />
-  </ItemGroup>
-
 </Project>

@@ -1,25 +1,27 @@
 using System.Diagnostics;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using AntlrCSharp;
+using Compiler.Grammar;
 
-namespace Compiler.Grammar;
+namespace AntlrCSharp;
 
 public class Program()
 {
     public static void Main(string[] args)
     {
-        var input = File.ReadAllText(args[0]);
-        
-        var inputStream = new AntlrInputStream(input);
-        var lexer = new LangXLexer(inputStream);
-        var commonTokenStream = new CommonTokenStream(lexer);
-        var parser = new LangXParser(commonTokenStream);
+        var sep = Path.DirectorySeparatorChar;
+        var path = $"..{sep}..{sep}..{sep}Grammar{sep}";
+        var input = File.ReadAllText(path + "langX.test");
+
+        AntlrInputStream inputStream = new AntlrInputStream(input);
+        LangXLexer lexer = new LangXLexer(inputStream);
+        CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
+        LangXParser parser = new LangXParser(commonTokenStream);
         IParseTree parseTree = parser.start();
-        
+
         var listener = new BasicLangXListener();
         ParseTreeWalker.Default.Walk(listener, parseTree);
-        
+
         // create file from generated code
         // save the file as output.ll in Grammar directory
         var outputFile = @"C:\Users\jakub\Documents\CSharpCompiler\Compiler\Grammar\output.ll";
