@@ -103,6 +103,16 @@ public partial class LangXParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_start; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterStart(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitStart(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -167,6 +177,16 @@ public partial class LangXParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_stat; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterStat(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitStat(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -233,6 +253,16 @@ public partial class LangXParser : Parser {
 			return GetRuleContext<Expr0Context>(0);
 		}
 		public ExprContext(AssignContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterExpr(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitExpr(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -276,6 +306,16 @@ public partial class LangXParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_reassign; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterReassign(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitReassign(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -315,6 +355,16 @@ public partial class LangXParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_write; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterWrite(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitWrite(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -352,6 +402,16 @@ public partial class LangXParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_read; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterRead(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitRead(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -395,6 +455,16 @@ public partial class LangXParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_expr0; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterExpr0(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitExpr0(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -465,6 +535,16 @@ public partial class LangXParser : Parser {
 			return GetRuleContext<Expr1Context>(0);
 		}
 		public AddContext(Op1Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterAdd(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitAdd(this);
+		}
 	}
 	public partial class SubContext : Op1Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode SUB() { return GetToken(LangXParser.SUB, 0); }
@@ -472,6 +552,16 @@ public partial class LangXParser : Parser {
 			return GetRuleContext<Expr1Context>(0);
 		}
 		public SubContext(Op1Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterSub(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitSub(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -532,6 +622,16 @@ public partial class LangXParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_expr1; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterExpr1(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitExpr1(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -602,6 +702,16 @@ public partial class LangXParser : Parser {
 			return GetRuleContext<Expr2Context>(0);
 		}
 		public DivContext(Op2Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterDiv(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitDiv(this);
+		}
 	}
 	public partial class MulContext : Op2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode MUL() { return GetToken(LangXParser.MUL, 0); }
@@ -609,6 +719,16 @@ public partial class LangXParser : Parser {
 			return GetRuleContext<Expr2Context>(0);
 		}
 		public MulContext(Op2Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterMul(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitMul(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -669,24 +789,74 @@ public partial class LangXParser : Parser {
 	public partial class StringContext : Expr2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRING() { return GetToken(LangXParser.STRING, 0); }
 		public StringContext(Expr2Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterString(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitString(this);
+		}
 	}
 	public partial class IdContext : Expr2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(LangXParser.ID, 0); }
 		public IdContext(Expr2Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterId(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitId(this);
+		}
 	}
 	public partial class ExprInParensContext : Expr2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public Expr0Context expr0() {
 			return GetRuleContext<Expr0Context>(0);
 		}
 		public ExprInParensContext(Expr2Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterExprInParens(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitExprInParens(this);
+		}
 	}
 	public partial class FloatContext : Expr2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode FLOAT() { return GetToken(LangXParser.FLOAT, 0); }
 		public FloatContext(Expr2Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterFloat(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitFloat(this);
+		}
 	}
 	public partial class IntContext : Expr2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT() { return GetToken(LangXParser.INT, 0); }
 		public IntContext(Expr2Context context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.EnterInt(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			ILangXListener typedListener = listener as ILangXListener;
+			if (typedListener != null) typedListener.ExitInt(this);
+		}
 	}
 
 	[RuleVersion(0)]
