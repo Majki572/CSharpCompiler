@@ -7,6 +7,7 @@ public class Program()
 {
     public static void Main(string[] args)
     {
+        var currentDirectory = Directory.GetCurrentDirectory();
         var input = File.ReadAllText(@"langX.test");
         
         AntlrInputStream inputStream = new AntlrInputStream(input);
