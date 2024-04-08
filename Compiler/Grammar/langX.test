@@ -1,6 +1,3 @@
-int a =2+2;
-int b=3+3;
-int c=4+4;
-write a;
-write b;
-write c;
+string s = "Hello";
+s = "World";
+write s;
