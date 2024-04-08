@@ -1,6 +1,6 @@
 using Antlr4.Runtime.Misc;
 
-namespace AntlrCSharp;
+namespace Compiler.Grammar;
 
 public class BasicLangXListener : LangXBaseListener
 {
@@ -12,7 +12,7 @@ public class BasicLangXListener : LangXBaseListener
     {
         var id = context.ID().GetText();
         var value = _stack.Pop();
-        
+
         _variables.Add(id, value);
         _generator.Allocate(id, value);
         _generator.Store(id, value);
@@ -31,9 +31,9 @@ public class BasicLangXListener : LangXBaseListener
         {
             _generator.Printf(variable.name, variable);
         }
-        
+
     }
-    
+
     public override void ExitRead([NotNull] LangXParser.ReadContext context)
     {
         var id = context.ID().GetText();
@@ -48,7 +48,7 @@ public class BasicLangXListener : LangXBaseListener
     {
         _stack.Push(new Variable(context.INT().GetText(), VariableType.INT));
     }
-    
+
     public override void ExitFloat(LangXParser.FloatContext context)
     {
         _stack.Push(new Variable(context.FLOAT().GetText(), VariableType.FLOAT));
@@ -64,12 +64,12 @@ public class BasicLangXListener : LangXBaseListener
     {
         _stack.Push(new Variable(context.STRING().GetText(), VariableType.STRING));
     }
-    
+
     public override void ExitAdd(LangXParser.AddContext context)
     {
         var right = _stack.Pop();
         var left = _stack.Pop();
-        
+
         if (left.type != right.type)
         {
             throw new Exception("Type mismatch at add");
@@ -84,27 +84,27 @@ public class BasicLangXListener : LangXBaseListener
     {
         var right = _stack.Pop();
         var left = _stack.Pop();
-        
+
         if (left.type != right.type)
         {
             throw new Exception("Type mismatch at sub");
         }
-        
+
         var type = left.type;
         _generator.Sub(left.name, right.name, type);
         _stack.Push(new Variable($"%{Generator.Reg - 1}", type));
     }
-    
+
     public override void ExitMul(LangXParser.MulContext context)
     {
         var right = _stack.Pop();
         var left = _stack.Pop();
-        
+
         if (left.type != right.type)
         {
             throw new Exception("Type mismatch at sub");
         }
-        
+
         var type = left.type;
         _generator.Mul(left.name, right.name, type);
         _stack.Push(new Variable($"%{Generator.Reg - 1}", type));
@@ -114,12 +114,12 @@ public class BasicLangXListener : LangXBaseListener
     {
         var right = _stack.Pop();
         var left = _stack.Pop();
-        
+
         if (left.type != right.type)
         {
             throw new Exception("Type mismatch at sub");
         }
-        
+
         var type = left.type;
         _generator.Div(left.name, right.name, type);
         _stack.Push(new Variable($"%{Generator.Reg - 1}", type));

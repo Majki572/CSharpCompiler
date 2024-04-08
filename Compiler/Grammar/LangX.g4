@@ -5,7 +5,7 @@ start: ( stat? ';' NEWLINE)*;
 stat: assign | write | read;
 
 assign:
-	TYPE WS ID '=' expr0 # expr ; // nie używamy bo jest ogarnięte z automatu
+	TYPE WS ID '=' expr0 # expr; // nie używamy bo jest ogarnięte z automatu
 
 reassign: ID '=' expr0;
 

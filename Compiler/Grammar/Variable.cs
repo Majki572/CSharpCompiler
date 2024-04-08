@@ -1,10 +1,10 @@
-namespace AntlrCSharp;
+namespace Compiler.Grammar;
 
 public class Variable
 {
     public string name { get; set; }
     public VariableType type { get; set; }
-    
+
     public Variable(string name, VariableType type)
     {
         this.name = name;
@@ -15,11 +15,11 @@ public class Variable
 public class StringVariable : Variable
 {
     public int length { get; set; }
-    
+
     public StringVariable(string name) : base(name, VariableType.STRING)
     {
     }
-    
+
     public StringVariable(string name, int length) : base(name, VariableType.STRING)
     {
         this.length = length;
