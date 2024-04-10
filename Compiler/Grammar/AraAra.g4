@@ -11,29 +11,30 @@ statement: assign
 read : READ ID;
 
 // wypisanie
-write : WRITE expression;
+write : WRITE (ID | expression | expressionBool | stringExpression);
 
 // przypisanie
 assign : (INT_TYPE | FLOAT_TYPE) ID '=' expression
     | BOOL_TYPE ID '=' expressionBool
     | STRING_TYPE ID '=' stringExpression
+    | ID '=' (expression | expressionBool | stringExpression)
 ;
 
 // działania na liczbach 
-expression: expression1 (ADD|SUB) expression1;
-expression1: expression2 (MUL|DIV) expression2;
-expression2: expression3 (LT|GT|LE|GE|EQ|NE) expression3;
-expression3: expression4 (AND|OR) expression4;
+expression: expression1 | expression1 (ADD|SUB) expression1;
+expression1: expression2 | expression2 (MUL|DIV) expression2;
+expression2: expression3 | expression3 (LT|GT|LE|GE|EQ|NE) expression3;
+expression3: expression4 | expression4 (AND|OR) expression4;
 expression4: INT | FLOAT | ID | '(' expression ')';
 
 // działania na boolach
-expressionBool: expressionBool1 (AND|OR) expressionBool1;
-expressionBool1: expressionBool2 (EQ|NE) expressionBool2;
+expressionBool: expressionBool1 | expressionBool1 (AND|OR) expressionBool1;
+expressionBool1:expressionBool2 | expressionBool2 (EQ|NE) expressionBool2;
 expressionBool2: BOOL | ID | '(' expressionBool ')';
 
 // dzoałania na stringach
 stringExpression: stringExpression1 (ADD) stringExpression1;
-stringExpression1: STRING | ID | '(' stringExpression ')';
+stringExpression1: STRING | ID | stringExpression;
 
 // tablice
 array:  ARRAY '<' TYPE '>' ID '[' INT ']'
