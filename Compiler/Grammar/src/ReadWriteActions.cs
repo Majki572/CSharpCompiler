@@ -20,7 +20,7 @@ public abstract class ReadWriteActions
         }
         else if (variable.Type == VariableType.STRING)
         {
-            var length = ((StringVariable) variable).Length;
+            var length = ((StringVariable)variable).Length;
             StringManagement.PrintString(id, length);
         }
 
