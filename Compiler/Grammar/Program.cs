@@ -30,10 +30,10 @@ public class Program()
         Console.WriteLine("File generated successfully");
         
         // compile the file
-        var process = new Process();
-        process.StartInfo.FileName = @"C:\Program Files\LLVM\bin\clang++.exe";
-        process.StartInfo.Arguments = $"-o {outputFile.Replace(".ll", ".exe")} {outputFile}";
-        process.Start();
-        process.WaitForExit();
+        // var process = new Process();
+        // process.StartInfo.FileName = @"C:\Program Files\LLVM\bin\clang++.exe";
+        // process.StartInfo.Arguments = $"-o {outputFile.Replace(".ll", ".exe")} {outputFile}";
+        // process.Start();
+        // process.WaitForExit();
     }   
 }

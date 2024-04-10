@@ -6,11 +6,11 @@ public static class MemoryManagement
     {
         if (variable.Type == VariableType.INT)
         {
-            Generator.Code += $"%{id} = alloca i32, align 4\n";
+            Generator.Code += $"%{id} = alloca i32\n";
         }
         else if (variable.Type == VariableType.FLOAT)
         {
-            Generator.Code += $"%{id} = alloca float, align 4\n";
+            Generator.Code += $"%{id} = alloca float\n";
         }
         else if (variable.Type == VariableType.STRING)
         {
