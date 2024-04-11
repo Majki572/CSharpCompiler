@@ -13,10 +13,15 @@ public class Generator
         String text = "";
         text += "declare i32 @printf(i8*, ...)\n";
         text += "declare i32 @__isoc99_scanf(i8*, ...)\n";
+        text += "declare noalias i8* @malloc(i64 noundef)\n";
+        text += "declare i8* @strcpy(i8* noundef, i8* noundef)\n";
         text += "@strpi = constant [4 x i8] c\"%d\\0A\\00\"\n";
         text += "@strpd = constant [4 x i8] c\"%f\\0A\\00\"\n";
         text += "@strsi = constant [3 x i8] c\"%d\\00\"\n";
         text += "@strsd = constant [4 x i8] c\"%lf\\00\"\n";
+        
+        text += "@strss = constant [3 x i8] c\"%s\\00\"\n";
+        text += "@strps = constant [4 x i8] c\"%s\\0A\\00\"\n";
         text += HeaderText;
         text += "define i32 @main() nounwind{\n";
         text += MainText;
@@ -39,18 +44,38 @@ public class Generator
     {
         MainText += "%" + id + " = alloca i1\n";
     }
-
-    public static void AllocateStringConst(String id, int length)
+    
+    public static void AllocateStringConst(String id, String value, int length)
     {
-        MainText += "%" + id + " = alloca [ " + (length + 1) + " x i8 ]\n";
-        MainText += "%" + Reg + " = bitcast [ " + (length + 1) + " x i8 ]* %" + id + " to i8*\n";
-        Reg++;
-        HeaderText += "";
+        HeaderText += "@" + id + " = private unnamed_addr constant [ " + (length + 1) + " x i8 ] c\"" + value + "\\00\"\n";
+    }
+    
+    public static void AllocateString(String id) 
+    {
+        MainText += "%" + id + " = alloca i8*\n";
     }
 
-    public static void AllocateString(String id, int length)
+    public static void MallocStringSize(String id, String length)
     {
-
+        MainText += "%" + Reg + " = call i8* @malloc(i64 " + length + ")\n";
+        Reg++;
+        MainText += "store i8* %" + (Reg - 1) + ", i8** %" + id + "\n";
+    }
+    
+    public static void AssignString(String id, String value, int length) 
+    {
+        MainText += $"%{Reg} = load i8*, i8** %{id}\n";
+        Reg++;
+        MainText += $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg-1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{value}, i64 0, i64 0))\n";
+        Reg++;
+    }
+    
+    public static void AllocateToExistingString(String id, String newValueId, int length)
+    {
+        MainText += $"%{Reg} = load i8*, i8** %{id}\n";
+        Reg++;
+        MainText += $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg-1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{newValueId}, i64 0, i64 0))\n";
+        Reg++;
     }
 
     // Assign
@@ -91,13 +116,14 @@ public class Generator
         MainText += "%" + Reg + "= load i1, i1* %" + id + "\n";
         Reg++;
     }
-
+    
     public static void LoadString(String id)
     {
-
+        MainText += "%" + Reg + "= load i8*, i8** %" + id + "\n";
+        Reg++;
     }
-
-
+    
+    
     // Print
     public static void PrintInteger(String id)
     {
@@ -134,11 +160,14 @@ public class Generator
         MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i1 0, i1 0), i1 %" + (Reg - 1) + ")\n";
         Reg++;
     }
-
-    public static void PrintString(String id)
-    {
-
+    
+    public static void PrintString(String id) {
+        MainText += "%" + Reg + "= load i8*, i8** %" + id + "\n";
+        Reg++;
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* %" + (Reg-1) + ")\n";
+        Reg++;
     }
+
     public static void PrintNumber(String id)
     {
 
@@ -155,13 +184,15 @@ public class Generator
         MainText += "%" + Reg + " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strsd, i32 0, i32 0), double* %" + id + ")\n";
         Reg++;
     }
-
-    public static void ReadBool(String id) { }
-
-    public static void ReadString(String id) { }
-
-    public static void ReadNumber(String id) { }
-
+    
+    public static void ReadString(String id) 
+    {
+        MallocStringSize(id, 256.ToString());
+        LoadString(id);
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strss, i64 0, i64 0), i8* %" + (Reg - 1) + ")\n";
+        Reg++;
+    }
+    
     // Add
     public static void AddIntegers(String value1, String value2)
     {
@@ -174,11 +205,13 @@ public class Generator
         MainText += "%" + Reg + " = fadd double " + value1 + ", " + value2 + "\n";
         Reg++;
     }
-
-    public static void AddStrings(String value1, String value2)
+    
+    public static void AddString(String value1, String value2)
     {
-
+        MainText += "%" + Reg + " = call i8* @strcat(i8* " + value1 + ", i8* " + value2 + ")\n";
+        Reg++;
     }
+    
     // Sub
     public static void SubIntegers(String value1, String value2)
     {

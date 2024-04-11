@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from f:/GitHubRepository/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
+// Generated from C:/Users/jakub/Documents/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -86,6 +86,18 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitPrint([NotNull] KermitLangParser.PrintContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>print_string</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterPrint_string([NotNull] KermitLangParser.Print_stringContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>print_string</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitPrint_string([NotNull] KermitLangParser.Print_stringContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>read</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
@@ -207,6 +219,18 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitXor([NotNull] KermitLangParser.XorContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>neg</c>
+	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNeg([NotNull] KermitLangParser.NegContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>neg</c>
+	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNeg([NotNull] KermitLangParser.NegContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>expression4Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
 	/// </summary>
@@ -290,4 +314,28 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>string_add</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterString_add([NotNull] KermitLangParser.String_addContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>string_add</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitString_add([NotNull] KermitLangParser.String_addContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>string</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterString([NotNull] KermitLangParser.StringContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>string</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitString([NotNull] KermitLangParser.StringContext context);
 }

@@ -21,10 +21,14 @@ statement:
 		| STRING
 		| NUMBER
 		| expression
-	) ';'						# assign // Added handling for STRING and NUMBER types 
-	| 'PRINT' (expression) ';'	# print // Added STRING and NUMBER types
-	| 'READ_TO' ID ';'			# read;
-//| 'IF' (ID | BOOL) block ';' #if | 'CALL' ID '(' parameter* ')' ';' #call;
+		| expressionString
+	) ';' #assign // Added handling for STRING and NUMBER types 
+	| 'PRINT' (expression) ';' #print // Added STRING and NUMBER types
+	| 'PRINT' STRING ';' #print_string
+	| 'READ_TO' ID ';'  #read
+	//| 'IF' (ID | BOOL) block ';' #if
+	//| 'CALL' ID '(' parameter* ')' ';' #call
+	;
 
 //parameter: ID '|';
 
@@ -47,6 +51,7 @@ expression2:
 	expression3 'AND' expression2	# and
 	| expression3 'OR' expression2	# or
 	| expression3 'XOR' expression2	# xor
+	| expression3 'NEG' expression2	# neg
 	| expression3					# expression4Empty;
 expression3:
 	INTEGER					# int
@@ -60,6 +65,28 @@ expression3:
 // NUMBER | expression_base1 ) # expression_base_mul // Added STRING and NUMBER types | (ID |
 // INTEGER | REAL | STRING | NUMBER) DIV ( ID | INTEGER | REAL | STRING | NUMBER | expression_base1
 // ) # expression_base_div; // Added STRING and NUMBER types
+expressionString: STRING			            # string
+    | ID                                        # stringId
+    |   expressionString ADD expressionString   # string_add
+    ;
+    
+
+//expression_base1: (ID | INTEGER | REAL | STRING | NUMBER) MUL (
+//		ID
+//		| INTEGER
+//		| REAL
+//		| STRING
+//		| NUMBER
+//		| expression_base1
+//	) # expression_base_mul // Added STRING and NUMBER types
+//	| (ID | INTEGER | REAL | STRING | NUMBER) DIV (
+//		ID
+//		| INTEGER
+//		| REAL
+//		| STRING
+//		| NUMBER
+//		| expression_base1
+//	) # expression_base_div; // Added STRING and NUMBER types
 
 INTEGER: ('0' ..'9')+;
 

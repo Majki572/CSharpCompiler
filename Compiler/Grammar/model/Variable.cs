@@ -2,12 +2,12 @@ namespace Compiler.Grammar;
 
 public class Variable
 {
-    public string Value { get; set; }
+    public string Id { get; set; }
     public VariableType Type { get; set; }
 
-    public Variable(string value, VariableType type)
+    public Variable(string id, VariableType type)
     {
-        this.Value = value;
+        this.Id = id;
         this.Type = type;
     }
 }
@@ -16,11 +16,11 @@ public class StringVariable : Variable
 {
     public int Length { get; set; }
 
-    public StringVariable(string value) : base(value, VariableType.STRING)
+    public StringVariable(string id) : base(id, VariableType.STRING)
     {
     }
 
-    public StringVariable(string value, int length) : base(value, VariableType.STRING)
+    public StringVariable(string id, int length) : base(id, VariableType.STRING)
     {
         this.Length = length;
     }
