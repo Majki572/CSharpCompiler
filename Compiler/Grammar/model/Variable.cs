@@ -30,8 +30,11 @@ public class StringVariable : Variable
 
 public enum VariableType
 {
+    SHORT,
     INT,
-    REAL,
+    LOGNLONG,
+    FLOAT,
+    DOUBLE,
     BOOL,
     STRING,
     STRING_CONST,

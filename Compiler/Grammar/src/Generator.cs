@@ -41,6 +41,8 @@ public class Generator
     }
 
     // Allocate
+    
+    
     public static void AllocateInteger(String id)
     {
         MainText += "%" + id + " = alloca i32\n";
