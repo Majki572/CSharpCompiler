@@ -22,7 +22,7 @@ statement:
 		| NUMBER
 		| expression
 	) ';'						# assign // Added handling for STRING and NUMBER types 
-	| 'SELECT' (expression) ';'	# print // Added STRING and NUMBER types
+	| 'PRINT' (expression) ';'	# print // Added STRING and NUMBER types
 	| 'READ_TO' ID ';'			# read;
 //| 'IF' (ID | BOOL) block ';' #if | 'CALL' ID '(' parameter* ')' ';' #call;
 

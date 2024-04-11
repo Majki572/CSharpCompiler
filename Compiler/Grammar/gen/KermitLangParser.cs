@@ -49,7 +49,7 @@ public partial class KermitLangParser : Parser {
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'DECLARE'", "';'", "'ASSIGN'", "'SELECT'", "'READ_TO'", "'AND'", 
+		null, "'DECLARE'", "';'", "'ASSIGN'", "'PRINT'", "'READ_TO'", "'AND'", 
 		"'OR'", "'XOR'", "'NEG'", "'('", "')'", null, null, null, null, null, 
 		"'INTEGER'", "'REAL'", "'BOOL'", "'STRING'", "'NUMBER'", null, "'+'", 
 		"'-'", "'*'", "'/'"

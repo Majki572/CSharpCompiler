@@ -9,8 +9,12 @@ public class BasicLangXListener : KermitLangBaseListener
 {
     private readonly Dictionary<string, Variable> _variables = new Dictionary<string, Variable>();
     private readonly Stack<Variable> _stack = new Stack<Variable>();
+    private List<string> errors = new List<string>();
 
-    public virtual void ExitStart([NotNull] KermitLangParser.StartContext context) { }
+    public virtual void ExitStart([NotNull] KermitLangParser.StartContext context)
+    {
+        ReportErrors();
+    }
     public virtual void ExitBase_statement([NotNull] KermitLangParser.Base_statementContext context) { }
 
     public override void ExitDeclare(KermitLangParser.DeclareContext context)
@@ -19,32 +23,32 @@ public class BasicLangXListener : KermitLangBaseListener
 
         if (_variables.ContainsKey(id))
         {
-            // error
+            AddError(context.Start.Line, $"Variable {id} is already defined in this scope.");
         }
 
         if (context.INTEGER_NAME() != null && context.INTEGER() == null)
         {
-            // error
+            AddError(context.Start.Line, $"Value is not an integer.");
         }
 
         if (context.REAL_NAME() != null && context.REAL() == null)
         {
-            // error
+            AddError(context.Start.Line, $"Value is not a real.");
         }
 
         if (context.BOOL_NAME() != null && context.BOOL() == null)
         {
-            // error
+            AddError(context.Start.Line, $"Value is not a bool.");
         }
 
         if (context.STRING_NAME() != null && context.STRING() == null)
         {
-            // error
+            AddError(context.Start.Line, $"Value is not a string.");
         }
 
         if (context.NUMBER_NAME() != null && context.NUMBER() == null)
         {
-            // error
+            AddError(context.Start.Line, $"Value is not a number.");
         }
 
         if (context.INTEGER() != null)
@@ -77,12 +81,12 @@ public class BasicLangXListener : KermitLangBaseListener
             var newVar = new StringVariable(stringValue, stringValue.Length);
             if (_variables.ContainsKey(stringValue))
             {
-                // error
+                AddError(context.Start.Line, $"Variable already declared in this scope."); // wrocic do tego
             }
 
             _variables.Add(id, newVar);
-            Generator.AllocateString(newVar.Name, newVar.Length);
-            Generator.AssignString(newVar.Name, context.STRING().GetText());
+            Generator.AllocateString(newVar.Value, newVar.Length);
+            Generator.AssignString(newVar.Value, context.STRING().GetText());
         }
 
         if (context.NUMBER() != null)
@@ -100,37 +104,45 @@ public class BasicLangXListener : KermitLangBaseListener
         var id = context.ID(0).GetText();
         if (!_variables.ContainsKey(id))
         {
-            // error
+            AddError(context.Start.Line, $"Variable {id} is not declared in this scope.");
         }
 
         var variable = _variables[id];
         if (variable.Type == VariableType.INT && context.INTEGER() == null)
         {
-            // error
+            var actualType = GetActualType(context);
+            AddError(context.Start.Line, $"Expected a value of type INT for variable {id} but found {actualType}");
         }
         if (variable.Type == VariableType.REAL && context.REAL() == null)
         {
-            // error
+            var actualType = GetActualType(context);
+            AddError(context.Start.Line, $"Expected a value of type REAL for variable {id} but found {actualType}");
         }
         if (variable.Type == VariableType.BOOL && context.BOOL() == null)
         {
-            // error
+            var actualType = GetActualType(context);
+            AddError(context.Start.Line, $"Expected a value of type BOOL for variable {id} but found {actualType}");
         }
         if (variable.Type == VariableType.STRING && context.STRING() == null)
         {
-            // error
+            var actualType = GetActualType(context);
+            AddError(context.Start.Line, $"Expected a value of type STRING for variable {id} but found {actualType}");
         }
         if (variable.Type == VariableType.NUMBER && context.NUMBER() == null)
         {
-            // error
+            var actualType = GetActualType(context);
+            AddError(context.Start.Line, $"Expected a value of type NUMBER for variable {id} but found {actualType}");
         }
         if (context.ID(1) != null && !_variables.ContainsKey(context.ID(1).GetText()))
         {
-            // error
+            var secondId = context.ID(1).GetText();
+            AddError(context.Start.Line, $"Variable {secondId} is not declared in this scope.");
         }
         if (context.ID(1) != null && _variables[context.ID(1).GetText()].Type != variable.Type)
         {
-            // error
+            var secondId = context.ID(1).GetText();
+            var actualTypeSecond = GetActualType(context);
+            AddError(context.Start.Line, $"Variable {secondId} ({actualTypeSecond}) type does not match variable {id} type.");
         }
 
         if (variable.Type == VariableType.INT)
@@ -159,8 +171,8 @@ public class BasicLangXListener : KermitLangBaseListener
 
     public override void ExitPrint(KermitLangParser.PrintContext context)
     {
-        Console.WriteLine("Print");
         var variable = _stack.Pop();
+
         if (variable.Type == VariableType.INT)
         {
             Generator.PrintIntegerValue(variable.Value);
@@ -171,24 +183,25 @@ public class BasicLangXListener : KermitLangBaseListener
         }
         if (variable.Type == VariableType.BOOL)
         {
-            // TODO Implement bool print
+            Generator.PrintBool(variable.Value);
         }
         if (variable.Type == VariableType.STRING)
         {
-            // TODO Implement string print
+            Generator.PrintString(variable.Value);
         }
         if (variable.Type == VariableType.NUMBER)
         {
-            // TODO Implement number print
+            Generator.PrintNumber(variable.Value);
         }
     }
 
     public override void ExitRead(KermitLangParser.ReadContext context)
     {
         var id = context.ID().GetText();
+
         if (!_variables.ContainsKey(id))
         {
-            // error
+            AddError(context.Start.Line, $"Variable is not defined in this scope.");
         }
 
         var variable = _variables[id];
@@ -202,15 +215,15 @@ public class BasicLangXListener : KermitLangBaseListener
         }
         if (variable.Type == VariableType.BOOL)
         {
-            // TODO Implement bool read
+            Generator.ReadBool(variable.Value);
         }
         if (variable.Type == VariableType.STRING)
         {
-            // TODO Implement string read
+            Generator.ReadString(variable.Value);
         }
         if (variable.Type == VariableType.NUMBER)
         {
-            // TODO Implement number read
+            Generator.ReadNumber(variable.Value);
         }
     }
 
@@ -287,4 +300,55 @@ public class BasicLangXListener : KermitLangBaseListener
     public virtual void ExitEveryRule([NotNull] ParserRuleContext context) { }
     public virtual void VisitTerminal([NotNull] ITerminalNode node) { }
     public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
+
+    private void AddError(int line, string msg)
+    {
+        errors.Add($"Error in line {line}: {msg}");
+    }
+
+    private void ReportErrors()
+    {
+        if (errors.Any())
+        {
+            foreach (var error in errors)
+            {
+                Console.Error.WriteLine(error);
+            }
+            Environment.Exit(1);
+        }
+    }
+
+    private string GetActualType(KermitLangParser.AssignContext context)
+    {
+        if (context.INTEGER() != null)
+        {
+            return "int";
+        }
+        else if (context.REAL() != null)
+        {
+            return "real";
+        }
+        else if (context.BOOL() != null)
+        {
+            return "bool";
+        }
+        else if (context.STRING() != null)
+        {
+            return "string";
+        }
+        else if (context.ID().Length > 1)
+        {
+            String secondId = context.ID(1).GetText();
+            if (_variables.ContainsKey(secondId))
+            {
+                VariableType type = _variables[secondId].Type;
+                return type.ToString().ToLower();
+            }
+        }
+        else if (context.expression() != null)
+        {
+            return "expression";
+        }
+        return "unknown";
+    }
 }
