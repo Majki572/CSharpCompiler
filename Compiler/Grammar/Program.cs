@@ -23,16 +23,16 @@ public class Program()
 
         // create file from generated code
         // save the file as output.ll in Grammar directory
-        var outputFile = @"C:\Users\jakub\Documents\CSharpCompiler\Compiler\Grammar\output.ll";
+        var outputFile = path + "outputFile.ll"; //@"C:\Users\jakub\Documents\CSharpCompiler\Compiler\Grammar\output.ll";
         Console.WriteLine(Generator.Generate());
         File.WriteAllText(outputFile, Generator.Generate());
         Console.WriteLine("File generated successfully");
-        
+
         // compile the file
-        // var process = new Process();
-        // process.StartInfo.FileName = @"C:\Program Files\LLVM\bin\clang++.exe";
-        // process.StartInfo.Arguments = $"-o {outputFile.Replace(".ll", ".exe")} {outputFile}";
-        // process.Start();
-        // process.WaitForExit();
-    }   
+        var process = new System.Diagnostics.Process();
+        process.StartInfo.FileName = @"C:\Program Files\LLVM\bin\clang++.exe";
+        process.StartInfo.Arguments = $"-o {outputFile.Replace(".ll", ".exe")} {outputFile}";
+        process.Start();
+        process.WaitForExit();
+    }
 }

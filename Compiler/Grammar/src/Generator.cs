@@ -26,6 +26,16 @@ public class Generator
         text += "define i32 @main() nounwind{\n";
         text += MainText;
         text += "ret i32 0 }\n";
+
+        var errors = BasicLangXListener.Errors;
+        if (errors.Any())
+        {
+            foreach (var error in errors)
+            {
+                Console.Error.WriteLine(error);
+            }
+            Environment.Exit(1);
+        }
         return text;
     }
 
@@ -211,7 +221,7 @@ public class Generator
                     (Reg - 1) + ")\n";
         Reg++;
     }
-    
+
     public static void ReadBool(string variableId)
     {
         throw new NotImplementedException();
