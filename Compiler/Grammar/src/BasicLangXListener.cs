@@ -13,9 +13,7 @@ public class BasicLangXListener : KermitLangBaseListener
     private readonly Stack<Variable> _stack = new Stack<Variable>();
     public static List<string> Errors = new List<string>();
 
-    public virtual void ExitStart([NotNull] KermitLangParser.StartContext context)
-    {
-    }
+    public virtual void ExitStart([NotNull] KermitLangParser.StartContext context) { }
     public virtual void ExitBase_statement([NotNull] KermitLangParser.Base_statementContext context) { }
 
     public override void ExitDeclare(KermitLangParser.DeclareContext context)

@@ -293,18 +293,23 @@ public class Generator
     // And
     public static void AndBool(String value1, String value2)
     {
-
+        MainText += "%" + Reg + " = and i1 " + value1 + ", " + value2 + "\n";
+        Reg++;
     }
 
     // Or
     public static void OrBool(String value1, String value2)
     {
-
+        MainText += "%" + Reg + " = or i1 " + value1 + ", " + value2 + "\n";
+        Reg++;
     }
+
 
     // Xor
     public static void XorBool(String value1, String value2)
     {
-
+        MainText += "%" + Reg + " = xor i1 " + value1 + ", " + value2 + "\n";
+        Reg++;
     }
+
 }
