@@ -11,17 +11,10 @@ statement:
 		| BOOL_NAME
 		| STRING_NAME
 		| NUMBER_NAME
-	) ID (INTEGER | REAL | BOOL | STRING | NUMBER) ';' # declare
+	) ID (expression | expressionString) ';' # declare
 	// Added STRING_NAME and NUMBER_NAME for string and number types
 	| 'ASSIGN' ID (
-		INTEGER
-		| REAL
-		| BOOL
-		| ID
-		| STRING
-		| NUMBER
-		| expression
-		| expressionString
+		expression | expressionString
 	) ';' #assign // Added handling for STRING and NUMBER types 
 	| 'PRINT' (expression) ';' #print // Added STRING and NUMBER types
 	| 'PRINT' STRING ';' #print_string

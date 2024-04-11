@@ -198,6 +198,13 @@ public interface IKermitLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStringId([NotNull] KermitLangParser.StringIdContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>string_add</c>
 	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
 	/// </summary>

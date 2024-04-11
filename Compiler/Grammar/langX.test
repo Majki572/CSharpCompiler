@@ -1,3 +1,6 @@
-DECLARE STRING a "a";
-READ_TO a;
-SELECT a;
+DECLARE REAL a 100.0;
+DECLARE REAL b 1.555;
+PRINT a / b;
+PRINT a * b;
+PRINT a + b;
+PRINT a - b;

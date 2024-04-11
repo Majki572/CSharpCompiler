@@ -368,6 +368,20 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStringId([NotNull] KermitLangParser.StringIdContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStringId([NotNull] KermitLangParser.StringIdContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>string_add</c>
 	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
 	/// <para>The default implementation does nothing.</para>

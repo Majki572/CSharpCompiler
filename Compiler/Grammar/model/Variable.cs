@@ -1,4 +1,4 @@
-namespace Compiler.Grammar;
+namespace Compiler.Grammar.model;
 
 public class Variable
 {

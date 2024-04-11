@@ -315,6 +315,18 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStringId([NotNull] KermitLangParser.StringIdContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStringId([NotNull] KermitLangParser.StringIdContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>string_add</c>
 	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
 	/// </summary>

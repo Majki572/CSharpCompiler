@@ -19,7 +19,7 @@ public class Generator
         text += "@strpd = constant [4 x i8] c\"%f\\0A\\00\"\n";
         text += "@strsi = constant [3 x i8] c\"%d\\00\"\n";
         text += "@strsd = constant [4 x i8] c\"%lf\\00\"\n";
-        
+
         text += "@strss = constant [3 x i8] c\"%s\\00\"\n";
         text += "@strps = constant [4 x i8] c\"%s\\0A\\00\"\n";
         text += HeaderText;
@@ -44,13 +44,14 @@ public class Generator
     {
         MainText += "%" + id + " = alloca i1\n";
     }
-    
+
     public static void AllocateStringConst(String id, String value, int length)
     {
-        HeaderText += "@" + id + " = private unnamed_addr constant [ " + (length + 1) + " x i8 ] c\"" + value + "\\00\"\n";
+        HeaderText += "@" + id + " = private unnamed_addr constant [ " + (length + 1) + " x i8 ] c\"" + id +
+                      "\\00\"\n";
     }
-    
-    public static void AllocateString(String id) 
+
+    public static void AllocateString(String id)
     {
         MainText += "%" + id + " = alloca i8*\n";
     }
@@ -61,20 +62,22 @@ public class Generator
         Reg++;
         MainText += "store i8* %" + (Reg - 1) + ", i8** %" + id + "\n";
     }
-    
-    public static void AssignString(String id, String value, int length) 
+
+    public static void AssignString(String id, String value, int length)
     {
         MainText += $"%{Reg} = load i8*, i8** %{id}\n";
         Reg++;
-        MainText += $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg-1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{value}, i64 0, i64 0))\n";
+        MainText +=
+            $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg - 1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{value}, i64 0, i64 0))\n";
         Reg++;
     }
-    
+
     public static void AllocateToExistingString(String id, String newValueId, int length)
     {
         MainText += $"%{Reg} = load i8*, i8** %{id}\n";
         Reg++;
-        MainText += $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg-1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{newValueId}, i64 0, i64 0))\n";
+        MainText +=
+            $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg - 1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{newValueId}, i64 0, i64 0))\n";
         Reg++;
     }
 
@@ -98,6 +101,7 @@ public class Generator
     {
 
     }
+
     // Load
     public static void LoadInteger(String id)
     {
@@ -116,40 +120,44 @@ public class Generator
         MainText += "%" + Reg + "= load i1, i1* %" + id + "\n";
         Reg++;
     }
-    
+
     public static void LoadString(String id)
     {
         MainText += "%" + Reg + "= load i8*, i8** %" + id + "\n";
         Reg++;
     }
-    
-    
+
+
     // Print
     public static void PrintInteger(String id)
     {
-        MainText += "%" + Reg + "= load i32, i32* %" + id + "\n";
-        Reg++;
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 %" + (Reg - 1) + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 %" +
+                    (id) + ")\n";
         Reg++;
     }
 
     public static void PrintIntegerValue(String value)
     {
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 " + value + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 %" +
+                    value + ")\n";
         Reg++;
     }
 
     public static void PrintReal(String id)
     {
-        MainText += "%" + Reg + "= load double, double* %" + id + "\n";
-        Reg++;
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i32 0, i32 0), double %" + (Reg - 1) + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i32 0, i32 0), double %" +
+                    (Reg - 1) + ")\n";
         Reg++;
     }
 
     public static void PrintRealValue(String value)
     {
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), double noundef " + value + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), double noundef " +
+                    value + ")\n";
         Reg++;
     }
 
@@ -157,14 +165,19 @@ public class Generator
     {
         MainText += "%" + Reg + "= load i1, i1* %" + id + "\n";
         Reg++;
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i1 0, i1 0), i1 %" + (Reg - 1) + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i1 0, i1 0), i1 %" +
+                    (Reg - 1) + ")\n";
         Reg++;
     }
-    
-    public static void PrintString(String id) {
+
+    public static void PrintString(String id)
+    {
         MainText += "%" + Reg + "= load i8*, i8** %" + id + "\n";
         Reg++;
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* %" + (Reg-1) + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* %" +
+                    (Reg - 1) + ")\n";
         Reg++;
     }
 
@@ -172,27 +185,43 @@ public class Generator
     {
 
     }
+
     // Read
     public static void ReadInteger(String id)
     {
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strsi, i32 0, i32 0), i32* %" + id + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strsi, i32 0, i32 0), i32* %" + id + ")\n";
         Reg++;
     }
 
     public static void ReadReal(String id)
     {
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strsd, i32 0, i32 0), double* %" + id + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strsd, i32 0, i32 0), double* %" +
+                    id + ")\n";
         Reg++;
     }
-    
-    public static void ReadString(String id) 
+
+    public static void ReadString(String id)
     {
         MallocStringSize(id, 256.ToString());
         LoadString(id);
-        MainText += "%" + Reg + " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strss, i64 0, i64 0), i8* %" + (Reg - 1) + ")\n";
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strss, i64 0, i64 0), i8* %" +
+                    (Reg - 1) + ")\n";
         Reg++;
     }
     
+    public static void ReadBool(string variableId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static void ReadNumber(string varaibleId)
+    {
+        throw new NotImplementedException();
+    }
+
     // Add
     public static void AddIntegers(String value1, String value2)
     {
@@ -205,13 +234,13 @@ public class Generator
         MainText += "%" + Reg + " = fadd double " + value1 + ", " + value2 + "\n";
         Reg++;
     }
-    
-    public static void AddString(String value1, String value2)
+
+    public static void AddStrings(String value1, String value2)
     {
         MainText += "%" + Reg + " = call i8* @strcat(i8* " + value1 + ", i8* " + value2 + ")\n";
         Reg++;
     }
-    
+
     // Sub
     public static void SubIntegers(String value1, String value2)
     {
@@ -241,7 +270,7 @@ public class Generator
     // Div
     public static void DivIntegers(String value1, String value2)
     {
-        MainText += "%" + Reg + " = div i32 " + value1 + ", " + value2 + "\n";
+        MainText += "%" + Reg + " = sdiv i32 " + value1 + ", " + value2 + "\n";
         Reg++;
     }
 
