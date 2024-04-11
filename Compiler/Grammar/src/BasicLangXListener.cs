@@ -1,4 +1,7 @@
 using Antlr4.Runtime.Misc;
+using IErrorNode = Antlr4.Runtime.Tree.IErrorNode;
+using ITerminalNode = Antlr4.Runtime.Tree.ITerminalNode;
+using ParserRuleContext = Antlr4.Runtime.ParserRuleContext;
 
 namespace Compiler.Grammar.src;
 
@@ -6,6 +9,9 @@ public class BasicLangXListener : KermitLangBaseListener
 {
     private readonly Dictionary<string, Variable> _variables = new Dictionary<string, Variable>();
     private readonly Stack<Variable> _stack = new Stack<Variable>();
+
+    public virtual void ExitStart([NotNull] KermitLangParser.StartContext context) { }
+    public virtual void ExitBase_statement([NotNull] KermitLangParser.Base_statementContext context) { }
 
     public override void ExitDeclare(KermitLangParser.DeclareContext context)
     {
@@ -15,32 +21,32 @@ public class BasicLangXListener : KermitLangBaseListener
         {
             // error
         }
-        
+
         if (context.INTEGER_NAME() != null && context.INTEGER() == null)
         {
             // error
         }
-        
+
         if (context.REAL_NAME() != null && context.REAL() == null)
         {
             // error
         }
-        
+
         if (context.BOOL_NAME() != null && context.BOOL() == null)
         {
             // error
         }
-        
+
         if (context.STRING_NAME() != null && context.STRING() == null)
         {
             // error
         }
-        
+
         if (context.NUMBER_NAME() != null && context.NUMBER() == null)
         {
             // error
         }
-        
+
         if (context.INTEGER() != null)
         {
             var newVar = new Variable(id, VariableType.INT);
@@ -48,7 +54,7 @@ public class BasicLangXListener : KermitLangBaseListener
             Generator.AllocateInteger(newVar.Value);
             Generator.AssignInteger(newVar.Value, context.INTEGER().GetText());
         }
-        
+
         if (context.REAL() != null)
         {
             var newVar = new Variable(id, VariableType.REAL);
@@ -56,7 +62,7 @@ public class BasicLangXListener : KermitLangBaseListener
             Generator.AllocateDouble(newVar.Value);
             Generator.AssignDouble(newVar.Value, context.REAL().GetText());
         }
-        
+
         if (context.BOOL() != null)
         {
             var newVar = new Variable(id, VariableType.BOOL);
@@ -64,7 +70,7 @@ public class BasicLangXListener : KermitLangBaseListener
             Generator.AllocateBool(newVar.Value);
             Generator.AssignBool(newVar.Value, context.BOOL().GetText());
         }
-        
+
         if (context.STRING() != null)
         {
             var stringValue = id.Substring(1, id.Length - 2);
@@ -73,12 +79,12 @@ public class BasicLangXListener : KermitLangBaseListener
             {
                 // error
             }
-            
+
             _variables.Add(id, newVar);
             Generator.AllocateString(newVar.Name, newVar.Length);
             Generator.AssignString(newVar.Name, context.STRING().GetText());
         }
-        
+
         if (context.NUMBER() != null)
         {
             var newVar = new Variable(id, VariableType.NUMBER);
@@ -88,7 +94,7 @@ public class BasicLangXListener : KermitLangBaseListener
             //Generator.AssignNumber(newVar.Name, context.NUMBER().GetText());
         }
     }
-    
+
     public override void ExitAssign(KermitLangParser.AssignContext context)
     {
         var id = context.ID(0).GetText();
@@ -96,7 +102,7 @@ public class BasicLangXListener : KermitLangBaseListener
         {
             // error
         }
-        
+
         var variable = _variables[id];
         if (variable.Type == VariableType.INT && context.INTEGER() == null)
         {
@@ -126,7 +132,7 @@ public class BasicLangXListener : KermitLangBaseListener
         {
             // error
         }
-        
+
         if (variable.Type == VariableType.INT)
         {
             Generator.AssignInteger(variable.Value, context.INTEGER().GetText());
@@ -176,7 +182,7 @@ public class BasicLangXListener : KermitLangBaseListener
             // TODO Implement number print
         }
     }
-    
+
     public override void ExitRead(KermitLangParser.ReadContext context)
     {
         var id = context.ID().GetText();
@@ -184,7 +190,7 @@ public class BasicLangXListener : KermitLangBaseListener
         {
             // error
         }
-        
+
         var variable = _variables[id];
         if (variable.Type == VariableType.INT)
         {
@@ -217,16 +223,18 @@ public class BasicLangXListener : KermitLangBaseListener
     {
         base.ExitExpression_base_sub(context);
     }
-    
+    public virtual void ExitExpression1Empty([NotNull] KermitLangParser.Expression1EmptyContext context) { }
+
     public override void ExitExpression_base_mul(KermitLangParser.Expression_base_mulContext context)
     {
         base.ExitExpression_base_mul(context);
     }
-    
+
     public override void ExitExpression_base_div(KermitLangParser.Expression_base_divContext context)
     {
         base.ExitExpression_base_div(context);
     }
+    public virtual void ExitExpression2Empty([NotNull] KermitLangParser.Expression2EmptyContext context) { }
 
     public override void ExitAnd(KermitLangParser.AndContext context)
     {
@@ -247,6 +255,7 @@ public class BasicLangXListener : KermitLangBaseListener
     {
         base.ExitNeg(context);
     }
+    public virtual void ExitExpression4Empty([NotNull] KermitLangParser.Expression4EmptyContext context) { }
 
     public override void ExitInt(KermitLangParser.IntContext context)
     {
@@ -272,4 +281,10 @@ public class BasicLangXListener : KermitLangBaseListener
     {
         _stack.Push(new Variable(context.BOOL().GetText(), VariableType.BOOL));
     }
+    public virtual void ExitNumber([NotNull] KermitLangParser.NumberContext context) { }
+    public virtual void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context) { }
+    public virtual void EnterEveryRule([NotNull] ParserRuleContext context) { }
+    public virtual void ExitEveryRule([NotNull] ParserRuleContext context) { }
+    public virtual void VisitTerminal([NotNull] ITerminalNode node) { }
+    public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 }

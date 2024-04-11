@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:/Users/jakub/Documents/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
+// Generated from f:/GitHubRepository/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -114,12 +114,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitStart(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitStart(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 
 	[RuleVersion(0)]
@@ -176,12 +170,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitBase_statement(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitBase_statement(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 
 	[RuleVersion(0)]
@@ -233,12 +221,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitPrint(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitPrint(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class ReadContext : StatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(KermitLangParser.ID, 0); }
@@ -252,12 +234,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitRead(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitRead(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class DeclareContext : StatementContext {
@@ -283,12 +259,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitDeclare(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitDeclare(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class AssignContext : StatementContext {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] ID() { return GetTokens(KermitLangParser.ID); }
@@ -313,12 +283,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitAssign(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAssign(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 
@@ -487,12 +451,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitExpression1Empty(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpression1Empty(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class Expression_base_addContext : ExpressionContext {
 		[System.Diagnostics.DebuggerNonUserCode] public Expression1Context expression1() {
@@ -513,12 +471,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitExpression_base_add(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpression_base_add(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class Expression_base_subContext : ExpressionContext {
 		[System.Diagnostics.DebuggerNonUserCode] public Expression1Context expression1() {
@@ -538,12 +490,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitExpression_base_sub(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpression_base_sub(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 
@@ -627,12 +573,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitExpression2Empty(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpression2Empty(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class Expression_base_divContext : Expression1Context {
 		[System.Diagnostics.DebuggerNonUserCode] public Expression2Context expression2() {
@@ -653,12 +593,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitExpression_base_div(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpression_base_div(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class Expression_base_mulContext : Expression1Context {
 		[System.Diagnostics.DebuggerNonUserCode] public Expression2Context expression2() {
@@ -678,12 +612,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitExpression_base_mul(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpression_base_mul(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 
@@ -770,12 +698,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitNeg(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNeg(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class OrContext : Expression2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public Expression3Context expression3() {
@@ -795,12 +717,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitOr(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitOr(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class Expression4EmptyContext : Expression2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public Expression3Context expression3() {
@@ -816,12 +732,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitExpression4Empty(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpression4Empty(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class AndContext : Expression2Context {
@@ -842,12 +752,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitAnd(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitAnd(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class XorContext : Expression2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public Expression3Context expression3() {
@@ -866,12 +770,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitXor(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitXor(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 
@@ -977,12 +875,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitNumber(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitNumber(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class BoolContext : Expression3Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode BOOL() { return GetToken(KermitLangParser.BOOL, 0); }
@@ -996,12 +888,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitBool(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitBool(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class ExpressionInParensContext : Expression3Context {
@@ -1019,12 +905,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitExpressionInParens(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpressionInParens(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class IdContext : Expression3Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(KermitLangParser.ID, 0); }
@@ -1038,12 +918,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitId(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitId(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 	public partial class FloatContext : Expression3Context {
@@ -1059,12 +933,6 @@ public partial class KermitLangParser : Parser {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitFloat(this);
 		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitFloat(this);
-			else return visitor.VisitChildren(this);
-		}
 	}
 	public partial class IntContext : Expression3Context {
 		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INTEGER() { return GetToken(KermitLangParser.INTEGER, 0); }
@@ -1078,12 +946,6 @@ public partial class KermitLangParser : Parser {
 		public override void ExitRule(IParseTreeListener listener) {
 			IKermitLangListener typedListener = listener as IKermitLangListener;
 			if (typedListener != null) typedListener.ExitInt(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
-			IKermitLangVisitor<TResult> typedVisitor = visitor as IKermitLangVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitInt(this);
-			else return visitor.VisitChildren(this);
 		}
 	}
 

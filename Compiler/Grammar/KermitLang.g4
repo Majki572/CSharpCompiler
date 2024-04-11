@@ -11,7 +11,7 @@ statement:
 		| BOOL_NAME
 		| STRING_NAME
 		| NUMBER_NAME
-	) ID (INTEGER | REAL | BOOL | STRING | NUMBER) ';'  #declare
+	) ID (INTEGER | REAL | BOOL | STRING | NUMBER) ';' # declare
 	// Added STRING_NAME and NUMBER_NAME for string and number types
 	| 'ASSIGN' ID (
 		INTEGER
@@ -21,67 +21,46 @@ statement:
 		| STRING
 		| NUMBER
 		| expression
-	) ';' #assign // Added handling for STRING and NUMBER types 
-	| 'SELECT' (expression) ';' #print // Added STRING and NUMBER types
-	| 'READ_TO' ID ';'  #read
-	//| 'IF' (ID | BOOL) block ';' #if
-	//| 'CALL' ID '(' parameter* ')' ';' #call
-	;
+	) ';'						# assign // Added handling for STRING and NUMBER types 
+	| 'SELECT' (expression) ';'	# print // Added STRING and NUMBER types
+	| 'READ_TO' ID ';'			# read;
+//| 'IF' (ID | BOOL) block ';' #if | 'CALL' ID '(' parameter* ')' ';' #call;
 
 //parameter: ID '|';
 
 //function_def: ID '(' parameter_def* ')' block ';';
 
-//parameter_def: (
-//		INTEGER_NAME
-//		| REAL_NAME
-//		| BOOL_NAME
-//		| STRING_NAME
-//		| NUMBER_NAME
-//	) ID '|'; // Added STRING_NAME and NUMBER_NAME
+//parameter_def: ( INTEGER_NAME | REAL_NAME | BOOL_NAME | STRING_NAME | NUMBER_NAME ) ID '|'; //
+// Added STRING_NAME and NUMBER_NAME
 
 //block: '[' statement* ']';
-
 expression:
 	expression1 ADD expression		# expression_base_add
 	| expression1 SUB expression	# expression_base_sub
 	// ? | STRING (ADD STRING)*          # string
-	| expression1					# expression1Empty;
+	| expression1 # expression1Empty;
 expression1:
 	expression2 MUL expression1		# expression_base_mul
 	| expression2 DIV expression1	# expression_base_div
 	| expression2					# expression2Empty;
 expression2:
-    expression3 'AND' expression2	# and
+	expression3 'AND' expression2	# and
 	| expression3 'OR' expression2	# or
 	| expression3 'XOR' expression2	# xor
 	| expression3 'NEG' expression2	# neg
 	| expression3					# expression4Empty;
 expression3:
-	INTEGER						    # int
-	| REAL					        # float
-	| ID					        # id
-	| BOOL					        # bool
-	| NUMBER                        # number
-	| '(' expression ')'	        # expressionInParens;		
+	INTEGER					# int
+	| REAL					# float
+	| ID					# id
+	| BOOL					# bool
+	| NUMBER				# number
+	| '(' expression ')'	# expressionInParens;
 
-
-//expression_base1: (ID | INTEGER | REAL | STRING | NUMBER) MUL (
-//		ID
-//		| INTEGER
-//		| REAL
-//		| STRING
-//		| NUMBER
-//		| expression_base1
-//	) # expression_base_mul // Added STRING and NUMBER types
-//	| (ID | INTEGER | REAL | STRING | NUMBER) DIV (
-//		ID
-//		| INTEGER
-//		| REAL
-//		| STRING
-//		| NUMBER
-//		| expression_base1
-//	) # expression_base_div; // Added STRING and NUMBER types
+//expression_base1: (ID | INTEGER | REAL | STRING | NUMBER) MUL ( ID | INTEGER | REAL | STRING |
+// NUMBER | expression_base1 ) # expression_base_mul // Added STRING and NUMBER types | (ID |
+// INTEGER | REAL | STRING | NUMBER) DIV ( ID | INTEGER | REAL | STRING | NUMBER | expression_base1
+// ) # expression_base_div; // Added STRING and NUMBER types
 
 INTEGER: ('0' ..'9')+;
 
