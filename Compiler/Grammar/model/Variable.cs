@@ -16,13 +16,15 @@ public class StringVariable : Variable
 {
     public int Length { get; set; }
 
-    public StringVariable(string id) : base(id, VariableType.STRING)
-    {
-    }
-
     public StringVariable(string id, int length) : base(id, VariableType.STRING)
     {
         this.Length = length;
+    }
+    
+    public StringVariable(string id, int length, VariableType type) : base(id, VariableType.STRING)
+    {
+        this.Length = length;
+        this.Type = type;
     }
 }
 
@@ -32,5 +34,6 @@ public enum VariableType
     REAL,
     BOOL,
     STRING,
+    STRING_CONST,
     NUMBER
 }

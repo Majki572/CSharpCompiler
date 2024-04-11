@@ -102,20 +102,6 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitPrint([NotNull] KermitLangParser.PrintContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>print_string</c>
-	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterPrint_string([NotNull] KermitLangParser.Print_stringContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>print_string</c>
-	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitPrint_string([NotNull] KermitLangParser.Print_stringContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>read</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -129,6 +115,48 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitRead([NotNull] KermitLangParser.ReadContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterStringId([NotNull] KermitLangParser.StringIdContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitStringId([NotNull] KermitLangParser.StringIdContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>string_add</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterString_add([NotNull] KermitLangParser.String_addContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>string_add</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitString_add([NotNull] KermitLangParser.String_addContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>string</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterString([NotNull] KermitLangParser.StringContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>string</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitString([NotNull] KermitLangParser.StringContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>expression_base_add</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression"/>.
@@ -367,48 +395,6 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>stringId</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStringId([NotNull] KermitLangParser.StringIdContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>stringId</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStringId([NotNull] KermitLangParser.StringIdContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>string_add</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterString_add([NotNull] KermitLangParser.String_addContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>string_add</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitString_add([NotNull] KermitLangParser.String_addContext context) { }
-	/// <summary>
-	/// Enter a parse tree produced by the <c>string</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterString([NotNull] KermitLangParser.StringContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>string</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitString([NotNull] KermitLangParser.StringContext context) { }
 
 	/// <inheritdoc/>
 	/// <remarks>The default implementation does nothing.</remarks>

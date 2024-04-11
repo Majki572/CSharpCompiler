@@ -87,18 +87,6 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitPrint([NotNull] KermitLangParser.PrintContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>print_string</c>
-	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterPrint_string([NotNull] KermitLangParser.Print_stringContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>print_string</c>
-	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitPrint_string([NotNull] KermitLangParser.Print_stringContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>read</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// </summary>
@@ -110,6 +98,42 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitRead([NotNull] KermitLangParser.ReadContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStringId([NotNull] KermitLangParser.StringIdContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>stringId</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStringId([NotNull] KermitLangParser.StringIdContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>string_add</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterString_add([NotNull] KermitLangParser.String_addContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>string_add</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitString_add([NotNull] KermitLangParser.String_addContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>string</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterString([NotNull] KermitLangParser.StringContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>string</c>
+	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitString([NotNull] KermitLangParser.StringContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>expression_base_add</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression"/>.
@@ -314,40 +338,4 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>stringId</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterStringId([NotNull] KermitLangParser.StringIdContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>stringId</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitStringId([NotNull] KermitLangParser.StringIdContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>string_add</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterString_add([NotNull] KermitLangParser.String_addContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>string_add</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitString_add([NotNull] KermitLangParser.String_addContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>string</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterString([NotNull] KermitLangParser.StringContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>string</c>
-	/// labeled alternative in <see cref="KermitLangParser.expressionString"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitString([NotNull] KermitLangParser.StringContext context);
 }

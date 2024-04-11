@@ -1,6 +1,4 @@
-DECLARE DUPA a 100.0;
-DECLARE REAL b 1.555;
-PRINT a / b;
-PRINT a * b;
-PRINT a + b;
-PRINT a - b;
+DECLARE STRING a "Hello, World!";
+DECLARE STRING b "Hello, World!";
+DECLARE STRING c "Hello, World!";
+PRINT a + b + "awd" + c;

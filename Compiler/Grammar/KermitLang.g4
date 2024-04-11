@@ -16,8 +16,8 @@ statement:
 	| 'ASSIGN' ID (
 		expression | expressionString
 	) ';' #assign // Added handling for STRING and NUMBER types 
+	| 'PRINT' (expressionString) ';' #print // Added STRING and NUMBER types
 	| 'PRINT' (expression) ';' #print // Added STRING and NUMBER types
-	| 'PRINT' STRING ';' #print_string
 	| 'READ_TO' ID ';'  #read
 	//| 'IF' (ID | BOOL) block ';' #if
 	//| 'CALL' ID '(' parameter* ')' ';' #call
@@ -29,6 +29,12 @@ statement:
 
 //parameter_def: ( INTEGER_NAME | REAL_NAME | BOOL_NAME | STRING_NAME | NUMBER_NAME ) ID '|'; //
 // Added STRING_NAME and NUMBER_NAME
+
+expressionString: 
+    STRING              			            # string
+    | ID                                        # stringId
+    | expressionString ADD expressionString        # string_add
+    ;
 
 //block: '[' statement* ']';
 expression:
@@ -51,17 +57,13 @@ expression3:
 	| REAL					# float
 	| ID					# id
 	| BOOL					# bool
-	| NUMBER				# number
+	| NUMBER				# number	
 	| '(' expression ')'	# expressionInParens;
 
 //expression_base1: (ID | INTEGER | REAL | STRING | NUMBER) MUL ( ID | INTEGER | REAL | STRING |
 // NUMBER | expression_base1 ) # expression_base_mul // Added STRING and NUMBER types | (ID |
 // INTEGER | REAL | STRING | NUMBER) DIV ( ID | INTEGER | REAL | STRING | NUMBER | expression_base1
 // ) # expression_base_div; // Added STRING and NUMBER types
-expressionString: STRING			            # string
-    | ID                                        # stringId
-    |   expressionString ADD expressionString   # string_add
-    ;
     
 
 //expression_base1: (ID | INTEGER | REAL | STRING | NUMBER) MUL (
