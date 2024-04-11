@@ -1,10 +1,8 @@
-using System.Diagnostics;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
-using Compiler.Grammar;
 using Compiler.Grammar.src;
 
-namespace AntlrCSharp;
+namespace Compiler.Grammar;
 
 public class Program()
 {
@@ -14,11 +12,11 @@ public class Program()
         var path = $"..{sep}..{sep}..{sep}Grammar{sep}";
         var input = File.ReadAllText(path + "langX.test");
 
-        AntlrInputStream inputStream = new AntlrInputStream(input);
-        LangXLexer lexer = new LangXLexer(inputStream);
-        CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
-        LangXParser parser = new LangXParser(commonTokenStream);
-        IParseTree parseTree = parser.start();
+        var inputStream = new AntlrInputStream(input);
+        var lexer = new KermitLangLexer(inputStream);
+        var commonTokenStream = new CommonTokenStream(lexer);
+        var parser = new KermitLangParser(commonTokenStream);
+        var parseTree = parser.start();
 
         var listener = new BasicLangXListener();
         ParseTreeWalker.Default.Walk(listener, parseTree);
@@ -26,7 +24,8 @@ public class Program()
         // create file from generated code
         // save the file as output.ll in Grammar directory
         var outputFile = @"C:\Users\jakub\Documents\CSharpCompiler\Compiler\Grammar\output.ll";
-        File.WriteAllText(outputFile, listener.GenerateCode());
+        Console.WriteLine(Generator.Generate());
+        File.WriteAllText(outputFile, Generator.Generate());
         Console.WriteLine("File generated successfully");
         
         // compile the file

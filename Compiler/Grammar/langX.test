@@ -1,3 +1,2 @@
-string s = "Hello";
-s = "World";
-write s;
+DECLARE STRING a "awdawd";
+ASSIGN a "gaergar";

@@ -2,96 +2,162 @@ using Compiler.Grammar.model;
 
 namespace Compiler.Grammar.src;
 
-public class Generator : IGeneratorActions
+public class Generator
 {
-    public static string Header = "";
-    public static string Code = "";
+    public static string HeaderText = "";
+    public static string MainText = "";
     public static int Reg = 1;
+    
+    public static String Generate() {
+        String text = "";
+        text += "declare i32 @printf(i8*, ...)\n";
+        text += "declare i32 @__isoc99_scanf(i8*, ...)\n";
+        text += "@strpi = constant [4 x i8] c\"%d\\0A\\00\"\n";
+        text += "@strpd = constant [4 x i8] c\"%f\\0A\\00\"\n";
+        text += "@strsi = constant [3 x i8] c\"%d\\00\"\n";
+        text += "@strsd = constant [4 x i8] c\"%lf\\00\"\n";
+        text += HeaderText;
+        text += "define i32 @main() nounwind{\n";
+        text += MainText;
+        text += "ret i32 0 }\n";
+        return text;
+    }
+    
+    // Allocate
+    public static void AllocateInteger(String id) {
+        MainText += "%" + id + " = alloca i32\n";
+    } 
 
-    public void Printf(string id, Variable variable)
-    {
-        ReadWriteActions.Printf(id, variable);
+    public static void AllocateDouble(String id) {
+        MainText += "%" + id + " = alloca double\n";
     }
 
-    public void Scanf(string id, VariableType type)
-    {
-        ReadWriteActions.Scanf(id, type);
+    public static void AllocateBool(String id) {
+        MainText += "%" + id + " = alloca i1\n";
+    }
+    
+    public static void AllocateStringConst(String id, int length) {
+        MainText += "%" + id + " = alloca [ " + (length + 1) + " x i8 ]\n";
+        MainText += "%" + Reg + " = bitcast [ " + (length + 1) + " x i8 ]* %" + id + " to i8*\n";
+        Reg++;
+        HeaderText += ""
     }
 
-    public void Allocate(string id, Variable variable)
-    {
-        MemoryManagement.Allocate(id, variable);
+    // Assign
+    public static void AssignInteger(String id, String value) {
+        MainText += "store i32 " + value + ", i32* %" + id + "\n";
     }
 
-    public void Store(string id, Variable variable)
-    {
-        MemoryManagement.Store(id, variable);
+    public static void AssignDouble(String id, String value) {
+        MainText += "store double " + value + ", double* %" + id + "\n";
     }
 
-    public void Load(Variable variable)
-    {
-        MemoryManagement.Load(variable);
+    public static void AssignBool(String id, String value) {
+        MainText += "store i1 " + value + ", i1* %" + id + "\n";
+    }
+    
+    // Load
+    public static void LoadInteger(String id) {
+        MainText += "%" + Reg + "= load i32, i32* %" + id + "\n";
+        Reg++;
     }
 
-    public void Add(string val1, string val2, VariableType type)
-    {
-        CalcOperations.Add(val1, val2, type);
+    public static void LoadDouble(String id) {
+        MainText += "%" + Reg + "= load double, double* %" + id + "\n";
+        Reg++;
     }
 
-    public void Sub(string val1, string val2, VariableType type)
-    {
-        CalcOperations.Sub(val1, val2, type);
+    public static void LoadBool(String id) {
+        MainText += "%" + Reg + "= load i1, i1* %" + id + "\n";
+        Reg++;
+    }
+    
+    
+    // Print
+    public static void PrintInteger(String id) {
+        MainText += "%" + Reg + "= load i32, i32* %" + id + "\n";
+        Reg++;
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 %" + (Reg-1) + ")\n";
+        Reg++;
+    }
+    
+    public static void PrintIntegerValue(String value) {
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 " + value + ")\n";
+        Reg++;
     }
 
-    public void Mul(string val1, string val2, VariableType type)
-    {
-        CalcOperations.Mul(val1, val2, type);
+    public static void PrintReal(String id) {
+        MainText += "%" + Reg + "= load double, double* %" + id + "\n";
+        Reg++;
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i32 0, i32 0), double %" + (Reg-1) + ")\n";
+        Reg++;
     }
 
-    public void Div(string val1, string val2, VariableType type)
+    public static void PrintRealValue(String value)
     {
-        CalcOperations.Div(val1, val2, type);
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), double noundef " + value + ")\n";
+        Reg++;
     }
 
-    public void AllocateString(string id, int length)
-    {
-        StringManagement.AllocateString(id, length);
+    public static void PrintBool(String id) {
+        MainText += "%" + Reg + "= load i1, i1* %" + id + "\n";
+        Reg++;
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i1 0, i1 0), i1 %" + (Reg-1) + ")\n";
+        Reg++;
     }
 
-    public void BitCastString(string id, int length)
-    {
-        StringManagement.BitCastString(id, length);
+    // Read
+    public static void ReadInteger(String id) {
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strsi, i32 0, i32 0), i32* %" + id + ")\n";
+        Reg++;  
     }
 
-    public void CreateConstantString(string id, string value)
-    {
-        StringManagement.CreateConstantString(id, value);
+    public static void ReadReal(String id) {
+        MainText += "%" + Reg + " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strsd, i32 0, i32 0), double* %" + id + ")\n";
+        Reg++;
+    }
+    
+    // Add
+    public static void AddIntegers(String value1, String value2) {
+        MainText += "%" + Reg + " = add i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
     }
 
-    public void LoadString(string id, int length)
-    {
-        StringManagement.LoadString(id, length);
+    public static void AddReals(String value1, String value2) {
+        MainText += "%" + Reg + " = fadd double " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    
+    // Sub
+    public static void SubIntegers(String value1, String value2) {
+        MainText += "%" + Reg + " = sub i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
     }
 
-    public void PrintString(string id, int length)
-    {
-        StringManagement.PrintString(id, length);
+    public static void SubReals(String value1, String value2) {
+        MainText += "%" + Reg + " = fsub double " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    
+    // Mul
+    public static void MulIntegers(String value1, String value2) {
+        MainText += "%" + Reg + " = mul i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
     }
 
-    public string GenerateCode()
-    {
-        var code = "";
-        code += "declare i32 @printf(i8*, ...)\n";
-        code += "declare i32 @__isoc99_scanf(i8*, ...)\n";
-        code += $"{IoTypes.READ_INT.Name} = {IoTypes.READ_INT.Import}\n";
-        code += $"{IoTypes.READ_FLOAT.Name} = {IoTypes.READ_FLOAT.Import}\n";
-        code += $"{IoTypes.WRITE_INT.Name} = {IoTypes.WRITE_INT.Import}\n";
-        code += $"{IoTypes.WRITE_FLOAT.Name} = {IoTypes.WRITE_FLOAT.Import}\n";
-        code += $"{IoTypes.WRITE_STRING.Name} = {IoTypes.WRITE_STRING.Import}\n";
-        code += Header;
-        code += "define dso_local i32 @main() #0 {\n";
-        code += Code;
-        code += "ret i32 0\n}\n";
-        return code;
+    public static void MulReals(String value1, String value2) {
+        MainText += "%" + Reg + " = fmul double " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    
+    // Div
+    public static void DivIntegers(String value1, String value2) {
+        MainText += "%" + Reg + " = div i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+
+    public static void DivReals(String value1, String value2) {
+        MainText += "%" + Reg + " = fdiv double " + value1 + ", " + value2 + "\n";
+        Reg++;
     }
 }
