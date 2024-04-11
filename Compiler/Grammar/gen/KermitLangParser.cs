@@ -37,9 +37,9 @@ public partial class KermitLangParser : Parser {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, INTEGER=12, REAL=13, BOOL=14, STRING=15, NUMBER=16, 
-		INTEGER_NAME=17, REAL_NAME=18, BOOL_NAME=19, STRING_NAME=20, NUMBER_NAME=21, 
-		ID=22, ADD=23, SUB=24, MUL=25, DIV=26, COMMENT=27, WS=28;
+		T__9=10, INTEGER=11, REAL=12, BOOL=13, STRING=14, NUMBER=15, INTEGER_NAME=16, 
+		REAL_NAME=17, BOOL_NAME=18, STRING_NAME=19, NUMBER_NAME=20, ID=21, ADD=22, 
+		SUB=23, MUL=24, DIV=25, COMMENT=26, WS=27;
 	public const int
 		RULE_start = 0, RULE_base_statement = 1, RULE_statement = 2, RULE_expression = 3, 
 		RULE_expression1 = 4, RULE_expression2 = 5, RULE_expression3 = 6;
@@ -50,15 +50,15 @@ public partial class KermitLangParser : Parser {
 
 	private static readonly string[] _LiteralNames = {
 		null, "'DECLARE'", "';'", "'ASSIGN'", "'PRINT'", "'READ_TO'", "'AND'", 
-		"'OR'", "'XOR'", "'NEG'", "'('", "')'", null, null, null, null, null, 
-		"'INTEGER'", "'REAL'", "'BOOL'", "'STRING'", "'NUMBER'", null, "'+'", 
-		"'-'", "'*'", "'/'"
+		"'OR'", "'XOR'", "'('", "')'", null, null, null, null, null, "'INTEGER'", 
+		"'REAL'", "'BOOL'", "'STRING'", "'NUMBER'", null, "'+'", "'-'", "'*'", 
+		"'/'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, null, null, null, null, null, null, null, null, null, 
-		"INTEGER", "REAL", "BOOL", "STRING", "NUMBER", "INTEGER_NAME", "REAL_NAME", 
-		"BOOL_NAME", "STRING_NAME", "NUMBER_NAME", "ID", "ADD", "SUB", "MUL", 
-		"DIV", "COMMENT", "WS"
+		null, null, null, null, null, null, null, null, null, null, null, "INTEGER", 
+		"REAL", "BOOL", "STRING", "NUMBER", "INTEGER_NAME", "REAL_NAME", "BOOL_NAME", 
+		"STRING_NAME", "NUMBER_NAME", "ID", "ADD", "SUB", "MUL", "DIV", "COMMENT", 
+		"WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -303,7 +303,7 @@ public partial class KermitLangParser : Parser {
 				Match(T__0);
 				State = 23;
 				_la = TokenStream.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 4063232L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 2031616L) != 0)) ) {
 				ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -314,7 +314,7 @@ public partial class KermitLangParser : Parser {
 				Match(ID);
 				State = 25;
 				_la = TokenStream.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 126976L) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 63488L) != 0)) ) {
 				ErrorHandler.RecoverInline(this);
 				}
 				else {
@@ -680,25 +680,6 @@ public partial class KermitLangParser : Parser {
 			base.CopyFrom(context);
 		}
 	}
-	public partial class NegContext : Expression2Context {
-		[System.Diagnostics.DebuggerNonUserCode] public Expression3Context expression3() {
-			return GetRuleContext<Expression3Context>(0);
-		}
-		[System.Diagnostics.DebuggerNonUserCode] public Expression2Context expression2() {
-			return GetRuleContext<Expression2Context>(0);
-		}
-		public NegContext(Expression2Context context) { CopyFrom(context); }
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void EnterRule(IParseTreeListener listener) {
-			IKermitLangListener typedListener = listener as IKermitLangListener;
-			if (typedListener != null) typedListener.EnterNeg(this);
-		}
-		[System.Diagnostics.DebuggerNonUserCode]
-		public override void ExitRule(IParseTreeListener listener) {
-			IKermitLangListener typedListener = listener as IKermitLangListener;
-			if (typedListener != null) typedListener.ExitNeg(this);
-		}
-	}
 	public partial class OrContext : Expression2Context {
 		[System.Diagnostics.DebuggerNonUserCode] public Expression3Context expression3() {
 			return GetRuleContext<Expression3Context>(0);
@@ -778,7 +759,7 @@ public partial class KermitLangParser : Parser {
 		Expression2Context _localctx = new Expression2Context(Context, State);
 		EnterRule(_localctx, 10, RULE_expression2);
 		try {
-			State = 87;
+			State = 83;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,5,Context) ) {
 			case 1:
@@ -818,22 +799,10 @@ public partial class KermitLangParser : Parser {
 				}
 				break;
 			case 4:
-				_localctx = new NegContext(_localctx);
+				_localctx = new Expression4EmptyContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
 				State = 82;
-				expression3();
-				State = 83;
-				Match(T__8);
-				State = 84;
-				expression2();
-				}
-				break;
-			case 5:
-				_localctx = new Expression4EmptyContext(_localctx);
-				EnterOuterAlt(_localctx, 5);
-				{
-				State = 86;
 				expression3();
 				}
 				break;
@@ -954,14 +923,14 @@ public partial class KermitLangParser : Parser {
 		Expression3Context _localctx = new Expression3Context(Context, State);
 		EnterRule(_localctx, 12, RULE_expression3);
 		try {
-			State = 98;
+			State = 94;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case INTEGER:
 				_localctx = new IntContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 89;
+				State = 85;
 				Match(INTEGER);
 				}
 				break;
@@ -969,7 +938,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new FloatContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 90;
+				State = 86;
 				Match(REAL);
 				}
 				break;
@@ -977,7 +946,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new IdContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 91;
+				State = 87;
 				Match(ID);
 				}
 				break;
@@ -985,7 +954,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new BoolContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 92;
+				State = 88;
 				Match(BOOL);
 				}
 				break;
@@ -993,20 +962,20 @@ public partial class KermitLangParser : Parser {
 				_localctx = new NumberContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 93;
+				State = 89;
 				Match(NUMBER);
 				}
 				break;
-			case T__9:
+			case T__8:
 				_localctx = new ExpressionInParensContext(_localctx);
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 94;
-				Match(T__9);
-				State = 95;
+				State = 90;
+				Match(T__8);
+				State = 91;
 				expression();
-				State = 96;
-				Match(T__10);
+				State = 92;
+				Match(T__9);
 				}
 				break;
 			default:
@@ -1025,37 +994,36 @@ public partial class KermitLangParser : Parser {
 	}
 
 	private static int[] _serializedATN = {
-		4,1,28,101,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,1,0,
+		4,1,27,97,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,1,0,
 		5,0,16,8,0,10,0,12,0,19,9,0,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
 		2,1,2,1,2,1,2,1,2,1,2,3,2,37,8,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,47,
 		8,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,58,8,3,1,4,1,4,1,4,1,4,1,4,
 		1,4,1,4,1,4,1,4,3,4,69,8,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,
-		1,5,1,5,1,5,1,5,1,5,1,5,3,5,88,8,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,
-		3,6,99,8,6,1,6,0,0,7,0,2,4,6,8,10,12,0,2,1,0,17,21,1,0,12,16,116,0,17,
-		1,0,0,0,2,20,1,0,0,0,4,46,1,0,0,0,6,57,1,0,0,0,8,68,1,0,0,0,10,87,1,0,
-		0,0,12,98,1,0,0,0,14,16,3,2,1,0,15,14,1,0,0,0,16,19,1,0,0,0,17,15,1,0,
-		0,0,17,18,1,0,0,0,18,1,1,0,0,0,19,17,1,0,0,0,20,21,3,4,2,0,21,3,1,0,0,
-		0,22,23,5,1,0,0,23,24,7,0,0,0,24,25,5,22,0,0,25,26,7,1,0,0,26,47,5,2,0,
-		0,27,28,5,3,0,0,28,36,5,22,0,0,29,37,5,12,0,0,30,37,5,13,0,0,31,37,5,14,
-		0,0,32,37,5,22,0,0,33,37,5,15,0,0,34,37,5,16,0,0,35,37,3,6,3,0,36,29,1,
-		0,0,0,36,30,1,0,0,0,36,31,1,0,0,0,36,32,1,0,0,0,36,33,1,0,0,0,36,34,1,
-		0,0,0,36,35,1,0,0,0,37,38,1,0,0,0,38,47,5,2,0,0,39,40,5,4,0,0,40,41,3,
-		6,3,0,41,42,5,2,0,0,42,47,1,0,0,0,43,44,5,5,0,0,44,45,5,22,0,0,45,47,5,
-		2,0,0,46,22,1,0,0,0,46,27,1,0,0,0,46,39,1,0,0,0,46,43,1,0,0,0,47,5,1,0,
-		0,0,48,49,3,8,4,0,49,50,5,23,0,0,50,51,3,6,3,0,51,58,1,0,0,0,52,53,3,8,
-		4,0,53,54,5,24,0,0,54,55,3,6,3,0,55,58,1,0,0,0,56,58,3,8,4,0,57,48,1,0,
-		0,0,57,52,1,0,0,0,57,56,1,0,0,0,58,7,1,0,0,0,59,60,3,10,5,0,60,61,5,25,
-		0,0,61,62,3,8,4,0,62,69,1,0,0,0,63,64,3,10,5,0,64,65,5,26,0,0,65,66,3,
-		8,4,0,66,69,1,0,0,0,67,69,3,10,5,0,68,59,1,0,0,0,68,63,1,0,0,0,68,67,1,
-		0,0,0,69,9,1,0,0,0,70,71,3,12,6,0,71,72,5,6,0,0,72,73,3,10,5,0,73,88,1,
-		0,0,0,74,75,3,12,6,0,75,76,5,7,0,0,76,77,3,10,5,0,77,88,1,0,0,0,78,79,
-		3,12,6,0,79,80,5,8,0,0,80,81,3,10,5,0,81,88,1,0,0,0,82,83,3,12,6,0,83,
-		84,5,9,0,0,84,85,3,10,5,0,85,88,1,0,0,0,86,88,3,12,6,0,87,70,1,0,0,0,87,
-		74,1,0,0,0,87,78,1,0,0,0,87,82,1,0,0,0,87,86,1,0,0,0,88,11,1,0,0,0,89,
-		99,5,12,0,0,90,99,5,13,0,0,91,99,5,22,0,0,92,99,5,14,0,0,93,99,5,16,0,
-		0,94,95,5,10,0,0,95,96,3,6,3,0,96,97,5,11,0,0,97,99,1,0,0,0,98,89,1,0,
-		0,0,98,90,1,0,0,0,98,91,1,0,0,0,98,92,1,0,0,0,98,93,1,0,0,0,98,94,1,0,
-		0,0,99,13,1,0,0,0,7,17,36,46,57,68,87,98
+		1,5,1,5,3,5,84,8,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,3,6,95,8,6,1,6,
+		0,0,7,0,2,4,6,8,10,12,0,2,1,0,16,20,1,0,11,15,111,0,17,1,0,0,0,2,20,1,
+		0,0,0,4,46,1,0,0,0,6,57,1,0,0,0,8,68,1,0,0,0,10,83,1,0,0,0,12,94,1,0,0,
+		0,14,16,3,2,1,0,15,14,1,0,0,0,16,19,1,0,0,0,17,15,1,0,0,0,17,18,1,0,0,
+		0,18,1,1,0,0,0,19,17,1,0,0,0,20,21,3,4,2,0,21,3,1,0,0,0,22,23,5,1,0,0,
+		23,24,7,0,0,0,24,25,5,21,0,0,25,26,7,1,0,0,26,47,5,2,0,0,27,28,5,3,0,0,
+		28,36,5,21,0,0,29,37,5,11,0,0,30,37,5,12,0,0,31,37,5,13,0,0,32,37,5,21,
+		0,0,33,37,5,14,0,0,34,37,5,15,0,0,35,37,3,6,3,0,36,29,1,0,0,0,36,30,1,
+		0,0,0,36,31,1,0,0,0,36,32,1,0,0,0,36,33,1,0,0,0,36,34,1,0,0,0,36,35,1,
+		0,0,0,37,38,1,0,0,0,38,47,5,2,0,0,39,40,5,4,0,0,40,41,3,6,3,0,41,42,5,
+		2,0,0,42,47,1,0,0,0,43,44,5,5,0,0,44,45,5,21,0,0,45,47,5,2,0,0,46,22,1,
+		0,0,0,46,27,1,0,0,0,46,39,1,0,0,0,46,43,1,0,0,0,47,5,1,0,0,0,48,49,3,8,
+		4,0,49,50,5,22,0,0,50,51,3,6,3,0,51,58,1,0,0,0,52,53,3,8,4,0,53,54,5,23,
+		0,0,54,55,3,6,3,0,55,58,1,0,0,0,56,58,3,8,4,0,57,48,1,0,0,0,57,52,1,0,
+		0,0,57,56,1,0,0,0,58,7,1,0,0,0,59,60,3,10,5,0,60,61,5,24,0,0,61,62,3,8,
+		4,0,62,69,1,0,0,0,63,64,3,10,5,0,64,65,5,25,0,0,65,66,3,8,4,0,66,69,1,
+		0,0,0,67,69,3,10,5,0,68,59,1,0,0,0,68,63,1,0,0,0,68,67,1,0,0,0,69,9,1,
+		0,0,0,70,71,3,12,6,0,71,72,5,6,0,0,72,73,3,10,5,0,73,84,1,0,0,0,74,75,
+		3,12,6,0,75,76,5,7,0,0,76,77,3,10,5,0,77,84,1,0,0,0,78,79,3,12,6,0,79,
+		80,5,8,0,0,80,81,3,10,5,0,81,84,1,0,0,0,82,84,3,12,6,0,83,70,1,0,0,0,83,
+		74,1,0,0,0,83,78,1,0,0,0,83,82,1,0,0,0,84,11,1,0,0,0,85,95,5,11,0,0,86,
+		95,5,12,0,0,87,95,5,21,0,0,88,95,5,13,0,0,89,95,5,15,0,0,90,91,5,9,0,0,
+		91,92,3,6,3,0,92,93,5,10,0,0,93,95,1,0,0,0,94,85,1,0,0,0,94,86,1,0,0,0,
+		94,87,1,0,0,0,94,88,1,0,0,0,94,89,1,0,0,0,94,90,1,0,0,0,95,13,1,0,0,0,
+		7,17,36,46,57,68,83,94
 	};
 
 	public static readonly ATN _ATN =

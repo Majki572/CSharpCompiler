@@ -47,7 +47,6 @@ expression2:
 	expression3 'AND' expression2	# and
 	| expression3 'OR' expression2	# or
 	| expression3 'XOR' expression2	# xor
-	| expression3 'NEG' expression2	# neg
 	| expression3					# expression4Empty;
 expression3:
 	INTEGER					# int

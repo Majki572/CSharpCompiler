@@ -110,27 +110,27 @@ public class BasicLangXListener : KermitLangBaseListener
         var variable = _variables[id];
         if (variable.Type == VariableType.INT && context.INTEGER() == null)
         {
-            var actualType = GetActualType(context);
+            var actualType = GetActualTypeAssignContext(context);
             AddError(context.Start.Line, $"Expected a value of type INT for variable {id} but found {actualType}");
         }
         if (variable.Type == VariableType.REAL && context.REAL() == null)
         {
-            var actualType = GetActualType(context);
+            var actualType = GetActualTypeAssignContext(context);
             AddError(context.Start.Line, $"Expected a value of type REAL for variable {id} but found {actualType}");
         }
         if (variable.Type == VariableType.BOOL && context.BOOL() == null)
         {
-            var actualType = GetActualType(context);
+            var actualType = GetActualTypeAssignContext(context);
             AddError(context.Start.Line, $"Expected a value of type BOOL for variable {id} but found {actualType}");
         }
         if (variable.Type == VariableType.STRING && context.STRING() == null)
         {
-            var actualType = GetActualType(context);
+            var actualType = GetActualTypeAssignContext(context);
             AddError(context.Start.Line, $"Expected a value of type STRING for variable {id} but found {actualType}");
         }
         if (variable.Type == VariableType.NUMBER && context.NUMBER() == null)
         {
-            var actualType = GetActualType(context);
+            var actualType = GetActualTypeAssignContext(context);
             AddError(context.Start.Line, $"Expected a value of type NUMBER for variable {id} but found {actualType}");
         }
         if (context.ID(1) != null && !_variables.ContainsKey(context.ID(1).GetText()))
@@ -141,7 +141,7 @@ public class BasicLangXListener : KermitLangBaseListener
         if (context.ID(1) != null && _variables[context.ID(1).GetText()].Type != variable.Type)
         {
             var secondId = context.ID(1).GetText();
-            var actualTypeSecond = GetActualType(context);
+            var actualTypeSecond = GetActualTypeAssignContext(context);
             AddError(context.Start.Line, $"Variable {secondId} ({actualTypeSecond}) type does not match variable {id} type.");
         }
 
@@ -229,45 +229,292 @@ public class BasicLangXListener : KermitLangBaseListener
 
     public override void ExitExpression_base_add(KermitLangParser.Expression_base_addContext context)
     {
-        base.ExitExpression_base_add(context);
+        var right = _stack.Pop();
+        var left = _stack.Pop();
+        if (left.Type != right.Type)
+        {
+            AddError(context.Start.Line, $"Type mismatch when trying to add {right} to {left}");
+        }
+
+        if (left.Type == VariableType.INT && right.Type == VariableType.INT)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadInteger(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadInteger(left.Value);
+            }
+
+            Generator.AddIntegers(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+        }
+
+        if (left.Type == VariableType.REAL && right.Type == VariableType.REAL)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadDouble(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadDouble(left.Value);
+            }
+
+            Generator.AddReals(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.REAL));
+        }
+
+        if (left.Type == VariableType.STRING && right.Type == VariableType.STRING)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadString(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadString(left.Value);
+            }
+
+            Generator.AddStrings(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.STRING));
+        }
     }
 
     public override void ExitExpression_base_sub(KermitLangParser.Expression_base_subContext context)
     {
-        base.ExitExpression_base_sub(context);
+        var right = _stack.Pop();
+        var left = _stack.Pop();
+        if (left.Type != right.Type)
+        {
+            AddError(context.Start.Line, $"Type mismatch when trying to substract {right} from {left}");
+        }
+
+        if (left.Type == VariableType.INT && right.Type == VariableType.INT)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadInteger(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadInteger(left.Value);
+            }
+
+            Generator.SubIntegers(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+        }
+
+        if (left.Type == VariableType.REAL && right.Type == VariableType.REAL)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadDouble(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadDouble(left.Value);
+            }
+
+            Generator.SubReals(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.REAL));
+        }
     }
     public virtual void ExitExpression1Empty([NotNull] KermitLangParser.Expression1EmptyContext context) { }
 
     public override void ExitExpression_base_mul(KermitLangParser.Expression_base_mulContext context)
     {
-        base.ExitExpression_base_mul(context);
+        var right = _stack.Pop();
+        var left = _stack.Pop();
+        if (left.Type != right.Type)
+        {
+            AddError(context.Start.Line, $"Type mismatch when trying to add {right} to {left}");
+        }
+
+        if (left.Type == VariableType.INT && right.Type == VariableType.INT)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadInteger(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadInteger(left.Value);
+            }
+
+            Generator.MulIntegers(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+        }
+
+        if (left.Type == VariableType.REAL && right.Type == VariableType.REAL)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadDouble(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadDouble(left.Value);
+            }
+
+            Generator.MulReals(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.REAL));
+        }
+
     }
 
     public override void ExitExpression_base_div(KermitLangParser.Expression_base_divContext context)
     {
-        base.ExitExpression_base_div(context);
+        var right = _stack.Pop();
+        var left = _stack.Pop();
+        if (left.Type != right.Type)
+        {
+            AddError(context.Start.Line, $"Type mismatch when trying to add {right} to {left}");
+        }
+
+        if (left.Type == VariableType.INT && right.Type == VariableType.INT)
+        {
+            if (right.Value.Equals("0"))
+            {
+                AddError(context.Start.Line, "Cannot divide by 0.");
+            }
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadInteger(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadInteger(left.Value);
+            }
+
+            Generator.AddIntegers(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+        }
+
+        if (left.Type == VariableType.REAL && right.Type == VariableType.REAL)
+        {
+            if (right.Value.Equals("0"))
+            {
+                AddError(context.Start.Line, "Cannot divide by 0.");
+            }
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadDouble(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadDouble(left.Value);
+            }
+
+            Generator.AddReals(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.REAL));
+        }
     }
     public virtual void ExitExpression2Empty([NotNull] KermitLangParser.Expression2EmptyContext context) { }
 
     public override void ExitAnd(KermitLangParser.AndContext context)
     {
-        base.ExitAnd(context);
+        var right = _stack.Pop();
+        var left = _stack.Pop();
+        if (left.Type != right.Type)
+        {
+            AddError(context.Start.Line, $"Type mismatch when trying to and {right} with {left}");
+        }
+
+        if (left.Type != VariableType.BOOL && right.Type != VariableType.BOOL)
+        {
+            AddError(context.Start.Line, $"Only accept bools.");
+        }
+
+        if (left.Type == VariableType.BOOL && right.Type == VariableType.BOOL)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadBool(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadBool(left.Value);
+            }
+
+            Generator.AndBool(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.REAL));
+        }
     }
 
     public override void ExitOr(KermitLangParser.OrContext context)
     {
-        base.ExitOr(context);
+        var right = _stack.Pop();
+        var left = _stack.Pop();
+        if (left.Type != right.Type)
+        {
+            AddError(context.Start.Line, $"Type mismatch when trying to or {right} with {left}");
+        }
+
+        if (left.Type != VariableType.BOOL && right.Type != VariableType.BOOL)
+        {
+            AddError(context.Start.Line, $"Only accept bools.");
+        }
+
+        if (left.Type == VariableType.BOOL && right.Type == VariableType.BOOL)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadBool(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadBool(left.Value);
+            }
+
+            Generator.OrBool(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.REAL));
+        }
     }
 
     public override void ExitXor(KermitLangParser.XorContext context)
     {
-        base.ExitXor(context);
+        var right = _stack.Pop();
+        var left = _stack.Pop();
+        if (left.Type != right.Type)
+        {
+            AddError(context.Start.Line, $"Type mismatch when trying to xor {right} with {left}");
+        }
+
+        if (left.Type != VariableType.BOOL && right.Type != VariableType.BOOL)
+        {
+            AddError(context.Start.Line, $"Only accept bools.");
+        }
+
+        if (left.Type == VariableType.BOOL && right.Type == VariableType.BOOL)
+        {
+            if (_variables.ContainsKey(right.Value))
+            {
+                Generator.LoadBool(right.Value);
+            }
+
+            if (_variables.ContainsKey(left.Value))
+            {
+                Generator.LoadBool(left.Value);
+            }
+
+            Generator.XorBool(left.Value, right.Value);
+            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.REAL));
+        }
     }
 
-    public override void ExitNeg(KermitLangParser.NegContext context)
-    {
-        base.ExitNeg(context);
-    }
     public virtual void ExitExpression4Empty([NotNull] KermitLangParser.Expression4EmptyContext context) { }
 
     public override void ExitInt(KermitLangParser.IntContext context)
@@ -285,7 +532,7 @@ public class BasicLangXListener : KermitLangBaseListener
         var id = context.ID().GetText();
         if (!_variables.ContainsKey(id))
         {
-            // error
+            AddError(context.Start.Line, $"Variable {id} is not declared in this scope.");
         }
         _stack.Push(_variables[id]);
     }
@@ -294,7 +541,10 @@ public class BasicLangXListener : KermitLangBaseListener
     {
         _stack.Push(new Variable(context.BOOL().GetText(), VariableType.BOOL));
     }
-    public virtual void ExitNumber([NotNull] KermitLangParser.NumberContext context) { }
+    public virtual void ExitNumber([NotNull] KermitLangParser.NumberContext context)
+    {
+        _stack.Push(new Variable(context.NUMBER().GetText(), VariableType.REAL));
+    }
     public virtual void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context) { }
     public virtual void EnterEveryRule([NotNull] ParserRuleContext context) { }
     public virtual void ExitEveryRule([NotNull] ParserRuleContext context) { }
@@ -318,7 +568,7 @@ public class BasicLangXListener : KermitLangBaseListener
         }
     }
 
-    private string GetActualType(KermitLangParser.AssignContext context)
+    private string GetActualTypeAssignContext(KermitLangParser.AssignContext context)
     {
         if (context.INTEGER() != null)
         {

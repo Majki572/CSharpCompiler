@@ -207,18 +207,6 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitXor([NotNull] KermitLangParser.XorContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>neg</c>
-	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNeg([NotNull] KermitLangParser.NegContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>neg</c>
-	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNeg([NotNull] KermitLangParser.NegContext context);
-	/// <summary>
 	/// Enter a parse tree produced by the <c>expression4Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
 	/// </summary>

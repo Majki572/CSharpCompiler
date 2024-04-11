@@ -242,20 +242,6 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitXor([NotNull] KermitLangParser.XorContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>neg</c>
-	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void EnterNeg([NotNull] KermitLangParser.NegContext context) { }
-	/// <summary>
-	/// Exit a parse tree produced by the <c>neg</c>
-	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
-	/// <para>The default implementation does nothing.</para>
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	public virtual void ExitNeg([NotNull] KermitLangParser.NegContext context) { }
-	/// <summary>
 	/// Enter a parse tree produced by the <c>expression4Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
 	/// <para>The default implementation does nothing.</para>
