@@ -2,96 +2,447 @@ using Compiler.Grammar.model;
 
 namespace Compiler.Grammar.src;
 
-public class Generator : IGeneratorActions
+public class Generator
 {
-    public static string Header = "";
-    public static string Code = "";
+    public static string HeaderText = "";
+    public static string MainText = "";
     public static int Reg = 1;
 
-    public void Printf(string id, Variable variable)
+    public static String Generate()
     {
-        ReadWriteActions.Printf(id, variable);
+        String text = "";
+        text += "declare i32 @printf(i8*, ...)\n";
+        text += "declare i32 @__isoc99_scanf(i8*, ...)\n";
+        text += "declare noalias i8* @malloc(i64 noundef)\n";
+        text += "declare i8* @strcpy(i8* noundef, i8* noundef)\n";
+        text += "declare i8* @strcat(i8* noundef, i8* noundef)\n";
+        
+        text += "@strpd = constant [4 x i8] c\"%d\\0A\\00\"\n";
+        text += "@strplld = constant [6 x i8] c\"%lld\\0A\\00\"\n";
+        text += "@strpf = constant [4 x i8] c\"%f\\0A\\00\"\n";
+        text += "@strplf = constant [5 x i8] c\"%lf\\0A\\00\"\n";
+        
+        text += "@strshd = constant [4 x i8] c\"%hd\\00\"\n";
+        text += "@strsd = constant [3 x i8] c\"%d\\00\"\n";
+        text += "@strslld = constant [5 x i8] c\"%lld\\00\"\n";
+        text += "@strsf = constant [3 x i8] c\"%f\\00\"\n";
+        text += "@strslf = constant [4 x i8] c\"%lf\\00\"\n";
+
+        text += "@strss = constant [3 x i8] c\"%s\\00\"\n";
+        text += "@strps = constant [4 x i8] c\"%s\\0A\\00\"\n";
+        text += HeaderText;
+        text += "define i32 @main() nounwind{\n";
+        text += MainText;
+        text += "ret i32 0 }\n";
+
+        var errors = BasicLangXListener.Errors;
+        if (errors.Any())
+        {
+            foreach (var error in errors)
+            {
+                Console.Error.WriteLine(error);
+            }
+            Environment.Exit(1);
+        }
+        return text;
     }
 
-    public void Scanf(string id, VariableType type)
+    // Allocate
+    public static void AllocateShort(String id)
     {
-        ReadWriteActions.Scanf(id, type);
+        MainText += "%" + id + " = alloca i16\n";
+    }
+    
+    public static void AllocateInteger(String id)
+    {
+        MainText += "%" + id + " = alloca i32\n";
+    }
+    
+    public static void AllocateLong(String id)
+    {
+        MainText += "%" + id + " = alloca i64\n";
+    }
+    
+    public static void AllocateFloat(String id)
+    {
+        MainText += "%" + id + " = alloca float\n";
+    }
+    
+    public static void AllocateDouble(String id)
+    {
+        MainText += "%" + id + " = alloca double\n";
     }
 
-    public void Allocate(string id, Variable variable)
+    public static void AllocateBool(String id)
     {
-        MemoryManagement.Allocate(id, variable);
+        MainText += "%" + id + " = alloca i1\n";
     }
 
-    public void Store(string id, Variable variable)
+    public static void AllocateStringConst(String id, String value, int length)
     {
-        MemoryManagement.Store(id, variable);
+        HeaderText += "@" + id + " = private unnamed_addr constant [ " + (length + 1) + " x i8 ] c\"" + value +
+                      "\\00\"\n";
     }
 
-    public void Load(Variable variable)
+    public static void AllocateString(String id)
     {
-        MemoryManagement.Load(variable);
+        MainText += "%" + id + " = alloca i8*\n";
     }
 
-    public void Add(string val1, string val2, VariableType type)
+    public static void MallocStringSize(String id, String length)
     {
-        CalcOperations.Add(val1, val2, type);
+        MainText += "%" + Reg + " = call i8* @malloc(i64 " + length + ")\n";
+        Reg++;
+        MainText += "store i8* %" + (Reg - 1) + ", i8** %" + id + "\n";
     }
 
-    public void Sub(string val1, string val2, VariableType type)
+    public static void AssignString(String id, String value, int length)
     {
-        CalcOperations.Sub(val1, val2, type);
+        MainText += $"%{Reg} = load i8*, i8** %{id}\n";
+        Reg++;
+        MainText +=
+            $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg - 1}, i8* noundef {value})\n";
+        Reg++;
     }
 
-    public void Mul(string val1, string val2, VariableType type)
+    public static void AssignStringConst(String id, String value, int length)
     {
-        CalcOperations.Mul(val1, val2, type);
+        MainText += $"%{Reg} = load i8*, i8** %{id}\n";
+        Reg++;
+        MainText +=
+            $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg - 1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{value}, i64 0, i64 0))\n";
+        Reg++;
     }
 
-    public void Div(string val1, string val2, VariableType type)
+    // Assign
+    public static void AssignShort(String id, String value)
     {
-        CalcOperations.Div(val1, val2, type);
+        MainText += "store i16 " + value + ", i16* %" + id + "\n";
+    }
+    public static void AssignShort32(String id)
+    {
+        MainText += $"%{Reg} = trunc i32 %{Reg-1} to i16\n";
+        Reg++;
+        MainText += "store i16 %" + (Reg-1) + ", i16* " + id + "\n";
+    }
+    public static void AssignInteger(String id, String value)
+    {
+        MainText += "store i32 " + value + ", i32* %" + id + "\n";
+    }
+    public static void AssignLong(String id, String value)
+    {
+        MainText += "store i64 " + value + ", i64* %" + id + "\n";
+    }
+    public static void AssignFloat(String id, String value)
+    {
+        MainText += "store float " + value + ", float* %" + id + "\n";
+    }
+    public static void AssignDouble(String id, String value)
+    {
+        MainText += "store double " + value + ", double* %" + id + "\n";
+    }
+    public static void AssignBool(String id, String value)
+    {
+        MainText += "store i1 " + value + ", i1* %" + id + "\n";
     }
 
-    public void AllocateString(string id, int length)
+    // Load
+    public static void LoadShort(String id)
     {
-        StringManagement.AllocateString(id, length);
+        MainText += "%" + Reg + "= load i16, i16* %" + id + "\n";
+        Reg++;
+    }
+    public static void MapShort(String id)
+    {
+        MainText += $"%{Reg} = sext i16 %{id} to i32\n";
+        Reg++;
+    }
+    public static void LoadInteger(String id)
+    {
+        MainText += "%" + Reg + "= load i32, i32* %" + id + "\n";
+        Reg++;
+    }
+    public static void LoadLong(String id)
+    {
+        MainText += "%" + Reg + "= load i64, i64* %" + id + "\n";
+        Reg++;
+    }
+    public static void LoadFloat(String id)
+    {
+        MainText += "%" + Reg + "= load float, float* %" + id + "\n";
+        Reg++;
+    }
+    public static void LoadDouble(String id)
+    {
+        MainText += "%" + Reg + "= load double, double* %" + id + "\n";
+        Reg++;
     }
 
-    public void BitCastString(string id, int length)
+    public static void LoadBool(String id)
     {
-        StringManagement.BitCastString(id, length);
+        MainText += "%" + Reg + "= load i1, i1* %" + id + "\n";
+        Reg++;
     }
 
-    public void CreateConstantString(string id, string value)
+    public static void LoadString(String id)
     {
-        StringManagement.CreateConstantString(id, value);
+        MainText += "%" + Reg + "= load i8*, i8** %" + id + "\n";
+        Reg++;
     }
 
-    public void LoadString(string id, int length)
+
+    // Print
+    public static void PrintShort(String id)
     {
-        StringManagement.LoadString(id, length);
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 " +
+                    id + ")\n";
+        Reg++;
+    }
+    public static void PrintInteger(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 " +
+                    (id) + ")\n";
+        Reg++;
+    } 
+    public static void PrintLong(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @strplld, i64 0, i64 0), i64 " +
+                    (id) + ")\n";
+        Reg++;
+    }
+    public static void PrintFloat(String id)
+    {
+        MainText += $"%{Reg} = fpext float {id} to double\n";
+        Reg++;
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpf, i64 0, i64 0), double %" +
+                    (Reg - 1) + ")\n";
+        Reg++;
+    }
+    public static void PrintDouble(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @strplf, i64 0, i64 0), double " +
+                    id + ")\n";
+        Reg++;
+    }
+    public static void PrintBool(String id)
+    {
+        MainText += "%" + Reg + "= load i1, i1* %" + id + "\n";
+        Reg++;
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i1 0, i1 0), i1 %" +
+                    (Reg - 1) + ")\n";
+        Reg++;
     }
 
-    public void PrintString(string id, int length)
+    public static void PrintString(String id)
     {
-        StringManagement.PrintString(id, length);
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* " +
+                    id + ")\n";
+        Reg++;
     }
 
-    public string GenerateCode()
+    public static void PrintNumber(String id)
     {
-        var code = "";
-        code += "declare i32 @printf(i8*, ...)\n";
-        code += "declare i32 @__isoc99_scanf(i8*, ...)\n";
-        code += $"{IoTypes.READ_INT.Name} = {IoTypes.READ_INT.Import}\n";
-        code += $"{IoTypes.READ_FLOAT.Name} = {IoTypes.READ_FLOAT.Import}\n";
-        code += $"{IoTypes.WRITE_INT.Name} = {IoTypes.WRITE_INT.Import}\n";
-        code += $"{IoTypes.WRITE_FLOAT.Name} = {IoTypes.WRITE_FLOAT.Import}\n";
-        code += $"{IoTypes.WRITE_STRING.Name} = {IoTypes.WRITE_STRING.Import}\n";
-        code += Header;
-        code += "define dso_local i32 @main() #0 {\n";
-        code += Code;
-        code += "ret i32 0\n}\n";
-        return code;
+
     }
+
+    // Read
+    public static void ReadShort(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strshd, i64 0, i64 0), i16* %" + id + ")\n";
+        Reg++;
+    }
+    public static void ReadInteger(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strsd, i64 0, i64 0), i32* %" + id + ")\n";
+        Reg++;
+    }
+    public static void ReadLong(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @strslld, i64 0, i64 0), i64* %" + id + ")\n";
+        Reg++;
+    }
+    public static void ReadFloat(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strsf, i64 0, i64 0), float* %" + id + ")\n";
+        Reg++;
+    }
+    public static void ReadDouble(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strslf, i64 0, i64 0), double* %" +
+                    id + ")\n";
+        Reg++;
+    }
+
+    public static void ReadString(String id)
+    {
+        MallocStringSize(id, 256.ToString());
+        LoadString(id);
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @strss, i64 0, i64 0), i8* %" +
+                    (Reg - 1) + ")\n";
+        Reg++;
+    }
+
+    public static void ReadBool(string variableId)
+    {
+        throw new NotImplementedException();
+    }
+
+    // Add
+    public static void AddShorts(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = add i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void AddIntegers(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = add i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void AddLongs(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = add i64 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void AddFloats(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fadd float " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void AddDoubles(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fadd double " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    
+    public static void AddStrings(String value1, StringVariable variable1, String value2, StringVariable variable2)
+    {
+        AllocateString($"{Reg}");
+        Reg++;
+        MallocStringSize($"{Reg-1}", (variable1.Length + variable2.Length + 1).ToString());
+        MainText += "%" + Reg + " = call i8* @strcat(i8* %" + (Reg - 1) + ", i8* " + value1 + ")\n";
+        Reg++;
+        MainText += "%" + Reg + " = call i8* @strcat(i8* %" + (Reg - 1) + ", i8* " + value2 + ")\n";
+        Reg++;
+    }
+    public static string GetConstString(StringVariable variable)
+    {
+        return $"getelementptr inbounds ([{variable.Length + 1} x i8], [{variable.Length + 1} x i8]* @{variable.Id}, i64 0, i64 0)";
+    }
+    
+    // Sub
+    public static void SubShorts(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sub i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void SubIntegers(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sub i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void SubLongs(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sub i64 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void SubFloats(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fsub float " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void SubDoubles(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fsub double " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+
+    // Mul
+    public static void MulShorts(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = mul i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void MulIntegers(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = mul i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void MulLongs(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = mul i64 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void MulFloats(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fmul float " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void MulDouble(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fmul double " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+
+    // Div
+    public static void DivShorts(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sdiv i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void DivIntegers(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sdiv i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void DivLongs(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sdiv i64 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void DivFloats(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fdiv float " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void DivDouble(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fdiv double " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+
+    // And
+    public static void AndBool(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = and i1 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+
+    // Or
+    public static void OrBool(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = or i1 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+
+
+    // Xor
+    public static void XorBool(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = xor i1 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+
 }

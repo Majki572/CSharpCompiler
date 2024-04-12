@@ -1,98 +1,61 @@
 grammar KermitLang;
 
-prog: base_statement*;
+start: base_statement*;
 
-base_statement: statement | function_def;
+base_statement: statement;
 
 statement:
 	'DECLARE' (
 		INTEGER_NAME
-		| REAL_NAME
+		| SHORT_NAME
+		| LONG_NAME
 		| BOOL_NAME
+		| DOUBLE_NAME
+		| FLOAT_NAME
 		| STRING_NAME
 		| NUMBER_NAME
-	) ID (INTEGER | REAL | BOOL | STRING | NUMBER) ';'
-	// Added STRING_NAME and NUMBER_NAME for string and number types
+	) ID (expression) ';' # declare
 	| 'ASSIGN' ID (
-		INTEGER
-		| REAL
-		| BOOL
-		| ID
-		| STRING
-		| NUMBER
-		| expression
-	) ';' // Added handling for STRING and NUMBER types
-	| 'SELECT' (INTEGER | REAL | BOOL | ID | STRING | NUMBER) ';' // Added STRING and NUMBER types
-	| 'READ_TO' ID ';'
-	| 'IF' (ID | BOOL) block ';'
-	| 'CALL' ID '(' parameter* ')' ';';
+		expression 
+	) ';' #assign
+	| 'PRINT' (expression) ';' #print 
+	| 'READ' ID ';'  #read
+	;
 
-parameter: ID '|';
-
-function_def: ID '(' parameter_def* ')' block ';';
-
-parameter_def: (
-		INTEGER_NAME
-		| REAL_NAME
-		| BOOL_NAME
-		| STRING_NAME
-		| NUMBER_NAME
-	) ID '|'; // Added STRING_NAME and NUMBER_NAME
-
-block: '[' statement* ']';
 
 expression:
-	expression_base					# expression_base_wrap // Wrap base expressions
-	| expression 'AND' expression	# logic_and // Added AND operation (consider short-circuit)
-	| expression 'OR' expression	# logic_or // Added OR operation (consider short-circuit)
-	| expression 'XOR' expression	# logic_xor // Added XOR operation
-	| 'NEG' expression				# logic_neg; // Added NEG operation
+	expression1 ADD expression		# expression_base_add
+	| expression1 SUB expression	# expression_base_sub
+	| expression1 # expression1Empty;
+expression1:
+	expression2 MUL expression1		# expression_base_mul
+	| expression2 DIV expression1	# expression_base_div
+	| expression2					# expression2Empty;
+expression2:
+	expression3 'AND' expression2	# and
+	| expression3 'OR' expression2	# or
+	| expression3 'XOR' expression2	# xor
+	| expression3 'NEG' expression2	# neg
+	| expression3					# expression4Empty;
+expression3:
+	 ID					# id
+	| BOOL					# bool
+	| NUMBER				# number
+	| STRING                # string	
+	| '(' expression ')'	# expressionInParens;
 
-expression_base: (ID | INTEGER | REAL | STRING | NUMBER) ADD (
-		ID
-		| INTEGER
-		| REAL
-		| STRING
-		| NUMBER
-	) # expression_base_add // Added STRING and NUMBER types
-	| (ID | INTEGER | REAL | STRING | NUMBER) MUL (
-		ID
-		| INTEGER
-		| REAL
-		| STRING
-		| NUMBER
-	) # expression_base_mul // Added STRING and NUMBER types
-	| (ID | INTEGER | REAL | STRING | NUMBER) SUB (
-		ID
-		| INTEGER
-		| REAL
-		| STRING
-		| NUMBER
-	) # expression_base_sub // Added STRING and NUMBER types
-	| (ID | INTEGER | REAL | STRING | NUMBER) DIV (
-		ID
-		| INTEGER
-		| REAL
-		| STRING
-		| NUMBER
-	) # expression_base_div; // Added STRING and NUMBER types
-
-INTEGER: ('0' ..'9')+;
-
-REAL: ('0' ..'9')+ '.' ('0' ..'9')+;
+NUMBER: ('0' ..'9')+ ('.' ('0' ..'9')+)?;
 
 BOOL: ('true' | 'false');
 
-STRING: '"' (~["\r\n] | '""')* '"'; // Added STRING type
+STRING: '"' (~["\r\n] | '""')* '"'; 
 
-NUMBER: ('0' ..'9')+ ('.' ('0' ..'9')+)? (
-		('e' | 'E') ('+' | '-')? ('0' ..'9')+
-	)?; // Added for different precision numbers
-
+SHORT_NAME: 'SHORT';
 INTEGER_NAME: 'INTEGER';
-
+LONG_NAME: 'LONG';
+FLOAT_NAME: 'FLOAT';
+DOUBLE_NAME: 'DOUBLE';
 REAL_NAME: 'REAL';
-
 BOOL_NAME: 'BOOL';
 
 STRING_NAME: 'STRING'; // Marked for string type handling
