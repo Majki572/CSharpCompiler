@@ -15,35 +15,17 @@ statement:
 		| STRING_NAME
 		| NUMBER_NAME
 	) ID (expression) ';' # declare
-	// Added STRING_NAME and NUMBER_NAME for string and number types
 	| 'ASSIGN' ID (
 		expression 
-	) ';' #assign // Added handling for STRING and NUMBER types 
-//	| 'PRINT' (expressionString) ';' #printString // Added STRING and NUMBER types
-	| 'PRINT' (expression) ';' #print // Added STRING and NUMBER types
+	) ';' #assign
+	| 'PRINT' (expression) ';' #print 
 	| 'READ' ID ';'  #read
-	//| 'IF' (ID | BOOL) block ';' #if
-	//| 'CALL' ID '(' parameter* ')' ';' #call
 	;
 
-//parameter: ID '|';
 
-//function_def: ID '(' parameter_def* ')' block ';';
-
-//parameter_def: ( INTEGER_NAME | REAL_NAME | BOOL_NAME | STRING_NAME | NUMBER_NAME ) ID '|'; //
-// Added STRING_NAME and NUMBER_NAME
-
-//expressionString: 
-//    STRING              			            # string
-//    | ID                                        # stringId
-//    | expressionString ADD expressionString        # string_add
-//    ;
-
-//block: '[' statement* ']';
 expression:
 	expression1 ADD expression		# expression_base_add
 	| expression1 SUB expression	# expression_base_sub
-	// ? | STRING (ADD STRING)*          # string
 	| expression1 # expression1Empty;
 expression1:
 	expression2 MUL expression1		# expression_base_mul
@@ -62,34 +44,11 @@ expression3:
 	| STRING                # string	
 	| '(' expression ')'	# expressionInParens;
 
-//expression_base1: (ID | INTEGER | REAL | STRING | NUMBER) MUL ( ID | INTEGER | REAL | STRING |
-// NUMBER | expression_base1 ) # expression_base_mul // Added STRING and NUMBER types | (ID |
-// INTEGER | REAL | STRING | NUMBER) DIV ( ID | INTEGER | REAL | STRING | NUMBER | expression_base1
-// ) # expression_base_div; // Added STRING and NUMBER types
-    
-
-//expression_base1: (ID | INTEGER | REAL | STRING | NUMBER) MUL (
-//		ID
-//		| INTEGER
-//		| REAL
-//		| STRING
-//		| NUMBER
-//		| expression_base1
-//	) # expression_base_mul // Added STRING and NUMBER types
-//	| (ID | INTEGER | REAL | STRING | NUMBER) DIV (
-//		ID
-//		| INTEGER
-//		| REAL
-//		| STRING
-//		| NUMBER
-//		| expression_base1
-//	) # expression_base_div; // Added STRING and NUMBER types
-
 NUMBER: ('0' ..'9')+ ('.' ('0' ..'9')+)?;
 
 BOOL: ('true' | 'false');
 
-STRING: '"' (~["\r\n] | '""')* '"'; // Added STRING type
+STRING: '"' (~["\r\n] | '""')* '"'; 
 
 SHORT_NAME: 'SHORT';
 INTEGER_NAME: 'INTEGER';

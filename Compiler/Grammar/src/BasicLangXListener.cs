@@ -199,7 +199,7 @@ public class BasicLangXListener : KermitLangBaseListener
             var id = context.ID().GetText();
             var newVariable = _stack.Pop();
             var isValid = true;
-
+            
             if (!_variables.ContainsKey(id))
             {
                 AddError(context.Start.Line, $"Variable {id} is not declared in this scope.");
@@ -296,12 +296,6 @@ public class BasicLangXListener : KermitLangBaseListener
                 }
 
                 var newVar = new StringVariable(id, stringVariable.Length);
-                if (_variables.ContainsKey(id))
-                {
-                    AddError(context.Start.Line, $"Variable already declared in this scope."); // wrocic do tego
-                }
-
-
                 Generator.MallocStringSize(id, newVar.Length.ToString());
                 if (newVariable.Type == VariableType.STRING)
                 {
@@ -428,7 +422,7 @@ public class BasicLangXListener : KermitLangBaseListener
             var isValid = true;
 
             if (!(left.Type.Equals(right.Type)) &&
-                (left.Type != VariableType.STRING || left.Type != VariableType.STRING_CONST))
+                (left.Type != VariableType.STRING && left.Type != VariableType.STRING_CONST))
             {
                 AddError(context.Start.Line, $"Type mismatch when trying to add {right} to {left}");
             }
@@ -1166,9 +1160,10 @@ public class BasicLangXListener : KermitLangBaseListener
     {
         var id = context.ID().GetText();
         var isValid = true;
-
-        if (!_variables.ContainsKey(id))
+        
+        if (!_variables.ContainsKey(id) && id != "")
         {
+            Console.WriteLine(id);
             AddError(context.Start.Line, $"Variable {id} is not declared in this scope.");
             isValid = false;
         }
