@@ -1,0 +1,6 @@
+DECLARE BOOL a true;
+DECLARE BOOL b false;
+PRINT a AND b;
+PRINT a OR b;
+PRINT a XOR b;
+PRINT NOT a;
