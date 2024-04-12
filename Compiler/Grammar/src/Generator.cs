@@ -16,10 +16,17 @@ public class Generator
         text += "declare noalias i8* @malloc(i64 noundef)\n";
         text += "declare i8* @strcpy(i8* noundef, i8* noundef)\n";
         text += "declare i8* @strcat(i8* noundef, i8* noundef)\n";
-        text += "@strpi = constant [4 x i8] c\"%d\\0A\\00\"\n";
-        text += "@strpd = constant [4 x i8] c\"%f\\0A\\00\"\n";
-        text += "@strsi = constant [3 x i8] c\"%d\\00\"\n";
-        text += "@strsd = constant [4 x i8] c\"%lf\\00\"\n";
+        
+        text += "@strpd = constant [4 x i8] c\"%d\\0A\\00\"\n";
+        text += "@strplld = constant [6 x i8] c\"%lld\\0A\\00\"\n";
+        text += "@strpf = constant [4 x i8] c\"%f\\0A\\00\"\n";
+        text += "@strplf = constant [5 x i8] c\"%lf\\0A\\00\"\n";
+        
+        text += "@strshd = constant [4 x i8] c\"%hd\\00\"\n";
+        text += "@strsd = constant [3 x i8] c\"%d\\00\"\n";
+        text += "@strslld = constant [5 x i8] c\"%lld\\00\"\n";
+        text += "@strsf = constant [3 x i8] c\"%f\\00\"\n";
+        text += "@strslf = constant [4 x i8] c\"%lf\\00\"\n";
 
         text += "@strss = constant [3 x i8] c\"%s\\00\"\n";
         text += "@strps = constant [4 x i8] c\"%s\\0A\\00\"\n";
@@ -41,13 +48,26 @@ public class Generator
     }
 
     // Allocate
-    
+    public static void AllocateShort(String id)
+    {
+        MainText += "%" + id + " = alloca i16\n";
+    }
     
     public static void AllocateInteger(String id)
     {
         MainText += "%" + id + " = alloca i32\n";
     }
-
+    
+    public static void AllocateLong(String id)
+    {
+        MainText += "%" + id + " = alloca i64\n";
+    }
+    
+    public static void AllocateFloat(String id)
+    {
+        MainText += "%" + id + " = alloca float\n";
+    }
+    
     public static void AllocateDouble(String id)
     {
         MainText += "%" + id + " = alloca double\n";
@@ -81,7 +101,7 @@ public class Generator
         MainText += $"%{Reg} = load i8*, i8** %{id}\n";
         Reg++;
         MainText +=
-            $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg - 1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* %{value}, i64 0, i64 0))\n";
+            $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg - 1}, i8* noundef {value})\n";
         Reg++;
     }
 
@@ -93,39 +113,65 @@ public class Generator
             $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg - 1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{value}, i64 0, i64 0))\n";
         Reg++;
     }
-    
-    public static void AllocateToExistingString(String id, String newValueId, int length)
-    {
-        MainText += $"%{Reg} = load i8*, i8** %{id}\n";
-        Reg++;
-        MainText +=
-            $"%{Reg} = call i8* @strcpy(i8* noundef %{Reg - 1}, i8* getelementptr inbounds ([{length + 1} x i8], [{length + 1} x i8]* @{newValueId}, i64 0, i64 0))\n";
-        Reg++;
-    }
 
     // Assign
+    public static void AssignShort(String id, String value)
+    {
+        MainText += "store i16 " + value + ", i16* %" + id + "\n";
+    }
+    public static void AssignShort32(String id)
+    {
+        MainText += $"%{Reg} = trunc i32 %{Reg-1} to i16\n";
+        Reg++;
+        MainText += "store i16 %" + (Reg-1) + ", i16* " + id + "\n";
+    }
     public static void AssignInteger(String id, String value)
     {
         MainText += "store i32 " + value + ", i32* %" + id + "\n";
     }
-
+    public static void AssignLong(String id, String value)
+    {
+        MainText += "store i64 " + value + ", i64* %" + id + "\n";
+    }
+    public static void AssignFloat(String id, String value)
+    {
+        MainText += "store float " + value + ", float* %" + id + "\n";
+    }
     public static void AssignDouble(String id, String value)
     {
         MainText += "store double " + value + ", double* %" + id + "\n";
     }
-
     public static void AssignBool(String id, String value)
     {
         MainText += "store i1 " + value + ", i1* %" + id + "\n";
     }
 
     // Load
+    public static void LoadShort(String id)
+    {
+        MainText += "%" + Reg + "= load i16, i16* %" + id + "\n";
+        Reg++;
+    }
+    public static void MapShort(String id)
+    {
+        MainText += $"%{Reg} = sext i16 %{id} to i32\n";
+        Reg++;
+    }
     public static void LoadInteger(String id)
     {
         MainText += "%" + Reg + "= load i32, i32* %" + id + "\n";
         Reg++;
     }
-
+    public static void LoadLong(String id)
+    {
+        MainText += "%" + Reg + "= load i64, i64* %" + id + "\n";
+        Reg++;
+    }
+    public static void LoadFloat(String id)
+    {
+        MainText += "%" + Reg + "= load float, float* %" + id + "\n";
+        Reg++;
+    }
     public static void LoadDouble(String id)
     {
         MainText += "%" + Reg + "= load double, double* %" + id + "\n";
@@ -146,38 +192,43 @@ public class Generator
 
 
     // Print
+    public static void PrintShort(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 " +
+                    id + ")\n";
+        Reg++;
+    }
     public static void PrintInteger(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 %" +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 " +
+                    (id) + ")\n";
+        Reg++;
+    } 
+    public static void PrintLong(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @strplld, i64 0, i64 0), i64 " +
                     (id) + ")\n";
         Reg++;
     }
-
-    public static void PrintIntegerValue(String value)
+    public static void PrintFloat(String id)
     {
-        MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpi, i32 0, i32 0), i32 %" +
-                    value + ")\n";
+        MainText += $"%{Reg} = fpext float {id} to double\n";
         Reg++;
-    }
-
-    public static void PrintReal(String id)
-    {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i32 0, i32 0), double %" +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpf, i64 0, i64 0), double %" +
                     (Reg - 1) + ")\n";
         Reg++;
     }
-
-    public static void PrintRealValue(String value)
+    public static void PrintDouble(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i64 0, i64 0), double noundef " +
-                    value + ")\n";
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @strplf, i64 0, i64 0), double " +
+                    id + ")\n";
         Reg++;
     }
-
     public static void PrintBool(String id)
     {
         MainText += "%" + Reg + "= load i1, i1* %" + id + "\n";
@@ -191,8 +242,8 @@ public class Generator
     public static void PrintString(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* %" +
-                    (Reg - 1) + ")\n";
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* " +
+                    id + ")\n";
         Reg++;
     }
 
@@ -202,17 +253,34 @@ public class Generator
     }
 
     // Read
+    public static void ReadShort(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strshd, i64 0, i64 0), i16* %" + id + ")\n";
+        Reg++;
+    }
     public static void ReadInteger(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strsi, i32 0, i32 0), i32* %" + id + ")\n";
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strsd, i64 0, i64 0), i32* %" + id + ")\n";
         Reg++;
     }
-
-    public static void ReadReal(String id)
+    public static void ReadLong(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strsd, i32 0, i32 0), double* %" +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @strslld, i64 0, i64 0), i64* %" + id + ")\n";
+        Reg++;
+    }
+    public static void ReadFloat(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strsf, i64 0, i64 0), float* %" + id + ")\n";
+        Reg++;
+    }
+    public static void ReadDouble(String id)
+    {
+        MainText += "%" + Reg +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strslf, i64 0, i64 0), double* %" +
                     id + ")\n";
         Reg++;
     }
@@ -222,7 +290,7 @@ public class Generator
         MallocStringSize(id, 256.ToString());
         LoadString(id);
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @strss, i64 0, i64 0), i8* %" +
+                    " = call i32 (i8*, ...) @__isoc99_scanf(i8* noundef getelementptr inbounds ([3 x i8], [3 x i8]* @strss, i64 0, i64 0), i8* %" +
                     (Reg - 1) + ")\n";
         Reg++;
     }
@@ -232,75 +300,124 @@ public class Generator
         throw new NotImplementedException();
     }
 
-    public static void ReadNumber(string varaibleId)
-    {
-        throw new NotImplementedException();
-    }
-
     // Add
+    public static void AddShorts(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = add i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
     public static void AddIntegers(String value1, String value2)
     {
         MainText += "%" + Reg + " = add i32 " + value1 + ", " + value2 + "\n";
         Reg++;
     }
-
-    public static void AddReals(String value1, String value2)
+    public static void AddLongs(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = add i64 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void AddFloats(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fadd float " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void AddDoubles(String value1, String value2)
     {
         MainText += "%" + Reg + " = fadd double " + value1 + ", " + value2 + "\n";
         Reg++;
-    }
-
-    public static string GetConstString(StringVariable variable)
-    {
-        return $"getelementptr inbounds ([{variable.Length + 1} x i8], [{variable.Length + 1} x i8]* @{variable.Id}, i64 0, i64 0)";
     }
     
     public static void AddStrings(String value1, StringVariable variable1, String value2, StringVariable variable2)
     {
         AllocateString($"{Reg}");
         Reg++;
-        Console.WriteLine("length " + (variable1.Length + variable2.Length + 1));
         MallocStringSize($"{Reg-1}", (variable1.Length + variable2.Length + 1).ToString());
         MainText += "%" + Reg + " = call i8* @strcat(i8* %" + (Reg - 1) + ", i8* " + value1 + ")\n";
         Reg++;
         MainText += "%" + Reg + " = call i8* @strcat(i8* %" + (Reg - 1) + ", i8* " + value2 + ")\n";
         Reg++;
     }
-
+    public static string GetConstString(StringVariable variable)
+    {
+        return $"getelementptr inbounds ([{variable.Length + 1} x i8], [{variable.Length + 1} x i8]* @{variable.Id}, i64 0, i64 0)";
+    }
+    
     // Sub
+    public static void SubShorts(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sub i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
     public static void SubIntegers(String value1, String value2)
     {
         MainText += "%" + Reg + " = sub i32 " + value1 + ", " + value2 + "\n";
         Reg++;
     }
-
-    public static void SubReals(String value1, String value2)
+    public static void SubLongs(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sub i64 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void SubFloats(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fsub float " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void SubDoubles(String value1, String value2)
     {
         MainText += "%" + Reg + " = fsub double " + value1 + ", " + value2 + "\n";
         Reg++;
     }
 
     // Mul
+    public static void MulShorts(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = mul i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
     public static void MulIntegers(String value1, String value2)
     {
         MainText += "%" + Reg + " = mul i32 " + value1 + ", " + value2 + "\n";
         Reg++;
     }
-
-    public static void MulReals(String value1, String value2)
+    public static void MulLongs(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = mul i64 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void MulFloats(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fmul float " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void MulDouble(String value1, String value2)
     {
         MainText += "%" + Reg + " = fmul double " + value1 + ", " + value2 + "\n";
         Reg++;
     }
 
     // Div
+    public static void DivShorts(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sdiv i32 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
     public static void DivIntegers(String value1, String value2)
     {
         MainText += "%" + Reg + " = sdiv i32 " + value1 + ", " + value2 + "\n";
         Reg++;
     }
-
-    public static void DivReals(String value1, String value2)
+    public static void DivLongs(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = sdiv i64 " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void DivFloats(String value1, String value2)
+    {
+        MainText += "%" + Reg + " = fdiv float " + value1 + ", " + value2 + "\n";
+        Reg++;
+    }
+    public static void DivDouble(String value1, String value2)
     {
         MainText += "%" + Reg + " = fdiv double " + value1 + ", " + value2 + "\n";
         Reg++;

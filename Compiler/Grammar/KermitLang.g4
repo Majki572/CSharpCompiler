@@ -7,18 +7,21 @@ base_statement: statement;
 statement:
 	'DECLARE' (
 		INTEGER_NAME
-		| REAL_NAME
+		| SHORT_NAME
+		| LONG_NAME
 		| BOOL_NAME
+		| DOUBLE_NAME
+		| FLOAT_NAME
 		| STRING_NAME
 		| NUMBER_NAME
-	) ID (expression | expressionString) ';' # declare
+	) ID (expression) ';' # declare
 	// Added STRING_NAME and NUMBER_NAME for string and number types
 	| 'ASSIGN' ID (
-		expression | expressionString
+		expression 
 	) ';' #assign // Added handling for STRING and NUMBER types 
-	| 'PRINT' (expressionString) ';' #print // Added STRING and NUMBER types
+//	| 'PRINT' (expressionString) ';' #printString // Added STRING and NUMBER types
 	| 'PRINT' (expression) ';' #print // Added STRING and NUMBER types
-	| 'READ_TO' ID ';'  #read
+	| 'READ' ID ';'  #read
 	//| 'IF' (ID | BOOL) block ';' #if
 	//| 'CALL' ID '(' parameter* ')' ';' #call
 	;
@@ -30,11 +33,11 @@ statement:
 //parameter_def: ( INTEGER_NAME | REAL_NAME | BOOL_NAME | STRING_NAME | NUMBER_NAME ) ID '|'; //
 // Added STRING_NAME and NUMBER_NAME
 
-expressionString: 
-    STRING              			            # string
-    | ID                                        # stringId
-    | expressionString ADD expressionString        # string_add
-    ;
+//expressionString: 
+//    STRING              			            # string
+//    | ID                                        # stringId
+//    | expressionString ADD expressionString        # string_add
+//    ;
 
 //block: '[' statement* ']';
 expression:
@@ -53,11 +56,10 @@ expression2:
 	| expression3 'NEG' expression2	# neg
 	| expression3					# expression4Empty;
 expression3:
-	INTEGER					# int
-	| REAL					# float
-	| ID					# id
+	 ID					# id
 	| BOOL					# bool
-	| NUMBER				# number	
+	| NUMBER				# number
+	| STRING                # string	
 	| '(' expression ')'	# expressionInParens;
 
 //expression_base1: (ID | INTEGER | REAL | STRING | NUMBER) MUL ( ID | INTEGER | REAL | STRING |
@@ -83,22 +85,18 @@ expression3:
 //		| expression_base1
 //	) # expression_base_div; // Added STRING and NUMBER types
 
-INTEGER: ('0' ..'9')+;
-
-REAL: ('0' ..'9')+ '.' ('0' ..'9')+;
+NUMBER: ('0' ..'9')+ ('.' ('0' ..'9')+)?;
 
 BOOL: ('true' | 'false');
 
 STRING: '"' (~["\r\n] | '""')* '"'; // Added STRING type
 
-NUMBER: ('0' ..'9')+ ('.' ('0' ..'9')+)? (
-		('e' | 'E') ('+' | '-')? ('0' ..'9')+
-	)?; // Added for different precision numbers
-
+SHORT_NAME: 'SHORT';
 INTEGER_NAME: 'INTEGER';
-
+LONG_NAME: 'LONG';
+FLOAT_NAME: 'FLOAT';
+DOUBLE_NAME: 'DOUBLE';
 REAL_NAME: 'REAL';
-
 BOOL_NAME: 'BOOL';
 
 STRING_NAME: 'STRING'; // Marked for string type handling

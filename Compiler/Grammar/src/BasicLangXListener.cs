@@ -11,10 +11,47 @@ public class BasicLangXListener : KermitLangBaseListener
     private readonly Dictionary<string, Variable> _variables = new Dictionary<string, Variable>();
     private readonly Dictionary<string, string> _constants = new Dictionary<string, string>();
     private readonly Stack<Variable> _stack = new Stack<Variable>();
+    private VariableType currentType;
     public static List<string> Errors = new List<string>();
 
     public virtual void ExitStart([NotNull] KermitLangParser.StartContext context) { }
     public virtual void ExitBase_statement([NotNull] KermitLangParser.Base_statementContext context) { }
+    
+    public override void EnterDeclare(KermitLangParser.DeclareContext context)
+    {
+        if (context.SHORT_NAME() != null)
+        {
+            currentType = VariableType.SHORT;
+        }
+        if (context.INTEGER_NAME() != null)
+        {
+            currentType = VariableType.INT;
+        }
+        if (context.LONG_NAME() != null)
+        {
+            currentType = VariableType.LOGNLONG;
+        }
+        if (context.FLOAT_NAME() != null)
+        {
+            currentType = VariableType.FLOAT;
+        }
+        if (context.DOUBLE_NAME() != null)
+        {
+            currentType = VariableType.DOUBLE;
+        }
+        if (context.BOOL_NAME() != null)
+        {
+            currentType = VariableType.BOOL;
+        }
+        if (context.STRING_NAME() != null)
+        {
+            currentType = VariableType.STRING;
+        }
+        if (context.NUMBER_NAME() != null)
+        {
+            currentType = VariableType.NUMBER;
+        }
+    }
 
     public override void ExitDeclare(KermitLangParser.DeclareContext context)
     {
@@ -30,23 +67,41 @@ public class BasicLangXListener : KermitLangBaseListener
                 isValid = false;
             }
 
+            if (context.SHORT_NAME() != null && variable.Type != VariableType.SHORT)
+            {
+                AddError(context.Start.Line, $"Value is not a short.");
+                isValid = false;
+            }
+
             if (context.INTEGER_NAME() != null && variable.Type != VariableType.INT)
             {
                 AddError(context.Start.Line, $"Value is not an integer.");
                 isValid = false;
             }
 
-        if (context.REAL_NAME() != null && variable.Type != VariableType.DOUBLE)
-        {
-            AddError(context.Start.Line, $"Value is not a real.");
-            isValid = false;
-        }
-        
-        if (context.BOOL_NAME() != null && variable.Type != VariableType.BOOL)
-        {
-            AddError(context.Start.Line, $"Value is not a bool.");
-            isValid = false;
-        }
+            if (context.LONG_NAME() != null && variable.Type != VariableType.LOGNLONG)
+            {
+                AddError(context.Start.Line, $"Value is not a long.");
+                isValid = false;
+            }
+
+            if (context.FLOAT_NAME() != null && variable.Type != VariableType.FLOAT)
+            {
+                AddError(context.Start.Line, $"Value is not a float.");
+                isValid = false;
+            }
+
+            if (context.DOUBLE_NAME() != null && variable.Type != VariableType.DOUBLE)
+            {
+                AddError(context.Start.Line, $"Value is not a real.");
+                isValid = false;
+            }
+
+            if (context.BOOL_NAME() != null && variable.Type != VariableType.BOOL)
+            {
+                AddError(context.Start.Line, $"Value is not a bool.");
+                isValid = false;
+            }
 
             if (context.STRING_NAME() != null &&
                 (variable.Type != VariableType.STRING && variable.Type != VariableType.STRING_CONST))
@@ -55,13 +110,15 @@ public class BasicLangXListener : KermitLangBaseListener
                 isValid = false;
             }
 
-            if (context.NUMBER_NAME() != null && variable.Type != VariableType.NUMBER)
+            if (variable.Type == VariableType.SHORT)
             {
-                AddError(context.Start.Line, $"Value is not a number.");
-                isValid = false;
+                var newVar = new Variable(id, VariableType.SHORT);
+                _variables.Add(id, newVar);
+                Generator.AllocateShort(newVar.Id);
+                Generator.AssignShort(newVar.Id, variable.Id);
             }
 
-            if (variable.Type == VariableType.INT && isValid)
+            if (variable.Type == VariableType.INT)
             {
                 var newVar = new Variable(id, VariableType.INT);
                 _variables.Add(id, newVar);
@@ -69,15 +126,31 @@ public class BasicLangXListener : KermitLangBaseListener
                 Generator.AssignInteger(newVar.Id, variable.Id);
             }
 
-        if (variable.Type == VariableType.DOUBLE && isValid)
-        {
-            var newVar = new Variable(id, VariableType.DOUBLE);
-            _variables.Add(id, newVar);
-            Generator.AllocateDouble(newVar.Id);
-            Generator.AssignDouble(newVar.Id, variable.Id);
-        }
+            if (variable.Type == VariableType.LOGNLONG)
+            {
+                var newVar = new Variable(id, VariableType.LOGNLONG);
+                _variables.Add(id, newVar);
+                Generator.AllocateLong(newVar.Id);
+                Generator.AssignLong(newVar.Id, variable.Id);
+            }
 
-            if (variable.Type == VariableType.BOOL && isValid)
+            if (variable.Type == VariableType.FLOAT)
+            {
+                var newVar = new Variable(id, VariableType.FLOAT);
+                _variables.Add(id, newVar);
+                Generator.AllocateFloat(newVar.Id);
+                Generator.AssignFloat(newVar.Id, variable.Id);
+            }
+
+            if (variable.Type == VariableType.DOUBLE)
+            {
+                var newVar = new Variable(id, VariableType.DOUBLE);
+                _variables.Add(id, newVar);
+                Generator.AllocateDouble(newVar.Id);
+                Generator.AssignDouble(newVar.Id, variable.Id);
+            }
+
+            if (variable.Type == VariableType.BOOL)
             {
                 var newVar = new Variable(id, VariableType.BOOL);
                 _variables.Add(id, newVar);
@@ -85,7 +158,7 @@ public class BasicLangXListener : KermitLangBaseListener
                 Generator.AssignBool(newVar.Id, variable.Id);
             }
 
-            if (variable.Type == VariableType.STRING && isValid)
+            if (variable.Type == VariableType.STRING || variable.Type == VariableType.STRING_CONST)
             {
                 if (variable is not StringVariable stringVariable)
                 {
@@ -134,10 +207,31 @@ public class BasicLangXListener : KermitLangBaseListener
             }
 
             var variable = _variables[id];
+            if (variable.Type == VariableType.SHORT && newVariable.Type != VariableType.SHORT)
+            {
+                AddError(context.Start.Line,
+                    $"Expected a value of type SHORT for variable {id} but found {variable.Type}");
+                isValid = false;
+            }
+
             if (variable.Type == VariableType.INT && newVariable.Type != VariableType.INT)
             {
                 AddError(context.Start.Line,
                     $"Expected a value of type INT for variable {id} but found {variable.Type}");
+                isValid = false;
+            }
+
+            if (variable.Type == VariableType.LOGNLONG && newVariable.Type != VariableType.LOGNLONG)
+            {
+                AddError(context.Start.Line,
+                    $"Expected a value of type LONG for variable {id} but found {variable.Type}");
+                isValid = false;
+            }
+
+            if (variable.Type == VariableType.FLOAT && newVariable.Type != VariableType.FLOAT)
+            {
+                AddError(context.Start.Line,
+                    $"Expected a value of type FLOAT for variable {id} but found {variable.Type}");
                 isValid = false;
             }
 
@@ -155,47 +249,68 @@ public class BasicLangXListener : KermitLangBaseListener
                 isValid = false;
             }
 
-            if (variable.Type == VariableType.STRING && newVariable.Type != VariableType.STRING)
+            if (variable.Type == VariableType.STRING && (newVariable.Type != VariableType.STRING &&
+                                                         newVariable.Type != VariableType.STRING_CONST))
             {
                 AddError(context.Start.Line,
                     $"Expected a value of type STRING for variable {id} but found {variable.Type}");
                 isValid = false;
             }
 
-            if (variable.Type == VariableType.NUMBER && newVariable.Type != VariableType.NUMBER)
+            if (newVariable.Type == VariableType.SHORT)
             {
-                AddError(context.Start.Line,
-                    $"Expected a value of type NUMBER for variable {id} but found {variable.Type}");
-                isValid = false;
+                Generator.AssignShort(variable.Id, newVariable.Id);
             }
-            if (variable.Type == VariableType.INT && isValid)
+
+            if (newVariable.Type == VariableType.INT)
             {
                 Generator.AssignInteger(variable.Id, newVariable.Id);
             }
-            if (variable.Type == VariableType.DOUBLE && isValid)
+
+            if (newVariable.Type == VariableType.LOGNLONG)
+            {
+                Generator.AssignLong(variable.Id, newVariable.Id);
+            }
+
+            if (newVariable.Type == VariableType.FLOAT)
+            {
+                Generator.AssignFloat(variable.Id, newVariable.Id);
+            }
+
+            if (newVariable.Type == VariableType.DOUBLE)
             {
                 Generator.AssignDouble(variable.Id, newVariable.Id);
             }
-            if (variable.Type == VariableType.BOOL && isValid)
+
+            if (newVariable.Type == VariableType.BOOL)
             {
                 Generator.AssignBool(variable.Id, newVariable.Id);
             }
-            if (variable.Type == VariableType.STRING && isValid)
-            {
-                var stringValue = newVariable.Id;
-                var constantValue = stringValue.Substring(1, stringValue.Length - 2);
-                var constantId = "str." + _constants.Count;
 
-                var newVar = new StringVariable(constantId, constantValue.Length);
-                _variables[id] = newVar;
-                Generator.AllocateStringConst(constantId, constantValue, constantValue.Length);
+            if (newVariable.Type == VariableType.STRING || newVariable.Type == VariableType.STRING_CONST)
+            {
+                if (newVariable is not StringVariable stringVariable)
+                {
+                    Console.WriteLine("error string");
+                    return;
+                }
+
+                var newVar = new StringVariable(id, stringVariable.Length);
+                if (_variables.ContainsKey(id))
+                {
+                    AddError(context.Start.Line, $"Variable already declared in this scope."); // wrocic do tego
+                }
+
+
                 Generator.MallocStringSize(id, newVar.Length.ToString());
-                Generator.AssignString(id, newVar.Id, newVar.Length);
-            }
-
-            if (!isValid)
-            {
-                _stack.Push(variable);
+                if (newVariable.Type == VariableType.STRING)
+                {
+                    Generator.AssignString(id, newVariable.Id, newVar.Length);
+                }
+                else
+                {
+                    Generator.AssignStringConst(id, newVariable.Id, newVar.Length);
+                }
             }
         }
         catch (Exception e)
@@ -210,54 +325,52 @@ public class BasicLangXListener : KermitLangBaseListener
         {
             var variable = _stack.Pop();
 
-
-            if (_variables.ContainsKey(variable.Id))
+            if (variable.Type == VariableType.SHORT)
             {
-                if (variable.Type == VariableType.INT)
-                {
-                    Generator.LoadInteger(variable.Id);
-                }
-                if (variable.Type == VariableType.DOUBLE)
-                {
-                    Generator.LoadDouble(variable.Id);
-                }
-                if (variable.Type == VariableType.BOOL)
-                {
-                    Generator.LoadBool(variable.Id);
-                }
-                if (variable.Type == VariableType.STRING)
-                {
-                    Generator.LoadString(variable.Id);
-                }
-                if (variable.Type == VariableType.NUMBER)
-                {
-                    // TODO Implement number loading
-                    //Generator.LoadNumber(variable.Name);
-                }
-                variable.Id = (Generator.Reg - 1).ToString();
+                Generator.PrintShort(variable.Id);
             }
 
             if (variable.Type == VariableType.INT)
             {
                 Generator.PrintInteger(variable.Id);
             }
+
+            if (variable.Type == VariableType.LOGNLONG)
+            {
+                Generator.PrintLong(variable.Id);
+            }
+
+            if (variable.Type == VariableType.FLOAT)
+            {
+                Generator.PrintFloat(variable.Id);
+            }
+
             if (variable.Type == VariableType.DOUBLE)
             {
-                Generator.PrintReal(variable.Id);
+                Generator.PrintDouble(variable.Id);
             }
+
             if (variable.Type == VariableType.BOOL)
             {
                 Generator.PrintBool(variable.Id);
             }
+
             if (variable.Type == VariableType.STRING)
             {
                 Generator.PrintString(variable.Id);
             }
+
+            if (variable.Type == VariableType.STRING_CONST)
+            {
+                var stringVariable = Generator.GetConstString(variable as StringVariable);
+                Generator.PrintString(stringVariable);
+            }
+
             if (variable.Type == VariableType.NUMBER)
             {
                 Generator.PrintNumber(variable.Id);
             }
-        } 
+        }
         catch (Exception e)
         {
 
@@ -276,13 +389,25 @@ public class BasicLangXListener : KermitLangBaseListener
         }
 
         var variable = _variables[id];
+        if (variable.Type == VariableType.SHORT && isValid)
+        {
+            Generator.ReadShort(variable.Id);
+        }
         if (variable.Type == VariableType.INT && isValid)
         {
             Generator.ReadInteger(variable.Id);
         }
+        if (variable.Type == VariableType.LOGNLONG && isValid)
+        {
+            Generator.ReadLong(variable.Id);
+        }
+        if (variable.Type == VariableType.FLOAT && isValid)
+        {
+            Generator.ReadFloat(variable.Id);
+        }
         if (variable.Type == VariableType.DOUBLE && isValid)
         {
-            Generator.ReadReal(variable.Id);
+            Generator.ReadDouble(variable.Id);
         }
         if (variable.Type == VariableType.BOOL && isValid)
         {
@@ -291,10 +416,6 @@ public class BasicLangXListener : KermitLangBaseListener
         if (variable.Type == VariableType.STRING && isValid)
         {
             Generator.ReadString(variable.Id);
-        }
-        if (variable.Type == VariableType.NUMBER && isValid)
-        {
-            Generator.ReadNumber(variable.Id);
         }
     }
 
@@ -306,10 +427,37 @@ public class BasicLangXListener : KermitLangBaseListener
             var left = _stack.Pop();
             var isValid = true;
 
-            if (!left.Type.Equals(right.Type))
+            if (!(left.Type.Equals(right.Type)) &&
+                (left.Type != VariableType.STRING || left.Type != VariableType.STRING_CONST))
             {
                 AddError(context.Start.Line, $"Type mismatch when trying to add {right} to {left}");
-                isValid = false;
+            }
+
+            if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadShort(right.Id);
+                    Generator.MapShort((Generator.Reg - 1).ToString());
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadShort(left.Id);
+                    Generator.MapShort((Generator.Reg - 1).ToString());
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.AllocateShort(Generator.Reg.ToString());
+                Generator.Reg++;
+                Generator.AddShorts(leftId, rightId);
+                Generator.AssignShort32($"%{Generator.Reg - 2}");
+                Generator.LoadShort((Generator.Reg - 3).ToString());
+                Generator.MapShort((Generator.Reg - 1).ToString());
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.SHORT));
             }
 
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
@@ -329,7 +477,47 @@ public class BasicLangXListener : KermitLangBaseListener
                 }
 
                 Generator.AddIntegers(leftId, rightId);
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.INT));
+            }
+
+            if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadLong(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadLong(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.AddLongs(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.LOGNLONG));
+            }
+
+            if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadFloat(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadFloat(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.AddFloats(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
@@ -348,28 +536,50 @@ public class BasicLangXListener : KermitLangBaseListener
                     leftId = (Generator.Reg - 1).ToString();
                 }
 
-            Generator.AddReals(leftId, rightId);
-            _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
-        }
+                Generator.AddDoubles(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.DOUBLE));
+            }
 
-            if (left.Type == VariableType.STRING && right.Type == VariableType.STRING && isValid)
+            if ((left.Type == VariableType.STRING || left.Type == VariableType.STRING_CONST) &&
+                (right.Type == VariableType.STRING || right.Type == VariableType.STRING_CONST) && isValid)
             {
-                var leftId = left.Id;
-                var rightId = right.Id;
-                if (_variables.ContainsKey(right.Id))
+                if (!(left.Type != VariableType.STRING || left.Type != VariableType.STRING_CONST))
                 {
-                    Generator.LoadString(right.Id);
-                    rightId = (Generator.Reg - 1).ToString();
+                    AddError(context.Start.Line, $"Only accept strings.");
+                    return;
                 }
 
-                if (_variables.ContainsKey(left.Id))
+                if (!(right.Type != VariableType.STRING || right.Type != VariableType.STRING_CONST))
+                {
+                    AddError(context.Start.Line, $"Only accept strings.");
+                    return;
+                }
+
+                var leftId = $"{left.Id}";
+                var rightId = $"{right.Id}";
+                if (_variables.ContainsKey(right.Id) && right.Type == VariableType.STRING)
+                {
+                    Generator.LoadString(right.Id);
+                    rightId = $"%{Generator.Reg - 1}";
+                }
+                else if (right.Type == VariableType.STRING_CONST)
+                {
+                    rightId = Generator.GetConstString(right as StringVariable);
+                }
+
+                if (_variables.ContainsKey(left.Id) && left.Type == VariableType.STRING)
                 {
                     Generator.LoadString(left.Id);
-                    leftId = (Generator.Reg - 1).ToString();
+                    leftId = $"%{Generator.Reg - 1}";
+                }
+                else if (left.Type == VariableType.STRING_CONST)
+                {
+                    leftId = Generator.GetConstString(left as StringVariable);
                 }
 
                 Generator.AddStrings(leftId, left as StringVariable, rightId, right as StringVariable);
-                _stack.Push(new Variable($"%{Generator.Reg - 1}", VariableType.STRING));
+                var length = (left as StringVariable).Length + (right as StringVariable).Length + 1;
+                _stack.Push(new StringVariable($"%{Generator.Reg - 1}", length));
             }
 
             if (!isValid)
@@ -398,6 +608,31 @@ public class BasicLangXListener : KermitLangBaseListener
                 isValid = false;
             }
 
+            if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadShort(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadShort(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.AllocateShort(Generator.Reg.ToString());
+                Generator.Reg++;
+                Generator.SubShorts(leftId, rightId);
+                Generator.AssignShort32($"%{Generator.Reg - 2}");
+                Generator.LoadShort((Generator.Reg - 3).ToString());
+                Generator.MapShort((Generator.Reg - 1).ToString());
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.SHORT));
+            }
+
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
             {
                 var leftId = left.Id;
@@ -415,7 +650,47 @@ public class BasicLangXListener : KermitLangBaseListener
                 }
 
                 Generator.SubIntegers(leftId, rightId);
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.INT));
+            }
+
+            if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadLong(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadLong(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.SubLongs(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.LOGNLONG));
+            }
+
+            if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadFloat(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadFloat(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.SubFloats(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
@@ -434,8 +709,8 @@ public class BasicLangXListener : KermitLangBaseListener
                     leftId = (Generator.Reg - 1).ToString();
                 }
 
-                Generator.SubReals(leftId, rightId);
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                Generator.SubDoubles(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.DOUBLE));
             }
 
             if (!isValid)
@@ -449,8 +724,7 @@ public class BasicLangXListener : KermitLangBaseListener
 
         }
     }
-    public virtual void ExitExpression1Empty([NotNull] KermitLangParser.Expression1EmptyContext context) { }
-
+    
     public override void ExitExpression_base_mul(KermitLangParser.Expression_base_mulContext context)
     {
         try
@@ -463,6 +737,31 @@ public class BasicLangXListener : KermitLangBaseListener
             {
                 AddError(context.Start.Line, $"Type mismatch when trying to add {right} to {left}");
                 isValid = false;
+            }
+
+            if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadShort(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadShort(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.AllocateShort(Generator.Reg.ToString());
+                Generator.Reg++;
+                Generator.MulShorts(leftId, rightId);
+                Generator.AssignShort32($"%{Generator.Reg - 2}");
+                Generator.LoadShort((Generator.Reg - 3).ToString());
+                Generator.MapShort((Generator.Reg - 1).ToString());
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.SHORT));
             }
 
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
@@ -482,7 +781,47 @@ public class BasicLangXListener : KermitLangBaseListener
                 }
 
                 Generator.MulIntegers(leftId, rightId);
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.INT));
+            }
+
+            if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadLong(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadLong(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.MulLongs(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.LOGNLONG));
+            }
+
+            if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadFloat(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadFloat(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.MulFloats(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
@@ -501,8 +840,8 @@ public class BasicLangXListener : KermitLangBaseListener
                     leftId = (Generator.Reg - 1).ToString();
                 }
 
-                Generator.MulReals(leftId, rightId);
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                Generator.MulDouble(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.DOUBLE));
             }
 
             if (!isValid)
@@ -531,6 +870,36 @@ public class BasicLangXListener : KermitLangBaseListener
                 isValid = false;
             }
 
+            if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (right.Id.Equals("0"))
+                {
+                    AddError(context.Start.Line, "Cannot divide by 0.");
+                }
+
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadShort(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadShort(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.AllocateShort(Generator.Reg.ToString());
+                Generator.Reg++;
+                Generator.DivShorts(leftId, rightId);
+                Generator.AssignShort32($"%{Generator.Reg - 2}");
+                Generator.LoadShort((Generator.Reg - 3).ToString());
+                Generator.MapShort((Generator.Reg - 1).ToString());
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.SHORT));
+            }
+
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
             {
                 var leftId = left.Id;
@@ -553,7 +922,57 @@ public class BasicLangXListener : KermitLangBaseListener
                 }
 
                 Generator.DivIntegers(leftId, rightId);
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.INT));
+            }
+
+            if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (right.Id.Equals("0"))
+                {
+                    AddError(context.Start.Line, "Cannot divide by 0.");
+                }
+
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadLong(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadLong(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.DivLongs(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.LOGNLONG));
+            }
+
+            if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
+            {
+                var leftId = left.Id;
+                var rightId = right.Id;
+                if (right.Id.Equals("0"))
+                {
+                    AddError(context.Start.Line, "Cannot divide by 0.");
+                }
+
+                if (_variables.ContainsKey(right.Id))
+                {
+                    Generator.LoadFloat(right.Id);
+                    rightId = (Generator.Reg - 1).ToString();
+                }
+
+                if (_variables.ContainsKey(left.Id))
+                {
+                    Generator.LoadFloat(left.Id);
+                    leftId = (Generator.Reg - 1).ToString();
+                }
+
+                Generator.DivFloats(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
@@ -577,8 +996,8 @@ public class BasicLangXListener : KermitLangBaseListener
                     leftId = (Generator.Reg - 1).ToString();
                 }
 
-                Generator.DivReals(leftId, rightId);
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                Generator.DivDouble(leftId, rightId);
+                _stack.Push(new Variable("%" + (Generator.Reg - 1), VariableType.DOUBLE));
             }
 
             if (!isValid)
@@ -592,7 +1011,6 @@ public class BasicLangXListener : KermitLangBaseListener
 
         }
     }
-    public virtual void ExitExpression2Empty([NotNull] KermitLangParser.Expression2EmptyContext context) { }
 
     public override void ExitAnd(KermitLangParser.AndContext context)
     {
@@ -744,18 +1162,6 @@ public class BasicLangXListener : KermitLangBaseListener
         }
     }
 
-    public virtual void ExitExpression4Empty([NotNull] KermitLangParser.Expression4EmptyContext context) { }
-
-    public override void ExitInt(KermitLangParser.IntContext context)
-    {
-        _stack.Push(new Variable(context.INTEGER().GetText(), VariableType.INT));
-    }
-
-    public override void ExitFloat(KermitLangParser.FloatContext context)
-    {
-        _stack.Push(new Variable(context.REAL().GetText(), VariableType.REAL));
-    }
-
     public override void ExitId(KermitLangParser.IdContext context)
     {
         var id = context.ID().GetText();
@@ -767,33 +1173,45 @@ public class BasicLangXListener : KermitLangBaseListener
             isValid = false;
         }
 
+        Console.WriteLine("ExitId - " + id + " " + _variables[id].Type);
         switch (_variables[id].Type)
         {
+            case VariableType.SHORT:
+                Generator.LoadShort(id);
+                Generator.MapShort($"{Generator.Reg - 1}");
+                _stack.Push(new Variable($"%{Generator.Reg - 1}", _variables[id].Type));
+                break;
             case VariableType.INT:
                 Generator.LoadInteger(id);
+                _stack.Push(new Variable($"%{Generator.Reg - 1}", _variables[id].Type));
+                break;
+            case VariableType.LOGNLONG:
+                Generator.LoadLong(id);
+                _stack.Push(new Variable($"%{Generator.Reg - 1}", _variables[id].Type));
+                break;
+            case VariableType.FLOAT:
+                Generator.LoadFloat(id);
+                _stack.Push(new Variable($"%{Generator.Reg - 1}", _variables[id].Type));
                 break;
             case VariableType.DOUBLE:
                 Generator.LoadDouble(id);
+                _stack.Push(new Variable($"%{Generator.Reg - 1}", _variables[id].Type));
                 break;
             case VariableType.BOOL:
                 Generator.LoadBool(id);
+                _stack.Push(new Variable($"%{Generator.Reg - 1}", _variables[id].Type));
                 break;
-            case VariableType.STRING:
+            case VariableType.STRING or VariableType.STRING_CONST:
                 Generator.LoadString(id);
-                break;
-            case VariableType.NUMBER:
-                // TODO Implement number loading
-                //Generator.LoadNumber(id);
+                _stack.Push(new StringVariable($"%{Generator.Reg - 1}", ((_variables[id] as StringVariable)!).Length));
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        _stack.Push(new Variable($"%{Generator.Reg - 1}", _variables[id].Type));
     }
 
     public override void ExitString(KermitLangParser.StringContext context)
     {
-        Console.WriteLine("ExitString - " + context.STRING().GetText());
         var value = context.STRING().GetText();
         var constantId = "str." + _constants.Count;
         var constantValue = value.Substring(1, value.Length - 2);
@@ -803,88 +1221,20 @@ public class BasicLangXListener : KermitLangBaseListener
         }
         else
         {
-            Console.WriteLine("ExitString - add constant");
             _constants.Add(constantId, value);
             Generator.AllocateStringConst(constantId, constantValue, constantValue.Length);
         }
         
         _stack.Push(new StringVariable(constantId, constantValue.Length, VariableType.STRING_CONST));
-        Console.WriteLine("ExitString - stack count " + _stack.Count);
-    }
-
-    public override void ExitStringId(KermitLangParser.StringIdContext context)
-    {
-        Console.WriteLine("ExitStringId - " + context.ID().GetText());
-        var id = context.ID().GetText();
-        if (!_variables.ContainsKey(id))
-        {
-            AddError(context.Start.Line, $"Variable {id} is not declared in this scope.");
-        }
-
-        if (_variables[id].Type != VariableType.STRING)
-        {
-            AddError(context.Start.Line, $"Variable {id} is not a string.");
-        }
-
-        Generator.LoadString(id);
-        _stack.Push(new StringVariable((Generator.Reg - 1).ToString(), (_variables[id] as StringVariable).Length));
-        Console.WriteLine("ExitStringId - stack count " + _stack.Count);
-    }
-
-    public override void ExitString_add(KermitLangParser.String_addContext context)
-    {
-        var right = _stack.Pop() as StringVariable;
-        var left = _stack.Pop() as StringVariable;
-        if (left.Type != right.Type)
-        {
-            AddError(context.Start.Line, $"Type mismatch when trying to add {right} to {left}");
-        }
-
-        if (!(left.Type != VariableType.STRING || left.Type != VariableType.STRING_CONST))
-        {
-            AddError(context.Start.Line, $"Only accept strings.");
-            return;
-        }
-        
-        if (!(right.Type != VariableType.STRING || right.Type != VariableType.STRING_CONST))
-        {
-            AddError(context.Start.Line, $"Only accept strings.");
-            return;
-        }
-        
-        var leftId = $"%{left.Id}";
-        var rightId = $"%{right.Id}";
-        if (_variables.ContainsKey(right.Id) && right.Type == VariableType.STRING)
-        {
-            Generator.LoadString(right.Id);
-            rightId = $"%{Generator.Reg - 1}";
-        } 
-        else if (right.Type == VariableType.STRING_CONST)
-        {
-            rightId = Generator.GetConstString(right as StringVariable);
-        }
-
-        if (_variables.ContainsKey(left.Id) && left.Type == VariableType.STRING)
-        {
-            Generator.LoadString(left.Id);
-            leftId = $"%{Generator.Reg - 1}";
-        }
-        else if (left.Type == VariableType.STRING_CONST)
-        {
-            leftId = Generator.GetConstString(left as StringVariable);
-        }
-        
-        Generator.AddStrings(leftId, left, rightId, right);
-        _stack.Push(new StringVariable((Generator.Reg - 1).ToString(), left.Length + right.Length + 1));
     }
 
     public override void ExitBool(KermitLangParser.BoolContext context)
     {
         _stack.Push(new Variable(context.BOOL().GetText(), VariableType.BOOL));
     }
-    public virtual void ExitNumber([NotNull] KermitLangParser.NumberContext context)
+    public override void ExitNumber([NotNull] KermitLangParser.NumberContext context)
     {
-        _stack.Push(new Variable(context.NUMBER().GetText(), VariableType.DOUBLE));
+        _stack.Push(new Variable(context.NUMBER().GetText(), currentType));
     }
     public virtual void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context) { }
     public virtual void EnterEveryRule([NotNull] ParserRuleContext context) { }
