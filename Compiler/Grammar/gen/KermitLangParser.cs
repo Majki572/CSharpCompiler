@@ -39,33 +39,35 @@ public partial class KermitLangParser : Parser {
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, NUMBER=8, BOOL=9, 
 		STRING=10, SHORT_NAME=11, INTEGER_NAME=12, LONG_NAME=13, FLOAT_NAME=14, 
 		DOUBLE_NAME=15, REAL_NAME=16, BOOL_NAME=17, PRINT=18, READ=19, IF=20, 
-		ELSE=21, WHILE=22, STRING_NAME=23, NUMBER_NAME=24, ID=25, ADD=26, SUB=27, 
-		MUL=28, DIV=29, L_PAR=30, P_PAR=31, L_CURL=32, P_CURL=33, COMMENT=34, 
-		WS=35;
+		ELSE=21, WHILE=22, STRUCT=23, STRING_NAME=24, NUMBER_NAME=25, ID=26, ADD=27, 
+		SUB=28, MUL=29, DIV=30, L_PAR=31, P_PAR=32, L_CURL=33, P_CURL=34, COMMENT=35, 
+		WS=36;
 	public const int
 		RULE_start = 0, RULE_base_statement = 1, RULE_statement = 2, RULE_type = 3, 
 		RULE_expression = 4, RULE_expression1 = 5, RULE_expression2 = 6, RULE_expression3 = 7, 
 		RULE_if_statement = 8, RULE_while_statement = 9, RULE_function_definition = 10, 
 		RULE_parameter_list = 11, RULE_parameter = 12, RULE_function_call = 13, 
-		RULE_argument_list = 14, RULE_statement_block = 15;
+		RULE_argument_list = 14, RULE_statement_block = 15, RULE_struct_definition = 16, 
+		RULE_struct_body = 17;
 	public static readonly string[] ruleNames = {
 		"start", "base_statement", "statement", "type", "expression", "expression1", 
 		"expression2", "expression3", "if_statement", "while_statement", "function_definition", 
-		"parameter_list", "parameter", "function_call", "argument_list", "statement_block"
+		"parameter_list", "parameter", "function_call", "argument_list", "statement_block", 
+		"struct_definition", "struct_body"
 	};
 
 	private static readonly string[] _LiteralNames = {
 		null, "';'", "'='", "'AND'", "'OR'", "'XOR'", "'NEG'", "','", null, null, 
 		null, "'short'", "'int'", "'long'", "'float'", "'double'", "'real'", "'bool'", 
-		"'print'", "'read'", "'if'", "'else'", "'while'", "'STRING'", "'NUMBER'", 
-		null, "'+'", "'-'", "'*'", "'/'", "'('", "')'", "'{'", "'}'"
+		"'print'", "'read'", "'if'", "'else'", "'while'", "'struct'", "'STRING'", 
+		"'NUMBER'", null, "'+'", "'-'", "'*'", "'/'", "'('", "')'", "'{'", "'}'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, null, null, null, null, null, "NUMBER", "BOOL", "STRING", 
 		"SHORT_NAME", "INTEGER_NAME", "LONG_NAME", "FLOAT_NAME", "DOUBLE_NAME", 
-		"REAL_NAME", "BOOL_NAME", "PRINT", "READ", "IF", "ELSE", "WHILE", "STRING_NAME", 
-		"NUMBER_NAME", "ID", "ADD", "SUB", "MUL", "DIV", "L_PAR", "P_PAR", "L_CURL", 
-		"P_CURL", "COMMENT", "WS"
+		"REAL_NAME", "BOOL_NAME", "PRINT", "READ", "IF", "ELSE", "WHILE", "STRUCT", 
+		"STRING_NAME", "NUMBER_NAME", "ID", "ADD", "SUB", "MUL", "DIV", "L_PAR", 
+		"P_PAR", "L_CURL", "P_CURL", "COMMENT", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -131,17 +133,17 @@ public partial class KermitLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 35;
+			State = 39;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 64944128L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 132052992L) != 0)) {
 				{
 				{
-				State = 32;
+				State = 36;
 				base_statement();
 				}
 				}
-				State = 37;
+				State = 41;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -186,7 +188,7 @@ public partial class KermitLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 38;
+			State = 42;
 			statement();
 			}
 		}
@@ -318,13 +320,29 @@ public partial class KermitLangParser : Parser {
 			if (typedListener != null) typedListener.ExitAssign(this);
 		}
 	}
+	public partial class StructDefinitionContext : StatementContext {
+		[System.Diagnostics.DebuggerNonUserCode] public Struct_definitionContext struct_definition() {
+			return GetRuleContext<Struct_definitionContext>(0);
+		}
+		public StructDefinitionContext(StatementContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IKermitLangListener typedListener = listener as IKermitLangListener;
+			if (typedListener != null) typedListener.EnterStructDefinition(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IKermitLangListener typedListener = listener as IKermitLangListener;
+			if (typedListener != null) typedListener.ExitStructDefinition(this);
+		}
+	}
 
 	[RuleVersion(0)]
 	public StatementContext statement() {
 		StatementContext _localctx = new StatementContext(Context, State);
 		EnterRule(_localctx, 4, RULE_statement);
 		try {
-			State = 67;
+			State = 74;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case SHORT_NAME:
@@ -338,15 +356,15 @@ public partial class KermitLangParser : Parser {
 				_localctx = new DeclareContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 40;
+				State = 44;
 				type();
-				State = 41;
+				State = 45;
 				Match(ID);
 				{
-				State = 42;
+				State = 46;
 				expression();
 				}
-				State = 43;
+				State = 47;
 				Match(T__0);
 				}
 				break;
@@ -354,15 +372,15 @@ public partial class KermitLangParser : Parser {
 				_localctx = new AssignContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 45;
+				State = 49;
 				Match(ID);
-				State = 46;
+				State = 50;
 				Match(T__1);
 				{
-				State = 47;
+				State = 51;
 				expression();
 				}
-				State = 48;
+				State = 52;
 				Match(T__0);
 				}
 				break;
@@ -370,17 +388,17 @@ public partial class KermitLangParser : Parser {
 				_localctx = new PrintContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 50;
+				State = 54;
 				Match(PRINT);
-				State = 51;
+				State = 55;
 				Match(L_PAR);
 				{
-				State = 52;
+				State = 56;
 				expression();
 				}
-				State = 53;
+				State = 57;
 				Match(P_PAR);
-				State = 54;
+				State = 58;
 				Match(T__0);
 				}
 				break;
@@ -388,15 +406,15 @@ public partial class KermitLangParser : Parser {
 				_localctx = new ReadContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 56;
-				Match(READ);
-				State = 57;
-				Match(L_PAR);
-				State = 58;
-				Match(ID);
-				State = 59;
-				Match(P_PAR);
 				State = 60;
+				Match(READ);
+				State = 61;
+				Match(L_PAR);
+				State = 62;
+				Match(ID);
+				State = 63;
+				Match(P_PAR);
+				State = 64;
 				Match(T__0);
 				}
 				break;
@@ -404,9 +422,9 @@ public partial class KermitLangParser : Parser {
 				_localctx = new IfBlockContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 61;
+				State = 65;
 				if_statement();
-				State = 62;
+				State = 66;
 				Match(T__0);
 				}
 				break;
@@ -414,9 +432,19 @@ public partial class KermitLangParser : Parser {
 				_localctx = new WhileBlockContext(_localctx);
 				EnterOuterAlt(_localctx, 6);
 				{
-				State = 64;
+				State = 68;
 				while_statement();
-				State = 65;
+				State = 69;
+				Match(T__0);
+				}
+				break;
+			case STRUCT:
+				_localctx = new StructDefinitionContext(_localctx);
+				EnterOuterAlt(_localctx, 7);
+				{
+				State = 71;
+				struct_definition();
+				State = 72;
 				Match(T__0);
 				}
 				break;
@@ -469,9 +497,9 @@ public partial class KermitLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 69;
+			State = 76;
 			_la = TokenStream.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 25360384L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 50526208L) != 0)) ) {
 			ErrorHandler.RecoverInline(this);
 			}
 			else {
@@ -565,18 +593,18 @@ public partial class KermitLangParser : Parser {
 		ExpressionContext _localctx = new ExpressionContext(Context, State);
 		EnterRule(_localctx, 8, RULE_expression);
 		try {
-			State = 80;
+			State = 87;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,2,Context) ) {
 			case 1:
 				_localctx = new ExpressionBaseAddContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 71;
+				State = 78;
 				expression1();
-				State = 72;
+				State = 79;
 				Match(ADD);
-				State = 73;
+				State = 80;
 				expression();
 				}
 				break;
@@ -584,11 +612,11 @@ public partial class KermitLangParser : Parser {
 				_localctx = new ExpressionBaseSubContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 75;
+				State = 82;
 				expression1();
-				State = 76;
+				State = 83;
 				Match(SUB);
-				State = 77;
+				State = 84;
 				expression();
 				}
 				break;
@@ -596,7 +624,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new Expression1EmptyContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 79;
+				State = 86;
 				expression1();
 				}
 				break;
@@ -687,18 +715,18 @@ public partial class KermitLangParser : Parser {
 		Expression1Context _localctx = new Expression1Context(Context, State);
 		EnterRule(_localctx, 10, RULE_expression1);
 		try {
-			State = 91;
+			State = 98;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,3,Context) ) {
 			case 1:
 				_localctx = new ExpressionBaseMulContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 82;
+				State = 89;
 				expression2();
-				State = 83;
+				State = 90;
 				Match(MUL);
-				State = 84;
+				State = 91;
 				expression1();
 				}
 				break;
@@ -706,11 +734,11 @@ public partial class KermitLangParser : Parser {
 				_localctx = new ExpressionBaseDivContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 86;
+				State = 93;
 				expression2();
-				State = 87;
+				State = 94;
 				Match(DIV);
-				State = 88;
+				State = 95;
 				expression1();
 				}
 				break;
@@ -718,7 +746,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new Expression2EmptyContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 90;
+				State = 97;
 				expression2();
 				}
 				break;
@@ -845,18 +873,18 @@ public partial class KermitLangParser : Parser {
 		Expression2Context _localctx = new Expression2Context(Context, State);
 		EnterRule(_localctx, 12, RULE_expression2);
 		try {
-			State = 110;
+			State = 117;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,4,Context) ) {
 			case 1:
 				_localctx = new AndContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 93;
+				State = 100;
 				expression3();
-				State = 94;
+				State = 101;
 				Match(T__2);
-				State = 95;
+				State = 102;
 				expression2();
 				}
 				break;
@@ -864,11 +892,11 @@ public partial class KermitLangParser : Parser {
 				_localctx = new OrContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 97;
+				State = 104;
 				expression3();
-				State = 98;
+				State = 105;
 				Match(T__3);
-				State = 99;
+				State = 106;
 				expression2();
 				}
 				break;
@@ -876,11 +904,11 @@ public partial class KermitLangParser : Parser {
 				_localctx = new XorContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 101;
+				State = 108;
 				expression3();
-				State = 102;
+				State = 109;
 				Match(T__4);
-				State = 103;
+				State = 110;
 				expression2();
 				}
 				break;
@@ -888,11 +916,11 @@ public partial class KermitLangParser : Parser {
 				_localctx = new NegContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 105;
+				State = 112;
 				expression3();
-				State = 106;
+				State = 113;
 				Match(T__5);
-				State = 107;
+				State = 114;
 				expression2();
 				}
 				break;
@@ -900,7 +928,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new Expression4EmptyContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 109;
+				State = 116;
 				expression3();
 				}
 				break;
@@ -1009,14 +1037,14 @@ public partial class KermitLangParser : Parser {
 		Expression3Context _localctx = new Expression3Context(Context, State);
 		EnterRule(_localctx, 14, RULE_expression3);
 		try {
-			State = 120;
+			State = 127;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case ID:
 				_localctx = new IdContext(_localctx);
 				EnterOuterAlt(_localctx, 1);
 				{
-				State = 112;
+				State = 119;
 				Match(ID);
 				}
 				break;
@@ -1024,7 +1052,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new BoolContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 113;
+				State = 120;
 				Match(BOOL);
 				}
 				break;
@@ -1032,7 +1060,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new NumberContext(_localctx);
 				EnterOuterAlt(_localctx, 3);
 				{
-				State = 114;
+				State = 121;
 				Match(NUMBER);
 				}
 				break;
@@ -1040,7 +1068,7 @@ public partial class KermitLangParser : Parser {
 				_localctx = new StringContext(_localctx);
 				EnterOuterAlt(_localctx, 4);
 				{
-				State = 115;
+				State = 122;
 				Match(STRING);
 				}
 				break;
@@ -1048,11 +1076,11 @@ public partial class KermitLangParser : Parser {
 				_localctx = new ExpressionInParensContext(_localctx);
 				EnterOuterAlt(_localctx, 5);
 				{
-				State = 116;
+				State = 123;
 				Match(L_PAR);
-				State = 117;
+				State = 124;
 				expression();
-				State = 118;
+				State = 125;
 				Match(P_PAR);
 				}
 				break;
@@ -1120,54 +1148,54 @@ public partial class KermitLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 122;
+			State = 129;
 			Match(IF);
-			State = 123;
+			State = 130;
 			Match(L_PAR);
-			State = 127;
+			State = 134;
 			ErrorHandler.Sync(this);
 			switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
 			case 1:
 				{
-				State = 124;
+				State = 131;
 				Match(ID);
 				}
 				break;
 			case 2:
 				{
-				State = 125;
+				State = 132;
 				Match(BOOL);
 				}
 				break;
 			case 3:
 				{
 				{
-				State = 126;
+				State = 133;
 				expression2();
 				}
 				}
 				break;
 			}
-			State = 129;
+			State = 136;
 			Match(P_PAR);
-			State = 130;
+			State = 137;
 			Match(L_CURL);
-			State = 131;
-			statement_block();
-			State = 132;
-			Match(P_CURL);
 			State = 138;
+			statement_block();
+			State = 139;
+			Match(P_CURL);
+			State = 145;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			if (_la==ELSE) {
 				{
-				State = 133;
+				State = 140;
 				Match(ELSE);
-				State = 134;
+				State = 141;
 				Match(L_CURL);
-				State = 135;
+				State = 142;
 				statement_block();
-				State = 136;
+				State = 143;
 				Match(P_CURL);
 				}
 			}
@@ -1230,21 +1258,21 @@ public partial class KermitLangParser : Parser {
 			_localctx = new WhileLoopContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 140;
+			State = 147;
 			Match(WHILE);
-			State = 141;
+			State = 148;
 			Match(L_PAR);
 			{
-			State = 142;
+			State = 149;
 			expression();
 			}
-			State = 143;
+			State = 150;
 			Match(P_PAR);
-			State = 144;
+			State = 151;
 			Match(L_CURL);
-			State = 145;
+			State = 152;
 			statement_block();
-			State = 146;
+			State = 153;
 			Match(P_CURL);
 			}
 		}
@@ -1307,21 +1335,21 @@ public partial class KermitLangParser : Parser {
 			_localctx = new FunctionDefContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 148;
-			type();
-			State = 149;
-			Match(ID);
-			State = 150;
-			Match(L_PAR);
-			State = 151;
-			parameter_list();
-			State = 152;
-			Match(P_PAR);
-			State = 153;
-			Match(L_CURL);
-			State = 154;
-			statement_block();
 			State = 155;
+			type();
+			State = 156;
+			Match(ID);
+			State = 157;
+			Match(L_PAR);
+			State = 158;
+			parameter_list();
+			State = 159;
+			Match(P_PAR);
+			State = 160;
+			Match(L_CURL);
+			State = 161;
+			statement_block();
+			State = 162;
 			Match(P_CURL);
 			}
 		}
@@ -1387,7 +1415,7 @@ public partial class KermitLangParser : Parser {
 		EnterRule(_localctx, 22, RULE_parameter_list);
 		int _la;
 		try {
-			State = 166;
+			State = 173;
 			ErrorHandler.Sync(this);
 			switch (TokenStream.LA(1)) {
 			case P_PAR:
@@ -1407,21 +1435,21 @@ public partial class KermitLangParser : Parser {
 				_localctx = new ParameterListContext(_localctx);
 				EnterOuterAlt(_localctx, 2);
 				{
-				State = 158;
+				State = 165;
 				parameter();
-				State = 163;
+				State = 170;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				while (_la==T__6) {
 					{
 					{
-					State = 159;
+					State = 166;
 					Match(T__6);
-					State = 160;
+					State = 167;
 					parameter();
 					}
 					}
-					State = 165;
+					State = 172;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 				}
@@ -1480,9 +1508,9 @@ public partial class KermitLangParser : Parser {
 			_localctx = new ParameterDeclareContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 168;
+			State = 175;
 			type();
-			State = 169;
+			State = 176;
 			Match(ID);
 			}
 		}
@@ -1538,21 +1566,21 @@ public partial class KermitLangParser : Parser {
 			_localctx = new FunctionInvokeContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 171;
+			State = 178;
 			Match(ID);
-			State = 172;
+			State = 179;
 			Match(L_PAR);
-			State = 174;
+			State = 181;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1107298048L) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2214594304L) != 0)) {
 				{
-				State = 173;
+				State = 180;
 				argument_list();
 				}
 			}
 
-			State = 176;
+			State = 183;
 			Match(P_PAR);
 			}
 		}
@@ -1608,21 +1636,21 @@ public partial class KermitLangParser : Parser {
 			_localctx = new ArgumentListContext(_localctx);
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 178;
+			State = 185;
 			expression();
-			State = 183;
+			State = 190;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
 			while (_la==T__6) {
 				{
 				{
-				State = 179;
+				State = 186;
 				Match(T__6);
-				State = 180;
+				State = 187;
 				expression();
 				}
 				}
-				State = 185;
+				State = 192;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
@@ -1673,23 +1701,23 @@ public partial class KermitLangParser : Parser {
 		try {
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 186;
+			State = 193;
 			Match(L_CURL);
-			State = 190;
+			State = 197;
 			ErrorHandler.Sync(this);
 			_la = TokenStream.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 64944128L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 132052992L) != 0)) {
 				{
 				{
-				State = 187;
+				State = 194;
 				base_statement();
 				}
 				}
-				State = 192;
+				State = 199;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 			}
-			State = 193;
+			State = 200;
 			Match(P_CURL);
 			}
 		}
@@ -1704,67 +1732,223 @@ public partial class KermitLangParser : Parser {
 		return _localctx;
 	}
 
+	public partial class Struct_definitionContext : ParserRuleContext {
+		public Struct_definitionContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_struct_definition; } }
+	 
+		public Struct_definitionContext() { }
+		public virtual void CopyFrom(Struct_definitionContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class StructDefContext : Struct_definitionContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode STRUCT() { return GetToken(KermitLangParser.STRUCT, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(KermitLangParser.ID, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode L_CURL() { return GetToken(KermitLangParser.L_CURL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode P_CURL() { return GetToken(KermitLangParser.P_CURL, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public Struct_bodyContext struct_body() {
+			return GetRuleContext<Struct_bodyContext>(0);
+		}
+		public StructDefContext(Struct_definitionContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IKermitLangListener typedListener = listener as IKermitLangListener;
+			if (typedListener != null) typedListener.EnterStructDef(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IKermitLangListener typedListener = listener as IKermitLangListener;
+			if (typedListener != null) typedListener.ExitStructDef(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Struct_definitionContext struct_definition() {
+		Struct_definitionContext _localctx = new Struct_definitionContext(Context, State);
+		EnterRule(_localctx, 32, RULE_struct_definition);
+		try {
+			_localctx = new StructDefContext(_localctx);
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 202;
+			Match(STRUCT);
+			State = 203;
+			Match(ID);
+			State = 204;
+			Match(L_CURL);
+			{
+			State = 205;
+			struct_body();
+			}
+			State = 206;
+			Match(P_CURL);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class Struct_bodyContext : ParserRuleContext {
+		public Struct_bodyContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_struct_body; } }
+	 
+		public Struct_bodyContext() { }
+		public virtual void CopyFrom(Struct_bodyContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class StructMembersContext : Struct_bodyContext {
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext[] type() {
+			return GetRuleContexts<TypeContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public TypeContext type(int i) {
+			return GetRuleContext<TypeContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode[] ID() { return GetTokens(KermitLangParser.ID); }
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID(int i) {
+			return GetToken(KermitLangParser.ID, i);
+		}
+		public StructMembersContext(Struct_bodyContext context) { CopyFrom(context); }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			IKermitLangListener typedListener = listener as IKermitLangListener;
+			if (typedListener != null) typedListener.EnterStructMembers(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			IKermitLangListener typedListener = listener as IKermitLangListener;
+			if (typedListener != null) typedListener.ExitStructMembers(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public Struct_bodyContext struct_body() {
+		Struct_bodyContext _localctx = new Struct_bodyContext(Context, State);
+		EnterRule(_localctx, 34, RULE_struct_body);
+		int _la;
+		try {
+			_localctx = new StructMembersContext(_localctx);
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 208;
+			type();
+			State = 209;
+			Match(ID);
+			State = 210;
+			Match(T__0);
+			State = 217;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 50526208L) != 0)) {
+				{
+				{
+				State = 211;
+				type();
+				State = 212;
+				Match(ID);
+				State = 213;
+				Match(T__0);
+				}
+				}
+				State = 219;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
 	private static int[] _serializedATN = {
-		4,1,35,196,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,36,221,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
-		2,15,7,15,1,0,5,0,34,8,0,10,0,12,0,37,9,0,1,1,1,1,1,2,1,2,1,2,1,2,1,2,
+		2,15,7,15,2,16,7,16,2,17,7,17,1,0,5,0,38,8,0,10,0,12,0,41,9,0,1,1,1,1,
 		1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
-		2,1,2,1,2,1,2,1,2,3,2,68,8,2,1,3,1,3,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,
-		4,3,4,81,8,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,3,5,92,8,5,1,6,1,6,1,
-		6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,3,6,111,8,6,
-		1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,121,8,7,1,8,1,8,1,8,1,8,1,8,3,8,128,
-		8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,3,8,139,8,8,1,9,1,9,1,9,1,9,1,
-		9,1,9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,11,1,11,1,
-		11,1,11,5,11,162,8,11,10,11,12,11,165,9,11,3,11,167,8,11,1,12,1,12,1,12,
-		1,13,1,13,1,13,3,13,175,8,13,1,13,1,13,1,14,1,14,1,14,5,14,182,8,14,10,
-		14,12,14,185,9,14,1,15,1,15,5,15,189,8,15,10,15,12,15,192,9,15,1,15,1,
-		15,1,15,0,0,16,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,1,3,0,11,15,
-		17,17,23,24,205,0,35,1,0,0,0,2,38,1,0,0,0,4,67,1,0,0,0,6,69,1,0,0,0,8,
-		80,1,0,0,0,10,91,1,0,0,0,12,110,1,0,0,0,14,120,1,0,0,0,16,122,1,0,0,0,
-		18,140,1,0,0,0,20,148,1,0,0,0,22,166,1,0,0,0,24,168,1,0,0,0,26,171,1,0,
-		0,0,28,178,1,0,0,0,30,186,1,0,0,0,32,34,3,2,1,0,33,32,1,0,0,0,34,37,1,
-		0,0,0,35,33,1,0,0,0,35,36,1,0,0,0,36,1,1,0,0,0,37,35,1,0,0,0,38,39,3,4,
-		2,0,39,3,1,0,0,0,40,41,3,6,3,0,41,42,5,25,0,0,42,43,3,8,4,0,43,44,5,1,
-		0,0,44,68,1,0,0,0,45,46,5,25,0,0,46,47,5,2,0,0,47,48,3,8,4,0,48,49,5,1,
-		0,0,49,68,1,0,0,0,50,51,5,18,0,0,51,52,5,30,0,0,52,53,3,8,4,0,53,54,5,
-		31,0,0,54,55,5,1,0,0,55,68,1,0,0,0,56,57,5,19,0,0,57,58,5,30,0,0,58,59,
-		5,25,0,0,59,60,5,31,0,0,60,68,5,1,0,0,61,62,3,16,8,0,62,63,5,1,0,0,63,
-		68,1,0,0,0,64,65,3,18,9,0,65,66,5,1,0,0,66,68,1,0,0,0,67,40,1,0,0,0,67,
-		45,1,0,0,0,67,50,1,0,0,0,67,56,1,0,0,0,67,61,1,0,0,0,67,64,1,0,0,0,68,
-		5,1,0,0,0,69,70,7,0,0,0,70,7,1,0,0,0,71,72,3,10,5,0,72,73,5,26,0,0,73,
-		74,3,8,4,0,74,81,1,0,0,0,75,76,3,10,5,0,76,77,5,27,0,0,77,78,3,8,4,0,78,
-		81,1,0,0,0,79,81,3,10,5,0,80,71,1,0,0,0,80,75,1,0,0,0,80,79,1,0,0,0,81,
-		9,1,0,0,0,82,83,3,12,6,0,83,84,5,28,0,0,84,85,3,10,5,0,85,92,1,0,0,0,86,
-		87,3,12,6,0,87,88,5,29,0,0,88,89,3,10,5,0,89,92,1,0,0,0,90,92,3,12,6,0,
-		91,82,1,0,0,0,91,86,1,0,0,0,91,90,1,0,0,0,92,11,1,0,0,0,93,94,3,14,7,0,
-		94,95,5,3,0,0,95,96,3,12,6,0,96,111,1,0,0,0,97,98,3,14,7,0,98,99,5,4,0,
-		0,99,100,3,12,6,0,100,111,1,0,0,0,101,102,3,14,7,0,102,103,5,5,0,0,103,
-		104,3,12,6,0,104,111,1,0,0,0,105,106,3,14,7,0,106,107,5,6,0,0,107,108,
-		3,12,6,0,108,111,1,0,0,0,109,111,3,14,7,0,110,93,1,0,0,0,110,97,1,0,0,
-		0,110,101,1,0,0,0,110,105,1,0,0,0,110,109,1,0,0,0,111,13,1,0,0,0,112,121,
-		5,25,0,0,113,121,5,9,0,0,114,121,5,8,0,0,115,121,5,10,0,0,116,117,5,30,
-		0,0,117,118,3,8,4,0,118,119,5,31,0,0,119,121,1,0,0,0,120,112,1,0,0,0,120,
-		113,1,0,0,0,120,114,1,0,0,0,120,115,1,0,0,0,120,116,1,0,0,0,121,15,1,0,
-		0,0,122,123,5,20,0,0,123,127,5,30,0,0,124,128,5,25,0,0,125,128,5,9,0,0,
-		126,128,3,12,6,0,127,124,1,0,0,0,127,125,1,0,0,0,127,126,1,0,0,0,128,129,
-		1,0,0,0,129,130,5,31,0,0,130,131,5,32,0,0,131,132,3,30,15,0,132,138,5,
-		33,0,0,133,134,5,21,0,0,134,135,5,32,0,0,135,136,3,30,15,0,136,137,5,33,
-		0,0,137,139,1,0,0,0,138,133,1,0,0,0,138,139,1,0,0,0,139,17,1,0,0,0,140,
-		141,5,22,0,0,141,142,5,30,0,0,142,143,3,8,4,0,143,144,5,31,0,0,144,145,
-		5,32,0,0,145,146,3,30,15,0,146,147,5,33,0,0,147,19,1,0,0,0,148,149,3,6,
-		3,0,149,150,5,25,0,0,150,151,5,30,0,0,151,152,3,22,11,0,152,153,5,31,0,
-		0,153,154,5,32,0,0,154,155,3,30,15,0,155,156,5,33,0,0,156,21,1,0,0,0,157,
-		167,1,0,0,0,158,163,3,24,12,0,159,160,5,7,0,0,160,162,3,24,12,0,161,159,
-		1,0,0,0,162,165,1,0,0,0,163,161,1,0,0,0,163,164,1,0,0,0,164,167,1,0,0,
-		0,165,163,1,0,0,0,166,157,1,0,0,0,166,158,1,0,0,0,167,23,1,0,0,0,168,169,
-		3,6,3,0,169,170,5,25,0,0,170,25,1,0,0,0,171,172,5,25,0,0,172,174,5,30,
-		0,0,173,175,3,28,14,0,174,173,1,0,0,0,174,175,1,0,0,0,175,176,1,0,0,0,
-		176,177,5,31,0,0,177,27,1,0,0,0,178,183,3,8,4,0,179,180,5,7,0,0,180,182,
-		3,8,4,0,181,179,1,0,0,0,182,185,1,0,0,0,183,181,1,0,0,0,183,184,1,0,0,
-		0,184,29,1,0,0,0,185,183,1,0,0,0,186,190,5,32,0,0,187,189,3,2,1,0,188,
-		187,1,0,0,0,189,192,1,0,0,0,190,188,1,0,0,0,190,191,1,0,0,0,191,193,1,
-		0,0,0,192,190,1,0,0,0,193,194,5,33,0,0,194,31,1,0,0,0,13,35,67,80,91,110,
-		120,127,138,163,166,174,183,190
+		2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,75,8,2,1,3,1,3,1,
+		4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,3,4,88,8,4,1,5,1,5,1,5,1,5,1,5,1,5,1,
+		5,1,5,1,5,3,5,99,8,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,
+		6,1,6,1,6,1,6,1,6,3,6,118,8,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,128,
+		8,7,1,8,1,8,1,8,1,8,1,8,3,8,135,8,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,8,1,
+		8,3,8,146,8,8,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,
+		1,10,1,10,1,10,1,10,1,11,1,11,1,11,1,11,5,11,169,8,11,10,11,12,11,172,
+		9,11,3,11,174,8,11,1,12,1,12,1,12,1,13,1,13,1,13,3,13,182,8,13,1,13,1,
+		13,1,14,1,14,1,14,5,14,189,8,14,10,14,12,14,192,9,14,1,15,1,15,5,15,196,
+		8,15,10,15,12,15,199,9,15,1,15,1,15,1,16,1,16,1,16,1,16,1,16,1,16,1,17,
+		1,17,1,17,1,17,1,17,1,17,1,17,5,17,216,8,17,10,17,12,17,219,9,17,1,17,
+		0,0,18,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,0,1,3,0,11,15,
+		17,17,24,25,230,0,39,1,0,0,0,2,42,1,0,0,0,4,74,1,0,0,0,6,76,1,0,0,0,8,
+		87,1,0,0,0,10,98,1,0,0,0,12,117,1,0,0,0,14,127,1,0,0,0,16,129,1,0,0,0,
+		18,147,1,0,0,0,20,155,1,0,0,0,22,173,1,0,0,0,24,175,1,0,0,0,26,178,1,0,
+		0,0,28,185,1,0,0,0,30,193,1,0,0,0,32,202,1,0,0,0,34,208,1,0,0,0,36,38,
+		3,2,1,0,37,36,1,0,0,0,38,41,1,0,0,0,39,37,1,0,0,0,39,40,1,0,0,0,40,1,1,
+		0,0,0,41,39,1,0,0,0,42,43,3,4,2,0,43,3,1,0,0,0,44,45,3,6,3,0,45,46,5,26,
+		0,0,46,47,3,8,4,0,47,48,5,1,0,0,48,75,1,0,0,0,49,50,5,26,0,0,50,51,5,2,
+		0,0,51,52,3,8,4,0,52,53,5,1,0,0,53,75,1,0,0,0,54,55,5,18,0,0,55,56,5,31,
+		0,0,56,57,3,8,4,0,57,58,5,32,0,0,58,59,5,1,0,0,59,75,1,0,0,0,60,61,5,19,
+		0,0,61,62,5,31,0,0,62,63,5,26,0,0,63,64,5,32,0,0,64,75,5,1,0,0,65,66,3,
+		16,8,0,66,67,5,1,0,0,67,75,1,0,0,0,68,69,3,18,9,0,69,70,5,1,0,0,70,75,
+		1,0,0,0,71,72,3,32,16,0,72,73,5,1,0,0,73,75,1,0,0,0,74,44,1,0,0,0,74,49,
+		1,0,0,0,74,54,1,0,0,0,74,60,1,0,0,0,74,65,1,0,0,0,74,68,1,0,0,0,74,71,
+		1,0,0,0,75,5,1,0,0,0,76,77,7,0,0,0,77,7,1,0,0,0,78,79,3,10,5,0,79,80,5,
+		27,0,0,80,81,3,8,4,0,81,88,1,0,0,0,82,83,3,10,5,0,83,84,5,28,0,0,84,85,
+		3,8,4,0,85,88,1,0,0,0,86,88,3,10,5,0,87,78,1,0,0,0,87,82,1,0,0,0,87,86,
+		1,0,0,0,88,9,1,0,0,0,89,90,3,12,6,0,90,91,5,29,0,0,91,92,3,10,5,0,92,99,
+		1,0,0,0,93,94,3,12,6,0,94,95,5,30,0,0,95,96,3,10,5,0,96,99,1,0,0,0,97,
+		99,3,12,6,0,98,89,1,0,0,0,98,93,1,0,0,0,98,97,1,0,0,0,99,11,1,0,0,0,100,
+		101,3,14,7,0,101,102,5,3,0,0,102,103,3,12,6,0,103,118,1,0,0,0,104,105,
+		3,14,7,0,105,106,5,4,0,0,106,107,3,12,6,0,107,118,1,0,0,0,108,109,3,14,
+		7,0,109,110,5,5,0,0,110,111,3,12,6,0,111,118,1,0,0,0,112,113,3,14,7,0,
+		113,114,5,6,0,0,114,115,3,12,6,0,115,118,1,0,0,0,116,118,3,14,7,0,117,
+		100,1,0,0,0,117,104,1,0,0,0,117,108,1,0,0,0,117,112,1,0,0,0,117,116,1,
+		0,0,0,118,13,1,0,0,0,119,128,5,26,0,0,120,128,5,9,0,0,121,128,5,8,0,0,
+		122,128,5,10,0,0,123,124,5,31,0,0,124,125,3,8,4,0,125,126,5,32,0,0,126,
+		128,1,0,0,0,127,119,1,0,0,0,127,120,1,0,0,0,127,121,1,0,0,0,127,122,1,
+		0,0,0,127,123,1,0,0,0,128,15,1,0,0,0,129,130,5,20,0,0,130,134,5,31,0,0,
+		131,135,5,26,0,0,132,135,5,9,0,0,133,135,3,12,6,0,134,131,1,0,0,0,134,
+		132,1,0,0,0,134,133,1,0,0,0,135,136,1,0,0,0,136,137,5,32,0,0,137,138,5,
+		33,0,0,138,139,3,30,15,0,139,145,5,34,0,0,140,141,5,21,0,0,141,142,5,33,
+		0,0,142,143,3,30,15,0,143,144,5,34,0,0,144,146,1,0,0,0,145,140,1,0,0,0,
+		145,146,1,0,0,0,146,17,1,0,0,0,147,148,5,22,0,0,148,149,5,31,0,0,149,150,
+		3,8,4,0,150,151,5,32,0,0,151,152,5,33,0,0,152,153,3,30,15,0,153,154,5,
+		34,0,0,154,19,1,0,0,0,155,156,3,6,3,0,156,157,5,26,0,0,157,158,5,31,0,
+		0,158,159,3,22,11,0,159,160,5,32,0,0,160,161,5,33,0,0,161,162,3,30,15,
+		0,162,163,5,34,0,0,163,21,1,0,0,0,164,174,1,0,0,0,165,170,3,24,12,0,166,
+		167,5,7,0,0,167,169,3,24,12,0,168,166,1,0,0,0,169,172,1,0,0,0,170,168,
+		1,0,0,0,170,171,1,0,0,0,171,174,1,0,0,0,172,170,1,0,0,0,173,164,1,0,0,
+		0,173,165,1,0,0,0,174,23,1,0,0,0,175,176,3,6,3,0,176,177,5,26,0,0,177,
+		25,1,0,0,0,178,179,5,26,0,0,179,181,5,31,0,0,180,182,3,28,14,0,181,180,
+		1,0,0,0,181,182,1,0,0,0,182,183,1,0,0,0,183,184,5,32,0,0,184,27,1,0,0,
+		0,185,190,3,8,4,0,186,187,5,7,0,0,187,189,3,8,4,0,188,186,1,0,0,0,189,
+		192,1,0,0,0,190,188,1,0,0,0,190,191,1,0,0,0,191,29,1,0,0,0,192,190,1,0,
+		0,0,193,197,5,33,0,0,194,196,3,2,1,0,195,194,1,0,0,0,196,199,1,0,0,0,197,
+		195,1,0,0,0,197,198,1,0,0,0,198,200,1,0,0,0,199,197,1,0,0,0,200,201,5,
+		34,0,0,201,31,1,0,0,0,202,203,5,23,0,0,203,204,5,26,0,0,204,205,5,33,0,
+		0,205,206,3,34,17,0,206,207,5,34,0,0,207,33,1,0,0,0,208,209,3,6,3,0,209,
+		210,5,26,0,0,210,217,5,1,0,0,211,212,3,6,3,0,212,213,5,26,0,0,213,214,
+		5,1,0,0,214,216,1,0,0,0,215,211,1,0,0,0,216,219,1,0,0,0,217,215,1,0,0,
+		0,217,218,1,0,0,0,218,35,1,0,0,0,219,217,1,0,0,0,14,39,74,87,98,117,127,
+		134,145,170,173,181,190,197,217
 	};
 
 	public static readonly ATN _ATN =

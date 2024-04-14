@@ -10,7 +10,8 @@ statement:
 	| PRINT L_PAR (expression) P_PAR ';'	# print
 	| READ L_PAR ID P_PAR ';'				# read
 	| if_statement ';'						# ifBlock
-	| while_statement ';'					# whileBlock;
+	| while_statement ';'					# whileBlock
+	| struct_definition ';'					# structDefinition;
 
 type:
 	INTEGER_NAME
@@ -66,6 +67,11 @@ argument_list: expression (',' expression)* # argumentList;
 
 statement_block: L_CURL base_statement* P_CURL;
 
+struct_definition:
+	'struct' ID L_CURL (struct_body) P_CURL # structDef;
+
+struct_body: type ID ';' (type ID ';')* # structMembers;
+
 NUMBER: ('0' ..'9')+ ('.' ('0' ..'9')+)?;
 
 BOOL: ('true' | 'false');
@@ -86,6 +92,7 @@ READ: 'read';
 IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
+STRUCT: 'struct';
 
 STRING_NAME: 'STRING'; // Marked for string type handling
 
