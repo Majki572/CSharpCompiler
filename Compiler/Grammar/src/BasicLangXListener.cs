@@ -49,6 +49,19 @@ public class BasicLangXListener : KermitLangBaseListener
         }
         return null; // handle undeclared variable error
     }
+
+    private void UpdateVariable(string name, Variable newValue)
+    {
+        foreach (var scope in _scopedVariables.Reverse())
+        {
+            if (scope.ContainsKey(name))
+            {
+                scope[name] = newValue;
+                break;
+            }
+        }
+    }
+
     #endregion
     public virtual void ExitStart([NotNull] KermitLangParser.StartContext context) { }
     public virtual void ExitBase_statement([NotNull] KermitLangParser.Base_statementContext context) { }
@@ -448,7 +461,32 @@ public class BasicLangXListener : KermitLangBaseListener
             Generator.ReadString(variable.Id);
         }
     }
-    void ExitIfBlock([NotNull] KermitLangParser.IfBlockContext context) { }
+
+    public override void EnterIfStatement([NotNull] KermitLangParser.IfStatementContext context)
+    {
+        try
+        {
+            var id = context.ID().GetText();
+            var variable = _stack.Pop();
+            var isValid = true;
+            if (!_scopedVariables.Peek().ContainsKey(id) && id != "")
+            {
+                AddError(context.Start.Line, $"Variable {id} is not declared in this scope.");
+                isValid = false;
+            }
+
+            // if ()
+            // {
+
+            // }
+        }
+        catch (Exception e)
+        {
+
+        }
+    }
+
+    public override void ExitIfStatement([NotNull] KermitLangParser.IfStatementContext context) { }
     void ExitWhileBlock([NotNull] KermitLangParser.WhileBlockContext context) { }
     void ExitStructDefinition([NotNull] KermitLangParser.StructDefinitionContext context) { }
     void ExitType([NotNull] KermitLangParser.TypeContext context) { }
@@ -1203,7 +1241,6 @@ public class BasicLangXListener : KermitLangBaseListener
 
         if (!_scopedVariables.Peek().ContainsKey(id) && id != "")
         {
-            Console.WriteLine(id);
             AddError(context.Start.Line, $"Variable {id} is not declared in this scope.");
             isValid = false;
         }

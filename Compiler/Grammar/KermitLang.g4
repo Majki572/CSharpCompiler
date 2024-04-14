@@ -11,7 +11,8 @@ statement:
 	| READ L_PAR ID P_PAR ';'				# read
 	| if_statement ';'						# ifBlock
 	| while_statement ';'					# whileBlock
-	| struct_definition ';'					# structDefinition;
+	| function_definition ';'				# functionBlock
+	| struct_definition ';'					# structBlock;
 
 type:
 	INTEGER_NAME
@@ -42,12 +43,11 @@ expression3:
 	| BOOL						# bool
 	| NUMBER					# number
 	| STRING					# string
-	| L_PAR expression P_PAR	# expressionInParens;
+	| L_PAR expression P_PAR	# expressionInParens
+	| function_call				# functionCall;
 
 if_statement:
-	IF L_PAR (ID | BOOL | (expression2)) P_PAR L_CURL statement_block P_CURL (
-		ELSE L_CURL statement_block P_CURL
-	)?;
+	IF L_PAR (ID | BOOL) P_PAR L_CURL statement_block P_CURL # ifStatement;
 
 while_statement:
 	WHILE L_PAR (expression) P_PAR L_CURL statement_block P_CURL # whileLoop;

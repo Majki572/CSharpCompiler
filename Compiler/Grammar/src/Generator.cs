@@ -7,6 +7,10 @@ public class Generator
     public static string HeaderText = "";
     public static string MainText = "";
     public static int Reg = 1;
+    public static int Reg2 = 2;
+    public static int Buff = 0;
+    public static string Buffer = "";
+    public static Stack<int> BrStack = new Stack<int>();
 
     public static String Generate()
     {
@@ -16,12 +20,12 @@ public class Generator
         text += "declare noalias i8* @malloc(i64 noundef)\n";
         text += "declare i8* @strcpy(i8* noundef, i8* noundef)\n";
         text += "declare i8* @strcat(i8* noundef, i8* noundef)\n";
-        
+
         text += "@strpd = constant [4 x i8] c\"%d\\0A\\00\"\n";
         text += "@strplld = constant [6 x i8] c\"%lld\\0A\\00\"\n";
         text += "@strpf = constant [4 x i8] c\"%f\\0A\\00\"\n";
         text += "@strplf = constant [5 x i8] c\"%lf\\0A\\00\"\n";
-        
+
         text += "@strshd = constant [4 x i8] c\"%hd\\00\"\n";
         text += "@strsd = constant [3 x i8] c\"%d\\00\"\n";
         text += "@strslld = constant [5 x i8] c\"%lld\\00\"\n";
@@ -52,22 +56,22 @@ public class Generator
     {
         MainText += "%" + id + " = alloca i16\n";
     }
-    
+
     public static void AllocateInteger(String id)
     {
         MainText += "%" + id + " = alloca i32\n";
     }
-    
+
     public static void AllocateLong(String id)
     {
         MainText += "%" + id + " = alloca i64\n";
     }
-    
+
     public static void AllocateFloat(String id)
     {
         MainText += "%" + id + " = alloca float\n";
     }
-    
+
     public static void AllocateDouble(String id)
     {
         MainText += "%" + id + " = alloca double\n";
@@ -121,9 +125,9 @@ public class Generator
     }
     public static void AssignShort32(String id)
     {
-        MainText += $"%{Reg} = trunc i32 %{Reg-1} to i16\n";
+        MainText += $"%{Reg} = trunc i32 %{Reg - 1} to i16\n";
         Reg++;
-        MainText += "store i16 %" + (Reg-1) + ", i16* " + id + "\n";
+        MainText += "store i16 %" + (Reg - 1) + ", i16* " + id + "\n";
     }
     public static void AssignInteger(String id, String value)
     {
@@ -205,7 +209,7 @@ public class Generator
                     " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 " +
                     (id) + ")\n";
         Reg++;
-    } 
+    }
     public static void PrintLong(String id)
     {
         MainText += "%" + Reg +
@@ -326,12 +330,12 @@ public class Generator
         MainText += "%" + Reg + " = fadd double " + value1 + ", " + value2 + "\n";
         Reg++;
     }
-    
+
     public static void AddStrings(String value1, StringVariable variable1, String value2, StringVariable variable2)
     {
         AllocateString($"{Reg}");
         Reg++;
-        MallocStringSize($"{Reg-1}", (variable1.Length + variable2.Length + 1).ToString());
+        MallocStringSize($"{Reg - 1}", (variable1.Length + variable2.Length + 1).ToString());
         MainText += "%" + Reg + " = call i8* @strcat(i8* %" + (Reg - 1) + ", i8* " + value1 + ")\n";
         Reg++;
         MainText += "%" + Reg + " = call i8* @strcat(i8* %" + (Reg - 1) + ", i8* " + value2 + ")\n";
@@ -341,7 +345,7 @@ public class Generator
     {
         return $"getelementptr inbounds ([{variable.Length + 1} x i8], [{variable.Length + 1} x i8]* @{variable.Id}, i64 0, i64 0)";
     }
-    
+
     // Sub
     public static void SubShorts(String value1, String value2)
     {
@@ -445,4 +449,44 @@ public class Generator
         Reg++;
     }
 
+    // If
+    public static void IfStart(String conditionVariable)
+    {
+        MainText += "br i1" + conditionVariable + ", label %true" + Buff + ", label %false" + Buff + "\n";
+        MainText += "true" + Buff + ":\n";
+        var b = Buff;
+        BrStack.Push(b);
+        Buff++;
+    }
+
+    public static void IfEnd()
+    {
+        int b = BrStack.Pop();
+        MainText += "br label %false" + b + "\n";
+        MainText += "false" + b + ":\n";
+    }
+
+    // Function
+    public static void FuncStart(string id, string parameters)
+    {
+        Buffer = MainText;
+        Reg2 = Reg;
+        MainText = "define i32 @" + id + "(" + parameters + ") nounwind {\n";
+        Reg = 2;
+    }
+
+    public static void FuncEnd()
+    {
+        MainText += "ret i32 0\n";
+        MainText += "}\n";
+        HeaderText += MainText;
+        MainText = Buffer;
+        Reg = Reg2;
+    }
+
+    public static void FuncCall(String id, String parameters)
+    {
+        MainText += "%" + Reg + " = call i32 @" + id + "(" + parameters + ")\n";
+        Reg++;
+    }
 }
