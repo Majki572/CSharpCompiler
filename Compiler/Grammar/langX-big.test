@@ -5,6 +5,7 @@ int b = 8;
 
 if (a == b) {
     print(success);
+    string rzopa = "rzopa";
 }
 
 if (a != b) {
