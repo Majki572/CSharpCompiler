@@ -18,7 +18,7 @@ public class StringGenerator
     public static string AllocateStringSize(string id, int size)
     {
         var res = Generator.GetRegInc() + " = call i8* @malloc(i64 " + (size + 1) + ")\n";
-        res += "store i8* %" + (Generator.Reg - 1) + ", i8** " + id + "\n";
+        res += "store i8* " + Generator.GetReg(1) + ", i8** " + id + "\n";
         return res;
     }
     
