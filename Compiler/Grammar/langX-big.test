@@ -1,37 +1,12 @@
-string success = "SUCCESS";
-
-int a = 7;
-int b = 8;
-
-if (a == b) {
-    print(success);
-    string rzopa = "rzopa";
+int main(){
+    int d = 5;
+    print(d);
+    return d;
 }
 
-if (a != b) {
-    print(success);
-}
+int mama(int a, int b){
 
-if (a < b) {
-    print(success);
-}
-
-if (a > b) {
-    print(success);
-}
-
-if (a <= b) {
-    print(success);
-}
-
-if (a >= b) {
-    print(success);
-}
-
-int x = 0;
-int y = 9;
-
-while (x < y) {
-    print(x);
-    x = x + 1;
+    int c = 7;
+    print(c);
+    return c;
 }

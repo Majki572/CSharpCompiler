@@ -63,7 +63,7 @@ while_statement:
 while_condition: (compareStatement | BOOL | ID) # whileCondition;
 
 function_definition:
-	type ID L_PAR parameter_list P_PAR statement_block # functionDef;
+	type ID L_PAR parameter_list P_PAR statement_block_function # functionDef;
 
 parameter_list:
 									# noParameters
@@ -82,6 +82,12 @@ statement_block_if:
 
 statement_block_while:
 	L_CURL base_statement* P_CURL # whileStatementBlock;
+
+statement_block_function:
+	L_CURL base_statement* function_return_statement P_CURL # functionStatementBlock;
+
+function_return_statement:
+	RETURN (expression) ';' # functionReturnStatement;
 
 struct_definition:
 	'struct' ID L_CURL (struct_body) P_CURL # structDef;
@@ -109,6 +115,7 @@ IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
 STRUCT: 'struct';
+RETURN: 'return';
 
 STRING_NAME: 'string';
 

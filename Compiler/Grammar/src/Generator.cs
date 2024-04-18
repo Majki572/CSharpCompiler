@@ -6,10 +6,12 @@ public class Generator
 {
     public static string HeaderText = "";
     public static string MainText = "";
+    // public static string FunctionsText = "";
     public static int Reg = 1;
     public static int Reg2 = 2;
     public static int Br = 0;
     public static string Buffer = "";
+    public static bool FunctionFlag = false;
     public static Stack<int> BrStack = new Stack<int>();
 
     public static String Generate()
@@ -35,9 +37,10 @@ public class Generator
         text += "@strss = constant [3 x i8] c\"%s\\00\"\n";
         text += "@strps = constant [4 x i8] c\"%s\\0A\\00\"\n";
         text += HeaderText;
-        text += "define i32 @main() nounwind{\n";
+        // text += "define i32 @main() nounwind{\n";
+        // text += MainText;
+        // text += "ret i32 0 }\n";
         text += MainText;
-        text += "ret i32 0 }\n";
 
         var errors = BasicLangXListener.Errors;
         if (errors.Any())
@@ -488,30 +491,6 @@ public class Generator
         MainText += "whileFalse" + b + ":\n";
     }
 
-    // Function
-    public static void FuncStart(string id, string parameters)
-    {
-        Buffer = MainText;
-        Reg2 = Reg;
-        MainText = "define i32 @" + id + "(" + parameters + ") nounwind {\n";
-        Reg = 2;
-    }
-
-    public static void FuncEnd()
-    {
-        MainText += "ret i32 0\n";
-        MainText += "}\n";
-        HeaderText += MainText;
-        MainText = Buffer;
-        Reg = Reg2;
-    }
-
-    public static void FuncCall(String id, String parameters)
-    {
-        MainText += "%" + Reg + " = call i32 @" + id + "(" + parameters + ")\n";
-        Reg++;
-    }
-
     // Comparisions
 
     public static void Equal(string operation)
@@ -549,4 +528,79 @@ public class Generator
         MainText += "%" + Reg + " = " + operation + " %" + (Reg - 2) + ", %" + (Reg - 1) + "\n";
         Reg++;
     }
+
+    // Methods
+    // id should be with @id
+    public static string CallMethod(string id, VariableType? type, Variable[] parameters)
+    {
+        var call = "call " + Util.Util.MapType(type) + " " + id + "(";
+        foreach (var parameter in parameters)
+        {
+            call += Util.Util.MapType(parameter.Type) + " %" + parameter.Id + ", ";
+        }
+
+        return call.Remove(call.Length - 2) + ")";
+    }
+
+    public static void DeclareMethod(string id, VariableType? type)
+    {
+        MainText += "define " + Util.Util.MapType(type) + " @" + id + "(";
+    }
+
+    public static void DeclareMethodParameters(Variable[] parameters)
+    {
+        if (parameters == null || parameters.Length == 0)
+        {
+            MainText += ")\n {";
+        }
+        else
+        {
+            var parametersStr = "";
+            foreach (var parameter in parameters)
+            {
+                parametersStr += Util.Util.MapType(parameter.Type) + " %" + parameter.Id + ", ";
+            }
+
+            MainText += parametersStr.Remove(parametersStr.Length - 2) + ")\n {";
+        }
+    }
+
+    public static void Return(string id, VariableType? type)
+    {
+        if (type == null)
+        {
+            MainText += "ret void\n";
+        }
+
+        MainText += "ret " + Util.Util.MapType(type) + " %" + id + "\n";
+    }
+
+    public static void EndMethod()
+    {
+        MainText += "}\n";
+    }
+
+    // Function
+    // public static void FuncStart(string id, string parameters)
+    // {
+    //     Buffer = MainText;
+    //     Reg2 = Reg;
+    //     MainText = "define i32 @" + id + "(" + parameters + ") nounwind {\n";
+    //     Reg = 2;
+    // }
+
+    // public static void FuncEnd()
+    // {
+    //     MainText += "ret i32 0\n";
+    //     MainText += "}\n";
+    //     HeaderText += MainText;
+    //     MainText = Buffer;
+    //     Reg = Reg2;
+    // }
+
+    // public static void FuncCall(String id, String parameters)
+    // {
+    //     MainText += "%" + Reg + " = call i32 @" + id + "(" + parameters + ")\n";
+    //     Reg++;
+    // }
 }

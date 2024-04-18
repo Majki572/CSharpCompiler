@@ -1651,10 +1651,33 @@ public class BasicLangXListener : KermitLangBaseListener
     {
         _stack.Push(new Variable(context.NUMBER().GetText(), _currentType));
     }
-    void ExitIf_statement([NotNull] KermitLangParser.If_statementContext context) { }
-    void ExitFunctionDef([NotNull] KermitLangParser.FunctionDefContext context) { }
-    void ExitNoParameters([NotNull] KermitLangParser.NoParametersContext context) { }
-    void ExitParameterList([NotNull] KermitLangParser.ParameterListContext context) { }
+    public override void EnterFunctionDef([NotNull] KermitLangParser.FunctionDefContext context)
+    {
+        EnterScope();
+        var type = context.type().GetText();
+        var variableType = (VariableType?)Util.Util.MapType(type);
+        var id = context.ID().GetText();
+
+        Generator.DeclareMethod(id, variableType);
+    }
+    public override void ExitFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context)
+    {
+        var value = _stack.Pop();
+        Generator.Return(value.Id, value.Type);
+    }
+    public override void ExitFunctionDef([NotNull] KermitLangParser.FunctionDefContext context)
+    {
+        ExitScope();
+        Generator.EndMethod();
+    }
+    public override void ExitNoParameters([NotNull] KermitLangParser.NoParametersContext context)
+    {
+        Generator.DeclareMethodParameters(null);
+    }
+    public override void ExitParameterList([NotNull] KermitLangParser.ParameterListContext context)
+    {
+        Generator.DeclareMethodParameters(null);
+    }
     void ExitParameterDeclare([NotNull] KermitLangParser.ParameterDeclareContext context) { }
     void ExitFunctionInvoke([NotNull] KermitLangParser.FunctionInvokeContext context) { }
     void ExitArgumentList([NotNull] KermitLangParser.ArgumentListContext context) { }

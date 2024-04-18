@@ -672,6 +672,34 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitWhileStatementBlock([NotNull] KermitLangParser.WhileStatementBlockContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>functionStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_function"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionStatementBlock([NotNull] KermitLangParser.FunctionStatementBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>functionStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_function"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionStatementBlock([NotNull] KermitLangParser.FunctionStatementBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>functionReturnStatement</c>
+	/// labeled alternative in <see cref="KermitLangParser.function_return_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>functionReturnStatement</c>
+	/// labeled alternative in <see cref="KermitLangParser.function_return_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>structDef</c>
 	/// labeled alternative in <see cref="KermitLangParser.struct_definition"/>.
 	/// <para>The default implementation does nothing.</para>

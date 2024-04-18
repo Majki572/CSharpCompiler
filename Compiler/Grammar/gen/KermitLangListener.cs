@@ -575,6 +575,30 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitWhileStatementBlock([NotNull] KermitLangParser.WhileStatementBlockContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>functionStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_function"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionStatementBlock([NotNull] KermitLangParser.FunctionStatementBlockContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>functionStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_function"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionStatementBlock([NotNull] KermitLangParser.FunctionStatementBlockContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>functionReturnStatement</c>
+	/// labeled alternative in <see cref="KermitLangParser.function_return_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>functionReturnStatement</c>
+	/// labeled alternative in <see cref="KermitLangParser.function_return_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context);
+	/// <summary>
 	/// Enter a parse tree produced by the <c>structDef</c>
 	/// labeled alternative in <see cref="KermitLangParser.struct_definition"/>.
 	/// </summary>

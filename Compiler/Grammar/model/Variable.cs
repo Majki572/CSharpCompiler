@@ -38,5 +38,6 @@ public enum VariableType
     BOOL,
     STRING,
     STRING_CONST,
-    NUMBER
+    NUMBER,
+    STRUCT
 }
