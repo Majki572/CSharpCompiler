@@ -1,0 +1,162 @@
+struct temp {
+    int a;
+    int b;
+    double d;
+}
+
+int mama(int a, int b){
+    int c = a + b;
+    print(c);
+
+    struct temp ele;
+    ele.a = 123;
+    ele.b = 456;
+    ele.d = 789.123;
+    print(ele.a);
+    print(ele.b);
+    print(ele.b + ele.a);
+    
+    return c;
+}
+
+double ma(double a, double b){
+    double c = a + b;
+    return c;
+}
+
+int mammamia(){
+    string success = "SUCCESS";
+
+    int a = 7;
+    int b = 8;
+
+    if (a == b) {
+        print(success + "is equal");
+    }
+
+    if (a != b) {
+        print(success);
+    }
+
+    if (a < b) {
+        print(success + "is less");
+    }
+
+    if (a > b) {
+        print(success);
+    }
+
+    if (a <= b) {
+        print(success + "is less or equal");
+    }
+
+    if (a >= b) {
+        print(success);
+    }
+
+    int x = 0;
+    int y = 9;
+
+    while (x < y) {
+        print(x);
+        x = x + 1;
+    }
+
+    return 0;
+}
+
+double main(){
+    int atete = mammamia();
+
+    int dddd = 5;
+    print(dddd);
+    int eeee = mama(dddd, 100);
+    double ffff = ma(4.4, 5.5);
+    print(eeee);
+    print(ffff);
+
+    int aaaa = 999;
+    print(aaaa);
+    read(aaaa);
+    print(aaaa);
+
+    string ala = "ala ma";
+    print(ala);
+    read(ala);
+    print(ala);
+
+    bool trulizna = true;
+
+    if(trulizna){
+        print("TRUE INDEED");
+        short b = 1;
+        print(b);
+        b = 2;
+        print(b);
+        read(b);
+        print(b + b);
+        print(b - b);
+        print(b / b);
+        print(b * b);
+
+        int a = 5;
+        print(a);
+        a = 16;
+        print(a);
+        read(a);
+        print(a + a);
+        print(a - a);
+        print(a / a);
+        print(a * a);
+
+        long c = 10000000;
+        print(c);
+        c = 200000000;
+        print(c);
+        read(c);
+        print(c + c);
+        print(c - c);
+        print(c / c);
+        print(c * c);
+
+        float d = 1.5;
+        print(d);
+        d = 2.5;
+        print(d);
+        read(d);
+        print(d + d);
+        print(d - d);
+        print(d / d);
+        print(d * d);
+
+        double e = 1.5;
+        print(e);
+        e = 2.5;
+        print(e);
+        read(e);
+        print(e + e);
+        print(e - e);
+        print(e / e);
+        print(e * e);
+
+        string f = "Hello";
+        print(f);
+        f = "World";
+        print(f);
+        read(f);
+        print(f);
+        print(f + f);
+        print(f + " " + f);
+        print(f + " " + f + " " + f);
+    }
+
+    int zyzz = 10;
+    int xyxx = 0;
+
+    while(xyxx < zyzz){
+        print(xyxx);
+        xyxx = xyxx + 1;
+    }
+
+    return 0.0;
+}

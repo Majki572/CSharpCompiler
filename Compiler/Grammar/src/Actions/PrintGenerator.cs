@@ -32,7 +32,7 @@ public class PrintGenerator
                 res += StringGenerator.PrintString(variable.GetId());
                 break;
             case VariableType.STRING_CONST:
-                res += StringGenerator.PrintString(variable.GetId());
+                res += StringGenerator.PrintString(StringGenerator.GetConstString(variable as StringVariable));
                 break;
         }
         

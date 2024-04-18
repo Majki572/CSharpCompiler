@@ -302,6 +302,20 @@ public interface IKermitLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitGreaterThanEqual([NotNull] KermitLangParser.GreaterThanEqualContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>boolCompare</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitBoolCompare([NotNull] KermitLangParser.BoolCompareContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>idCompare</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIdCompare([NotNull] KermitLangParser.IdCompareContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>whileStatement</c>
 	/// labeled alternative in <see cref="KermitLangParser.while_statement"/>.
 	/// </summary>

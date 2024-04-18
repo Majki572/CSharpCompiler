@@ -10,7 +10,7 @@ public class MethodCallGenerator
         var call = "call " + Util.Util.MapType(type) + " " + id + "(";
         foreach (var parameter in parameters)
         {
-            call += Util.Util.MapType(parameter.Type) + " %" + parameter.Id + ", ";
+            call += Util.Util.MapType(parameter.Type) + " " + parameter.Id + ", ";
         }
 
         return call.Remove(call.Length - 2) + ")";

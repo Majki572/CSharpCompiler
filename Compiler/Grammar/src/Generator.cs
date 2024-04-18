@@ -186,38 +186,38 @@ public class Generator
 
     public static void Equal(string operation)
     {
-        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + Generator.GetReg(1) + "\n";
-        Reg++;
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", " + Generator.GetReg(1) + "\n";
+        GetRegInc();
     }
 
     public static void NotEqual(string operation)
     {
-        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
-        Reg++;
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", " + (Generator.GetReg(1)) + "\n";
+        GetRegInc();
     }
 
     public static void LessThan(string operation)
     {
-        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
-        Reg++;
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", " + (Generator.GetReg(1)) + "\n";
+        GetRegInc();
     }
 
     public static void GreaterThan(string operation)
     {
-        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
-        Reg++;
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", " + (Generator.GetReg(1)) + "\n";
+        GetRegInc();
     }
 
     public static void LessOrEqual(string operation)
     {
-        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
-        Reg++;
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", " + (Generator.GetReg(1)) + "\n";
+        GetRegInc();
     }
 
     public static void GreaterOrEqual(string operation)
     {
-        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
-        Reg++;
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", " + (Generator.GetReg(1)) + "\n";
+        GetRegInc();
     }
 
     // Methods
@@ -240,13 +240,13 @@ public class Generator
         IsMain = false;
         MainText += MethodDeclareGenerator.DeclareMethod(id, type);
     }
-
+    
     public static void DeclareMethodParameters(Variable[] parameters)
     {
         MainText += MethodDeclareGenerator.ParseParameters(parameters);
         
         // this is required but I have no idea why
-        MethodReg++;
+        GetRegInc();
     }
 
     public static void Return(string id, VariableType? type)
@@ -264,12 +264,17 @@ public class Generator
     public static void FunctionCall(Method method, Variable[] parameters)
     {
         MainText += GetRegInc() + " = call " + Util.Util.MapType(method.ReturnType) + " " + method.Name + "(";
+        if (parameters.Length == 0)
+        {
+            MainText += ")\n";
+            return;
+        }
+        
         foreach (var parameter in parameters)
         {
             MainText += Util.Util.MapType(parameter.Type) + " " + parameter.Id + ", ";
         }
         MainText = MainText.Remove(MainText.Length - 2) + ")\n";
-        Reg++;
     }
 
     // Function
@@ -293,7 +298,7 @@ public class Generator
     // public static void FuncCall(String id, String parameters)
     // {
     //     MainText += GetReg() + " = call i32 @" + id + "(" + parameters + ")\n";
-    //     Reg++;
+    //     GetRegInc();
     // }
 
     public static string GetId(string id)
@@ -305,7 +310,7 @@ public class Generator
     {
         if (IsMain)
         {
-            return GetReg();
+            return "%" + Reg;
         }
 
         if (IsFunction)

@@ -576,6 +576,34 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitGreaterThanEqual([NotNull] KermitLangParser.GreaterThanEqualContext context) { }
 	/// <summary>
+	/// Enter a parse tree produced by the <c>boolCompare</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBoolCompare([NotNull] KermitLangParser.BoolCompareContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>boolCompare</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBoolCompare([NotNull] KermitLangParser.BoolCompareContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>idCompare</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIdCompare([NotNull] KermitLangParser.IdCompareContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>idCompare</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIdCompare([NotNull] KermitLangParser.IdCompareContext context) { }
+	/// <summary>
 	/// Enter a parse tree produced by the <c>whileStatement</c>
 	/// labeled alternative in <see cref="KermitLangParser.while_statement"/>.
 	/// <para>The default implementation does nothing.</para>

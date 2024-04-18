@@ -10,7 +10,7 @@ public class Program()
     {
         var sep = Path.DirectorySeparatorChar;
         var path = $"..{sep}..{sep}..{sep}Grammar{sep}";
-        var input = File.ReadAllText(path + "test/langX-big.test");
+        var input = File.ReadAllText(path + "test/final.boss");
 
         var inputStream = new AntlrInputStream(input);
         var lexer = new KermitLangLexer(inputStream);
@@ -23,7 +23,7 @@ public class Program()
 
         // create file from generated code
         // save the file as output.ll in Grammar directory
-        var outputFile = path + "target/langX-big.ll";
+        var outputFile = path + "target/final.ll";
         Generator.Generate();
         File.WriteAllText(outputFile, Generator.Generate());
         Console.WriteLine("File generated successfully");

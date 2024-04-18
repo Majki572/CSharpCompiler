@@ -29,7 +29,7 @@ public class AddGenerator
                 if (var1 is StringVariable strVar1 && var2 is StringVariable strVar2)
                 {
                     res += StringGenerator.AllocateString(Generator.GetReg());
-                    Generator.Reg++;
+                    Generator.GetRegInc();
                     res += StringGenerator.AllocateStringSize(Generator.GetReg(1), strVar1.Length + strVar2.Length);
 
                     var strId1 = strVar1.GetId();
