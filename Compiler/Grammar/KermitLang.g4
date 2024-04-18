@@ -52,7 +52,7 @@ expression3:
 	| function_call				# functionCall;
 
 if_statement:
-	IF L_PAR (compareStatement | BOOL | ID) P_PAR statement_block_if # ifStatement;
+	IF L_PAR (compareStatement) P_PAR statement_block_if # ifStatement;
 
 compareStatement:
 	expression '==' expression		# equal
@@ -60,7 +60,9 @@ compareStatement:
 	| expression '<' expression		# lessThan
 	| expression '>' expression		# greaterThan
 	| expression '<=' expression	# lessThanEqual
-	| expression '>=' expression	# greaterThanEqual;
+	| expression '>=' expression	# greaterThanEqual
+	| BOOL							# boolCompare
+	| ID							# idCompare;
 
 while_statement:
 	WHILE L_PAR (while_condition) P_PAR statement_block_while # whileStatement;

@@ -1,20 +1,10 @@
-int mama(int a, int b){
-   int c = a + b;
-    print(c);
-    return c;
-}
-
-double ma(double a, double b){
-    double c = a + b;
-    return c;
-}
-
 double main(){
-    int d = 5;
-    print(d);
-    int e = mama(d, 100);
-    double f = ma(4.4, 5.5);
-    print(e);
-    print(f);
+    int a = 0;
+    int b = 8;
+
+    while (a < b){
+        print("mama");
+        a = a + 1;
+    }
     return 0.0;
 }

@@ -829,16 +829,12 @@ public class BasicLangXListener : KermitLangBaseListener
     public override void ExitNumber([NotNull] KermitLangParser.NumberContext context)
     {
         var value = context.NUMBER().GetText();
-        if (_currentType == VariableType.FLOAT)
-        {
-            var floatValue = float.Parse(value, CultureInfo.InvariantCulture);
-            value =  floatValue.ToString("0.000000e+00");
-        }
         _stack.Push(new Variable(value, _currentType));
     }
     
     public override void EnterFunctionDef([NotNull] KermitLangParser.FunctionDefContext context)
     {
+        _stack.Clear();
         _scopedVariables.EnterScope();
         var type = Util.Util.MapType(context.type().GetText());
         var id = "@" + context.ID().GetText();
@@ -846,7 +842,6 @@ public class BasicLangXListener : KermitLangBaseListener
         
         Generator.DeclareMethod(id, type);
     }
-    
     
     public override void ExitFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context)
     {
@@ -862,7 +857,7 @@ public class BasicLangXListener : KermitLangBaseListener
     }
     public override void ExitNoParameters([NotNull] KermitLangParser.NoParametersContext context)
     {
-        Generator.DeclareMethodParameters(new Variable[0]);
+        Generator.DeclareMethodParameters(Array.Empty<Variable>());
     }
     public override void ExitParameterList([NotNull] KermitLangParser.ParameterListContext context)
     {
@@ -882,17 +877,20 @@ public class BasicLangXListener : KermitLangBaseListener
         var arguments = _stack.Reverse().ToList();
         _stack.Clear();
         var method = _methods[fucntionId];
+                
+        Console.WriteLine(arguments.Count);
+        Console.WriteLine(method.Parameters.Count);
         if (arguments.Count() != method.Parameters.Count)
         {
             AddError(context.Start.Line, $"Invalid number of arguments for function {fucntionId}");
             return;
         }
         
-        Console.WriteLine(arguments.Count);
-        Console.WriteLine(method.Parameters.Count);
-        
         Generator.FunctionCall(method, arguments.ToArray());
-        _stack.Push(new Variable(Generator.GetReg(1), method.ReturnType));
+        Console.WriteLine(method.ReturnType);
+        Console.WriteLine(method.Name);
+        if (Util.Util.MapType(method.ReturnType) != "void")
+            _stack.Push(new Variable(Generator.GetReg(1), method.ReturnType));
     }
 
     public virtual void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context) { }
@@ -1033,7 +1031,26 @@ public class BasicLangXListener : KermitLangBaseListener
     }
 
     #endregion
-    
+
+    public override void ExitBoolCompare(KermitLangParser.BoolCompareContext context)
+    {
+        _stack.Push(new Variable(context.BOOL().GetText(), VariableType.BOOL));
+    }
+
+    public override void ExitIdCompare(KermitLangParser.IdCompareContext context)
+    {
+        var id = MakeId(context.ID().GetText());
+        var variable = _scopedVariables.LookupVariable(id);
+        if (variable == null)
+        {
+            AddError(context.Start.Line, $"Variable {id} is not declared in this scope.");
+            return;
+        }
+
+        Generator.LoadVariable(variable);
+        _stack.Push(new Variable(Generator.GetReg(1), variable.Type));
+    }
+
     private void AddError(int line, string msg)
     {
         Errors.Add($"Error in line {line}: {msg}");
