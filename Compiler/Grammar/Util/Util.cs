@@ -12,7 +12,7 @@ public class Util
         var hexValue = bits.ToString("X16");
         return $"0x{hexValue}";
     }
-
+    
     public static string MapType(Variable variable)
     {
         return variable.Type switch
@@ -29,7 +29,7 @@ public class Util
             _ => "void"
         };
     }
-
+    
     public static string MapType(VariableType? type)
     {
         return type switch
