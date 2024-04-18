@@ -1,9 +1,20 @@
+int mama(int a, int b){
+   int c = a + b;
+    print(c);
+    return c;
+}
+
+double ma(double a, double b){
+    double c = a + b;
+    return c;
+}
+
 double main(){
-
-    bool trulizna = true;
-
-    if(trulizna){
-       print("mama");
-    }
+    int d = 5;
+    print(d);
+    int e = mama(d, 100);
+    double f = ma(4.4, 5.5);
+    print(e);
+    print(f);
     return 0.0;
 }
