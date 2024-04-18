@@ -72,19 +72,53 @@ public interface IKermitLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitRead([NotNull] KermitLangParser.ReadContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>expression_base_add</c>
-	/// labeled alternative in <see cref="KermitLangParser.expression"/>.
+	/// Visit a parse tree produced by the <c>ifBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression_base_add([NotNull] KermitLangParser.Expression_base_addContext context);
+	Result VisitIfBlock([NotNull] KermitLangParser.IfBlockContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>expression_base_sub</c>
+	/// Visit a parse tree produced by the <c>whileBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileBlock([NotNull] KermitLangParser.WhileBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>functionBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionBlock([NotNull] KermitLangParser.FunctionBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>structBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructBlock([NotNull] KermitLangParser.StructBlockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="KermitLangParser.type"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitType([NotNull] KermitLangParser.TypeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>expressionBaseAdd</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression_base_sub([NotNull] KermitLangParser.Expression_base_subContext context);
+	Result VisitExpressionBaseAdd([NotNull] KermitLangParser.ExpressionBaseAddContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>expressionBaseSub</c>
+	/// labeled alternative in <see cref="KermitLangParser.expression"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitExpressionBaseSub([NotNull] KermitLangParser.ExpressionBaseSubContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>expression1Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression"/>.
@@ -93,19 +127,19 @@ public interface IKermitLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitExpression1Empty([NotNull] KermitLangParser.Expression1EmptyContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>expression_base_mul</c>
+	/// Visit a parse tree produced by the <c>expressionBaseMul</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression1"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression_base_mul([NotNull] KermitLangParser.Expression_base_mulContext context);
+	Result VisitExpressionBaseMul([NotNull] KermitLangParser.ExpressionBaseMulContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>expression_base_div</c>
+	/// Visit a parse tree produced by the <c>expressionBaseDiv</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression1"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression_base_div([NotNull] KermitLangParser.Expression_base_divContext context);
+	Result VisitExpressionBaseDiv([NotNull] KermitLangParser.ExpressionBaseDivContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>expression2Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression1"/>.
@@ -142,12 +176,12 @@ public interface IKermitLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitNeg([NotNull] KermitLangParser.NegContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>expression4Empty</c>
+	/// Visit a parse tree produced by the <c>expression3Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitExpression4Empty([NotNull] KermitLangParser.Expression4EmptyContext context);
+	Result VisitExpression3Empty([NotNull] KermitLangParser.Expression3EmptyContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>id</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.
@@ -183,4 +217,129 @@ public interface IKermitLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>functionCall</c>
+	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionCall([NotNull] KermitLangParser.FunctionCallContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>ifStatement</c>
+	/// labeled alternative in <see cref="KermitLangParser.if_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitIfStatement([NotNull] KermitLangParser.IfStatementContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>equal</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEqual([NotNull] KermitLangParser.EqualContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>notEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNotEqual([NotNull] KermitLangParser.NotEqualContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>lessThan</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLessThan([NotNull] KermitLangParser.LessThanContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>greaterThan</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGreaterThan([NotNull] KermitLangParser.GreaterThanContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>lessThanEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitLessThanEqual([NotNull] KermitLangParser.LessThanEqualContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>greaterThanEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitGreaterThanEqual([NotNull] KermitLangParser.GreaterThanEqualContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>whileLoop</c>
+	/// labeled alternative in <see cref="KermitLangParser.while_statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitWhileLoop([NotNull] KermitLangParser.WhileLoopContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>functionDef</c>
+	/// labeled alternative in <see cref="KermitLangParser.function_definition"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionDef([NotNull] KermitLangParser.FunctionDefContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>noParameters</c>
+	/// labeled alternative in <see cref="KermitLangParser.parameter_list"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNoParameters([NotNull] KermitLangParser.NoParametersContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>parameterList</c>
+	/// labeled alternative in <see cref="KermitLangParser.parameter_list"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameterList([NotNull] KermitLangParser.ParameterListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>parameterDeclare</c>
+	/// labeled alternative in <see cref="KermitLangParser.parameter"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitParameterDeclare([NotNull] KermitLangParser.ParameterDeclareContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>functionInvoke</c>
+	/// labeled alternative in <see cref="KermitLangParser.function_call"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitFunctionInvoke([NotNull] KermitLangParser.FunctionInvokeContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>argumentList</c>
+	/// labeled alternative in <see cref="KermitLangParser.argument_list"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitArgumentList([NotNull] KermitLangParser.ArgumentListContext context);
+	/// <summary>
+	/// Visit a parse tree produced by <see cref="KermitLangParser.statement_block"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStatement_block([NotNull] KermitLangParser.Statement_blockContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>structDef</c>
+	/// labeled alternative in <see cref="KermitLangParser.struct_definition"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructDef([NotNull] KermitLangParser.StructDefContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>structMembers</c>
+	/// labeled alternative in <see cref="KermitLangParser.struct_body"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructMembers([NotNull] KermitLangParser.StructMembersContext context);
 }

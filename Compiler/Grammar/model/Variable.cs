@@ -10,6 +10,16 @@ public class Variable
         this.Id = id;
         this.Type = type;
     }
+    
+    public string GetId()
+    {
+        return this.Id;
+    }
+    
+    public void Print()
+    {
+        Console.WriteLine($"{this.Id} : {this.Type}");
+    }
 }
 
 public class StringVariable : Variable
@@ -38,5 +48,5 @@ public enum VariableType
     BOOL,
     STRING,
     STRING_CONST,
-    NUMBER
+    STRUCT
 }
