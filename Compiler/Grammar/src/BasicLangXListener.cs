@@ -40,7 +40,11 @@ public class BasicLangXListener : KermitLangBaseListener
         try
         {
             var id = MakeId(context.ID().GetText());
-            var variable = _stack.Pop();
+            var variable = CreateEmptyVariable(_currentType);
+            if (_stack.Count != 0)
+            {
+                variable = _stack.Pop();    
+            }
             var isValid = true;
 
             if (_scopedVariables.LookupVariable(id) != null)
@@ -883,6 +887,10 @@ public class BasicLangXListener : KermitLangBaseListener
             AddError(context.Start.Line, $"Invalid number of arguments for function {fucntionId}");
             return;
         }
+        
+        Console.WriteLine(arguments.Count);
+        Console.WriteLine(method.Parameters.Count);
+        
         Generator.FunctionCall(method, arguments.ToArray());
         _stack.Push(new Variable(Generator.GetReg(1), method.ReturnType));
     }
@@ -1039,5 +1047,28 @@ public class BasicLangXListener : KermitLangBaseListener
     private string GetStructName(string id)
     {
         return "%struct." + id;
+    }
+    
+    private Variable CreateEmptyVariable(VariableType type)
+    {
+        switch (type)
+        {
+            case VariableType.SHORT:
+                return new Variable("0", VariableType.SHORT);
+            case VariableType.INT:
+                return new Variable("0", VariableType.INT);
+            case VariableType.FLOAT:
+                return new Variable("0.0", VariableType.FLOAT);
+            case VariableType.DOUBLE:
+                return new Variable("0.0", VariableType.DOUBLE);
+            case VariableType.BOOL:
+                return new Variable("false", VariableType.BOOL);
+            case VariableType.LOGNLONG:
+                return new Variable("0", VariableType.LOGNLONG);
+            case VariableType.STRING or VariableType.STRING_CONST:
+                return new StringVariable("@str.0", 0, VariableType.STRING);
+            default:
+                return new Variable("0", VariableType.INT);
+        }
     }
 }
