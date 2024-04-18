@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from f:/GitHubRepository/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
+// Generated from C:/Users/jakub/Documents/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Antlr4.Runtime.Misc;
 using Compiler.Grammar.model;
 using IErrorNode = Antlr4.Runtime.Tree.IErrorNode;
@@ -9,7 +10,10 @@ namespace Compiler.Grammar.src;
 public class BasicLangXListener : KermitLangBaseListener
 {
     private readonly ScopedVariables _scopedVariables = new ScopedVariables();
-
+    
+    private readonly Dictionary<string, Method> _methods = new Dictionary<string, Method>();
+    private Method _currentMethod;
+    
     private readonly Dictionary<string, string> _constants = new Dictionary<string, string>();
     private readonly Stack<Variable> _stack = new Stack<Variable>();
     private VariableType _currentType;
@@ -817,38 +821,69 @@ public class BasicLangXListener : KermitLangBaseListener
     }
     public override void ExitNumber([NotNull] KermitLangParser.NumberContext context)
     {
-        _stack.Push(new Variable(context.NUMBER().GetText(), _currentType));
+        var value = context.NUMBER().GetText();
+        if (_currentType == VariableType.FLOAT)
+        {
+            var floatValue = float.Parse(value, CultureInfo.InvariantCulture);
+            value =  floatValue.ToString("0.000000e+00");
+        }
+        _stack.Push(new Variable(value, _currentType));
     }
+    
     public override void EnterFunctionDef([NotNull] KermitLangParser.FunctionDefContext context)
     {
         _scopedVariables.EnterScope();
-        var type = context.type().GetText();
-        var variableType = (VariableType?)Util.Util.MapType(type);
-        var id = context.ID().GetText();
-
-        Generator.DeclareMethod(id, variableType);
+        var type = Util.Util.MapType(context.type().GetText());
+        var id = "@" + context.ID().GetText();
+        _currentMethod = new Method(id, type);
+        
+        Generator.DeclareMethod(id, type);
     }
+    
+    
     public override void ExitFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context)
     {
+        _currentType = _currentMethod.ReturnType;
         var value = _stack.Pop();
-        Generator.Return(value.Id, value.Type);
+        Generator.Return(value.Id, _currentType);
     }
     public override void ExitFunctionDef([NotNull] KermitLangParser.FunctionDefContext context)
     {
+        _methods.Add(_currentMethod.Name, _currentMethod);
         _scopedVariables.ExitScope();
         Generator.EndMethod();
     }
     public override void ExitNoParameters([NotNull] KermitLangParser.NoParametersContext context)
     {
-        Generator.DeclareMethodParameters(null);
+        Generator.DeclareMethodParameters(new Variable[0]);
     }
     public override void ExitParameterList([NotNull] KermitLangParser.ParameterListContext context)
     {
-        Generator.DeclareMethodParameters(null);
+        foreach (var parameter in context.parameter())
+        {
+            var type = Util.Util.MapType(parameter.type().GetText());
+            var id = MakeId(parameter.ID().GetText());
+            _currentMethod.Parameters.Add(new Variable(id, type));
+            _scopedVariables.DeclareVariable(id, new Variable(id, type));
+        }
+        Generator.DeclareMethodParameters(_currentMethod.Parameters.ToArray());
     }
-    void ExitParameterDeclare([NotNull] KermitLangParser.ParameterDeclareContext context) { }
-    void ExitFunctionInvoke([NotNull] KermitLangParser.FunctionInvokeContext context) { }
-    void ExitArgumentList([NotNull] KermitLangParser.ArgumentListContext context) { }
+
+    public override void ExitFunctionInvoke([NotNull] KermitLangParser.FunctionInvokeContext context)
+    {
+        var fucntionId = "@" + context.ID().GetText();
+        var arguments = _stack.Reverse().ToList();
+        _stack.Clear();
+        var method = _methods[fucntionId];
+        if (arguments.Count() != method.Parameters.Count)
+        {
+            AddError(context.Start.Line, $"Invalid number of arguments for function {fucntionId}");
+            return;
+        }
+        Generator.FunctionCall(method, arguments.ToArray());
+        _stack.Push(new Variable(Generator.GetReg(1), method.ReturnType));
+    }
+    
     void ExitStatement_block([NotNull] KermitLangParser.Statement_blockContext context) { }
     void ExitStructDef([NotNull] KermitLangParser.StructDefContext context) { }
     void ExitStructMembers([NotNull] KermitLangParser.StructMembersContext context) { }

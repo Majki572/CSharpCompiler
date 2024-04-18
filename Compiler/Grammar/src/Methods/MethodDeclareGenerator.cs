@@ -1,4 +1,5 @@
 using Compiler.Grammar.model;
+using Compiler.Grammar.src.Actions;
 
 namespace Compiler.Grammar.src.Methods;
 
@@ -6,18 +7,34 @@ public class MethodDeclareGenerator
 {
     public static string DeclareMethod(string id, VariableType? type)
     {
-        return "define " + Util.Util.MapType(type) + " @" + id + "(";
+        return "define " + Util.Util.MapType(type) + " " + id + "(";
     }
 
     public static string ParseParameters(Variable[] parameters)
     {
-        var parametersStr = "";
-        foreach (var parameter in parameters)
+        if (parameters.Length == 0)
         {
-            parametersStr += Util.Util.MapType(parameter.Type) + " %" + parameter.Id + ", ";
+            return ") {\n";
         }
 
-        return parametersStr.Remove(parametersStr.Length - 2) + ")\n {";
+        var res = "";
+        
+        var parametersStr = "";
+        int i = 0;
+        foreach (var parameter in parameters)
+        {
+            parametersStr += Util.Util.MapType(parameter.Type) + " " + Generator.GetRegInc() + ", ";
+        }
+
+        res += parametersStr.Remove(parametersStr.Length - 2) + ") {\n";
+        
+        foreach (var parameter in parameters)
+        {
+            res += DeclareGenerator.Declare(parameter, new Variable( "%" + i, parameter.Type));
+            i++;
+        }
+
+        return res;
     }
     
     public static string Return(string id, VariableType? type)
@@ -27,7 +44,7 @@ public class MethodDeclareGenerator
             return "ret void\n";
         }
         
-        return "ret " + Util.Util.MapType(type) + " %" + id + "\n";
+        return "ret " + Util.Util.MapType(type) + " " + id + "\n";
     }
     
     public static string EndMethod()

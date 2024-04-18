@@ -9,6 +9,7 @@ statement:
 	| ID '=' (expression) ';'				# assign
 	| PRINT L_PAR (expression) P_PAR ';'	# print
 	| READ L_PAR ID P_PAR ';'				# read
+	| function_call ';'                     # functionCallExpression
 	| if_statement							# if
 	| while_statement						# while
 	| function_definition					# function
@@ -69,11 +70,11 @@ parameter_list:
 									# noParameters
 	| parameter (',' parameter)*	# parameterList;
 
-parameter: type ID # parameterDeclare;
+parameter: type ID;
 
 function_call: ID L_PAR argument_list? P_PAR # functionInvoke;
 
-argument_list: expression (',' expression)* # argumentList;
+argument_list: expression (',' expression)*;
 
 statement_block: L_CURL base_statement* P_CURL;
 

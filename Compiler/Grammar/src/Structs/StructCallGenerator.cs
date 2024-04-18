@@ -14,12 +14,12 @@ public class StructCallGenerator
     
     public static string AllocateStructSize(string id, string size)
     {
-        return "%" + Generator.Reg++ + " = call i8* @malloc(i64 " + size + ")\n";
+        return Generator.GetRegInc() + " = call i8* @malloc(i64 " + size + ")\n";
     }
     
     public static string BitcastStruct(string id, string structId)
     {
-        return "%" + Generator.Reg++ + " = bitcast i8* " + id + " to %struct." + structId + "*\n";
+        return Generator.GetRegInc() + " = bitcast i8* " + id + " to %struct." + structId + "*\n";
     }
     
     public static string StoreStruct(string id, string structId, string valueId)
@@ -29,12 +29,12 @@ public class StructCallGenerator
     
     public static string LoadStruct(string id, string structId)
     {
-        return "%" + Generator.Reg++ + " = load %struct." + structId + "*, %struct." + structId + "** " + id + "\n";
+        return Generator.GetRegInc() + " = load %struct." + structId + "*, %struct." + structId + "** " + id + "\n";
     }
     
     public static string LoadStructField(string id, string structId, string fieldId, string value)
     {
-        return "%" + Generator.Reg++ + " = getelementptr inbounds (%struct." + structId + ", %struct." + structId + "* " + id + ", i32 0, i32 " + fieldId + ")\n";
+        return Generator.GetRegInc() + " = getelementptr inbounds (%struct." + structId + ", %struct." + structId + "* " + id + ", i32 0, i32 " + fieldId + ")\n";
     }
     
     // save is method assign from variables
