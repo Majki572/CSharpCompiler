@@ -85,4 +85,22 @@ true6:
 %36 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* %35)
 br label %false6
 false6:
+%x = alloca i32
+store i32 0, i32* %x
+%y = alloca i32
+store i32 9, i32* %y
+br label %whileCondition7
+whileCondition7:
+%37= load i32, i32* %x
+%38= load i32, i32* %y
+%39 = icmp slt i32 %37, %38
+br i1 %39, label %whileTrue7, label %whileFalse7
+whileTrue7:
+%40= load i32, i32* %x
+%41 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 %40)
+%42= load i32, i32* %x
+%43 = add i32 %42, 1
+store i32 %43, i32* %x
+br label %whileCondition7
+whileFalse7:
 ret i32 0 }

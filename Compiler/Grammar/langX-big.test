@@ -28,4 +28,10 @@ if (a >= b) {
     print(success);
 }
 
+int x = 0;
+int y = 9;
 
+while (x < y) {
+    print(x);
+    x = x + 1;
+}

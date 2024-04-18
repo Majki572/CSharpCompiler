@@ -307,27 +307,27 @@ public class Generator
     // Add
     public static void AddShorts(String value1, String value2)
     {
-        MainText += "%" + Reg + " = add i32 " + value1 + ", " + value2 + "\n";
+        MainText += "%" + Reg + " = add i32 %" + value1 + ", " + value2 + "\n";
         Reg++;
     }
     public static void AddIntegers(String value1, String value2)
     {
-        MainText += "%" + Reg + " = add i32 " + value1 + ", " + value2 + "\n";
+        MainText += "%" + Reg + " = add i32 %" + value1 + ", " + value2 + "\n";
         Reg++;
     }
     public static void AddLongs(String value1, String value2)
     {
-        MainText += "%" + Reg + " = add i64 " + value1 + ", " + value2 + "\n";
+        MainText += "%" + Reg + " = add i64 %" + value1 + ", " + value2 + "\n";
         Reg++;
     }
     public static void AddFloats(String value1, String value2)
     {
-        MainText += "%" + Reg + " = fadd float " + value1 + ", " + value2 + "\n";
+        MainText += "%" + Reg + " = fadd float %" + value1 + ", " + value2 + "\n";
         Reg++;
     }
     public static void AddDoubles(String value1, String value2)
     {
-        MainText += "%" + Reg + " = fadd double " + value1 + ", " + value2 + "\n";
+        MainText += "%" + Reg + " = fadd double %" + value1 + ", " + value2 + "\n";
         Reg++;
     }
 
@@ -465,6 +465,29 @@ public class Generator
         MainText += "false" + b + ":\n";
     }
 
+    // While
+    public static void WhileStart()
+    {
+        Br++;
+        MainText += "br label %whileCondition" + Br + "\n";
+        MainText += "whileCondition" + Br + ":\n";
+        BrStack.Push(Br);
+    }
+
+    public static void WhileConditionEnd()
+    {
+        int b = BrStack.Peek();
+        MainText += "br i1 %" + (Reg - 1) + ", label %whileTrue" + b + ", label %whileFalse" + b + "\n";
+        MainText += "whileTrue" + b + ":\n";
+    }
+
+    public static void WhileEnd()
+    {
+        int b = BrStack.Pop();
+        MainText += "br label %whileCondition" + b + "\n";
+        MainText += "whileFalse" + b + ":\n";
+    }
+
     // Function
     public static void FuncStart(string id, string parameters)
     {
@@ -489,7 +512,7 @@ public class Generator
         Reg++;
     }
 
-    // comparisions
+    // Comparisions
 
     public static void Equal(string operation)
     {
@@ -526,5 +549,4 @@ public class Generator
         MainText += "%" + Reg + " = " + operation + " %" + (Reg - 2) + ", %" + (Reg - 1) + "\n";
         Reg++;
     }
-
 }

@@ -9,10 +9,10 @@ statement:
 	| ID '=' (expression) ';'				# assign
 	| PRINT L_PAR (expression) P_PAR ';'	# print
 	| READ L_PAR ID P_PAR ';'				# read
-	| if_statement							# ifBlock
-	| while_statement						# whileBlock
-	| function_definition					# functionBlock
-	| struct_definition						# structBlock;
+	| if_statement							# if
+	| while_statement						# while
+	| function_definition					# function
+	| struct_definition						# struct;
 
 type:
 	INTEGER_NAME
@@ -58,7 +58,9 @@ compareStatement:
 	| expression '>=' expression	# greaterThanEqual;
 
 while_statement:
-	WHILE L_PAR (expression) P_PAR statement_block # whileLoop;
+	WHILE L_PAR (while_condition) P_PAR statement_block_while # whileStatement;
+
+while_condition: (compareStatement | BOOL | ID) # whileCondition;
 
 function_definition:
 	type ID L_PAR parameter_list P_PAR statement_block # functionDef;
@@ -77,6 +79,9 @@ statement_block: L_CURL base_statement* P_CURL;
 
 statement_block_if:
 	L_CURL base_statement* P_CURL # ifStatementBlock;
+
+statement_block_while:
+	L_CURL base_statement* P_CURL # whileStatementBlock;
 
 struct_definition:
 	'struct' ID L_CURL (struct_body) P_CURL # structDef;
