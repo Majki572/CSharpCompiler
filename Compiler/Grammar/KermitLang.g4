@@ -9,10 +9,10 @@ statement:
 	| ID '=' (expression) ';'				# assign
 	| PRINT L_PAR (expression) P_PAR ';'	# print
 	| READ L_PAR ID P_PAR ';'				# read
-	| if_statement							# ifBlock
-	| while_statement						# whileBlock
-	| function_definition					# functionBlock
-	| struct_definition						# structBlock;
+	| if_statement							# if
+	| while_statement						# while
+	| function_definition					# function
+	| struct_definition						# struct;
 
 type:
 	INTEGER_NAME
@@ -47,7 +47,7 @@ expression3:
 	| function_call				# functionCall;
 
 if_statement:
-	IF L_PAR (compareStatement | BOOL | ID) P_PAR statement_block # ifStatement;
+	IF L_PAR (compareStatement | BOOL | ID) P_PAR statement_block_if # ifStatement;
 
 compareStatement:
 	expression '==' expression		# equal
@@ -58,10 +58,12 @@ compareStatement:
 	| expression '>=' expression	# greaterThanEqual;
 
 while_statement:
-	WHILE L_PAR (expression) P_PAR L_CURL statement_block P_CURL # whileLoop;
+	WHILE L_PAR (while_condition) P_PAR statement_block_while # whileStatement;
+
+while_condition: (compareStatement | BOOL | ID) # whileCondition;
 
 function_definition:
-	type ID L_PAR parameter_list P_PAR L_CURL statement_block P_CURL # functionDef;
+	type ID L_PAR parameter_list P_PAR statement_block_function # functionDef;
 
 parameter_list:
 									# noParameters
@@ -74,6 +76,18 @@ function_call: ID L_PAR argument_list? P_PAR # functionInvoke;
 argument_list: expression (',' expression)* # argumentList;
 
 statement_block: L_CURL base_statement* P_CURL;
+
+statement_block_if:
+	L_CURL base_statement* P_CURL # ifStatementBlock;
+
+statement_block_while:
+	L_CURL base_statement* P_CURL # whileStatementBlock;
+
+statement_block_function:
+	L_CURL base_statement* function_return_statement P_CURL # functionStatementBlock;
+
+function_return_statement:
+	RETURN (expression) ';' # functionReturnStatement;
 
 struct_definition:
 	'struct' ID L_CURL (struct_body) P_CURL # structDef;
@@ -101,11 +115,11 @@ IF: 'if';
 ELSE: 'else';
 WHILE: 'while';
 STRUCT: 'struct';
+RETURN: 'return';
 
-STRING_NAME: 'string'; // Marked for string type handling
+STRING_NAME: 'string';
 
-NUMBER_NAME:
-	'NUMBER'; // Marked for float32, float64, double, and decimal
+NUMBER_NAME: 'number';
 
 ID: ('a' ..'z' | '_')+;
 

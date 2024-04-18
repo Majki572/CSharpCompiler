@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from C:/Users/jakub/Documents/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
+// Generated from f:/GitHubRepository/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -116,61 +116,61 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitRead([NotNull] KermitLangParser.ReadContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>ifBlock</c>
+	/// Enter a parse tree produced by the <c>if</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterIfBlock([NotNull] KermitLangParser.IfBlockContext context) { }
+	public virtual void EnterIf([NotNull] KermitLangParser.IfContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>ifBlock</c>
+	/// Exit a parse tree produced by the <c>if</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitIfBlock([NotNull] KermitLangParser.IfBlockContext context) { }
+	public virtual void ExitIf([NotNull] KermitLangParser.IfContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>whileBlock</c>
+	/// Enter a parse tree produced by the <c>while</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterWhileBlock([NotNull] KermitLangParser.WhileBlockContext context) { }
+	public virtual void EnterWhile([NotNull] KermitLangParser.WhileContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>whileBlock</c>
+	/// Exit a parse tree produced by the <c>while</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitWhileBlock([NotNull] KermitLangParser.WhileBlockContext context) { }
+	public virtual void ExitWhile([NotNull] KermitLangParser.WhileContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>functionBlock</c>
+	/// Enter a parse tree produced by the <c>function</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterFunctionBlock([NotNull] KermitLangParser.FunctionBlockContext context) { }
+	public virtual void EnterFunction([NotNull] KermitLangParser.FunctionContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>functionBlock</c>
+	/// Exit a parse tree produced by the <c>function</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitFunctionBlock([NotNull] KermitLangParser.FunctionBlockContext context) { }
+	public virtual void ExitFunction([NotNull] KermitLangParser.FunctionContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>structBlock</c>
+	/// Enter a parse tree produced by the <c>struct</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterStructBlock([NotNull] KermitLangParser.StructBlockContext context) { }
+	public virtual void EnterStruct([NotNull] KermitLangParser.StructContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>structBlock</c>
+	/// Exit a parse tree produced by the <c>struct</c>
 	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitStructBlock([NotNull] KermitLangParser.StructBlockContext context) { }
+	public virtual void ExitStruct([NotNull] KermitLangParser.StructContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="KermitLangParser.type"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -520,19 +520,33 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitGreaterThanEqual([NotNull] KermitLangParser.GreaterThanEqualContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>whileLoop</c>
+	/// Enter a parse tree produced by the <c>whileStatement</c>
 	/// labeled alternative in <see cref="KermitLangParser.while_statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterWhileLoop([NotNull] KermitLangParser.WhileLoopContext context) { }
+	public virtual void EnterWhileStatement([NotNull] KermitLangParser.WhileStatementContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>whileLoop</c>
+	/// Exit a parse tree produced by the <c>whileStatement</c>
 	/// labeled alternative in <see cref="KermitLangParser.while_statement"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitWhileLoop([NotNull] KermitLangParser.WhileLoopContext context) { }
+	public virtual void ExitWhileStatement([NotNull] KermitLangParser.WhileStatementContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>whileCondition</c>
+	/// labeled alternative in <see cref="KermitLangParser.while_condition"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileCondition([NotNull] KermitLangParser.WhileConditionContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>whileCondition</c>
+	/// labeled alternative in <see cref="KermitLangParser.while_condition"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileCondition([NotNull] KermitLangParser.WhileConditionContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>functionDef</c>
 	/// labeled alternative in <see cref="KermitLangParser.function_definition"/>.
@@ -629,6 +643,62 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement_block([NotNull] KermitLangParser.Statement_blockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ifStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_if"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfStatementBlock([NotNull] KermitLangParser.IfStatementBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ifStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_if"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfStatementBlock([NotNull] KermitLangParser.IfStatementBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>whileStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_while"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterWhileStatementBlock([NotNull] KermitLangParser.WhileStatementBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>whileStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_while"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitWhileStatementBlock([NotNull] KermitLangParser.WhileStatementBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>functionStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_function"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionStatementBlock([NotNull] KermitLangParser.FunctionStatementBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>functionStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_function"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionStatementBlock([NotNull] KermitLangParser.FunctionStatementBlockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>functionReturnStatement</c>
+	/// labeled alternative in <see cref="KermitLangParser.function_return_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>functionReturnStatement</c>
+	/// labeled alternative in <see cref="KermitLangParser.function_return_statement"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitFunctionReturnStatement([NotNull] KermitLangParser.FunctionReturnStatementContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>structDef</c>
 	/// labeled alternative in <see cref="KermitLangParser.struct_definition"/>.

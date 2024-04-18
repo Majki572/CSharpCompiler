@@ -10,12 +10,12 @@ public class Variable
         this.Id = id;
         this.Type = type;
     }
-    
+
     public string GetId()
     {
         return this.Id;
     }
-    
+
     public void Print()
     {
         Console.WriteLine($"{this.Id} : {this.Type}");
@@ -30,7 +30,7 @@ public class StringVariable : Variable
     {
         this.Length = length;
     }
-    
+
     public StringVariable(string id, int length, VariableType type) : base(id, VariableType.STRING)
     {
         this.Length = length;
