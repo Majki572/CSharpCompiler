@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from f:/GitHubRepository/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
+// Generated from C:/Users/jakub/Documents/CSharpCompiler/Compiler/Grammar/KermitLang.g4 by ANTLR 4.13.1
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -277,17 +277,17 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitNeg([NotNull] KermitLangParser.NegContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>expression4Empty</c>
+	/// Enter a parse tree produced by the <c>expression3Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterExpression4Empty([NotNull] KermitLangParser.Expression4EmptyContext context);
+	void EnterExpression3Empty([NotNull] KermitLangParser.Expression3EmptyContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>expression4Empty</c>
+	/// Exit a parse tree produced by the <c>expression3Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitExpression4Empty([NotNull] KermitLangParser.Expression4EmptyContext context);
+	void ExitExpression3Empty([NotNull] KermitLangParser.Expression3EmptyContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>id</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.
@@ -372,6 +372,78 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitIfStatement([NotNull] KermitLangParser.IfStatementContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>equal</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEqual([NotNull] KermitLangParser.EqualContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>equal</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEqual([NotNull] KermitLangParser.EqualContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>notEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterNotEqual([NotNull] KermitLangParser.NotEqualContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>notEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitNotEqual([NotNull] KermitLangParser.NotEqualContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>lessThan</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLessThan([NotNull] KermitLangParser.LessThanContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>lessThan</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLessThan([NotNull] KermitLangParser.LessThanContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>greaterThan</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGreaterThan([NotNull] KermitLangParser.GreaterThanContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>greaterThan</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGreaterThan([NotNull] KermitLangParser.GreaterThanContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>lessThanEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLessThanEqual([NotNull] KermitLangParser.LessThanEqualContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>lessThanEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLessThanEqual([NotNull] KermitLangParser.LessThanEqualContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>greaterThanEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterGreaterThanEqual([NotNull] KermitLangParser.GreaterThanEqualContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>greaterThanEqual</c>
+	/// labeled alternative in <see cref="KermitLangParser.compareStatement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitGreaterThanEqual([NotNull] KermitLangParser.GreaterThanEqualContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>whileLoop</c>
 	/// labeled alternative in <see cref="KermitLangParser.while_statement"/>.

@@ -1,4 +1,7 @@
 using Compiler.Grammar.model;
+using Compiler.Grammar.src.Actions;
+using Compiler.Grammar.src.Actions.Expression;
+using Compiler.Grammar.src.Variables;
 
 namespace Compiler.Grammar.src;
 
@@ -17,10 +20,10 @@ public class Generator
         String text = "";
         text += "declare i32 @printf(i8*, ...)\n";
         text += "declare i32 @__isoc99_scanf(i8*, ...)\n";
-        text += "declare noalias i8* @malloc(i64 noundef)\n";
-        text += "declare i8* @strcpy(i8* noundef, i8* noundef)\n";
-        text += "declare i8* @strcat(i8* noundef, i8* noundef)\n";
-
+        text += "declare noalias i8* @malloc(i64)\n";
+        text += "declare i8* @strcpy(i8*, i8*)\n";
+        text += "declare i8* @strcat(i8*, i8*)\n";
+        
         text += "@strpd = constant [4 x i8] c\"%d\\0A\\00\"\n";
         text += "@strplld = constant [6 x i8] c\"%lld\\0A\\00\"\n";
         text += "@strpf = constant [4 x i8] c\"%f\\0A\\00\"\n";
@@ -35,7 +38,7 @@ public class Generator
         text += "@strss = constant [3 x i8] c\"%s\\00\"\n";
         text += "@strps = constant [4 x i8] c\"%s\\0A\\00\"\n";
         text += HeaderText;
-        text += "define i32 @main() nounwind{\n";
+        text += "define i32 @main() {\n";
         text += MainText;
         text += "ret i32 0 }\n";
 
@@ -51,6 +54,86 @@ public class Generator
         return text;
     }
 
+    public static void Declare(Variable variable, Variable value)
+    {
+        MainText += DeclareGenerator.Declare(variable, value);
+    }
+
+    public static void Assign(Variable variable, Variable newVariable)
+    {
+        MainText += AssignGenerator.Assign(variable, newVariable);   
+    }
+    
+    public static void Print(Variable variable)
+    {
+        MainText += PrintGenerator.Print(variable);
+    }
+    
+    public static void Read(Variable variable)
+    {
+        MainText += ReadGenerator.Read(variable);
+    }
+    
+    public static void Add(Variable variable1, Variable variable2)
+    {
+        MainText += AddGenerator.Add(variable1, variable2);
+    }
+    
+    public static void Sub(Variable variable1, Variable variable2)
+    {
+        MainText += SubGenerator.Sub(variable1, variable2);
+    }
+    
+    public static void Mul(Variable variable1, Variable variable2)
+    {
+        MainText += MulGenerator.Mul(variable1, variable2);
+    }
+    
+    public static void Div(Variable variable1, Variable variable2)
+    {
+        MainText += DivGenerator.Div(variable1, variable2);
+    }
+    
+    public static void And(Variable variable1, Variable variable2)
+    {
+        
+    }
+    
+    public static void Or(Variable variable1, Variable variable2)
+    {
+        
+    }
+    
+    public static void Xor(Variable variable1, Variable variable2)
+    {
+        
+    }
+    
+    public static void If(Variable variable)
+    {
+        
+    }
+    
+    public static void Func(Variable variable)
+    {
+        
+    }
+    
+    public static void FuncCall(Variable variable)
+    {
+        
+    }
+    
+    public static void LoadVariable(Variable variable)
+    {
+        MainText += LoadVariableGenerator.LoadVariable(variable);
+    }
+    
+    public static void LoadStringVariable(string id, string value)
+    {
+        HeaderText += StringGenerator.AllocateConstantString(id, value);
+    }
+    
     // Allocate
     public static void AllocateShort(String id)
     {
@@ -251,11 +334,6 @@ public class Generator
         Reg++;
     }
 
-    public static void PrintNumber(String id)
-    {
-
-    }
-
     // Read
     public static void ReadShort(String id)
     {
@@ -343,7 +421,7 @@ public class Generator
     }
     public static string GetConstString(StringVariable variable)
     {
-        return $"getelementptr inbounds ([{variable.Length + 1} x i8], [{variable.Length + 1} x i8]* @{variable.Id}, i64 0, i64 0)";
+        return $"getelementptr inbounds ([{variable.Length + 1} x i8], [{variable.Length + 1} x i8]* {variable.Id}, i64 0, i64 0)";
     }
 
     // Sub
@@ -488,5 +566,20 @@ public class Generator
     {
         MainText += "%" + Reg + " = call i32 @" + id + "(" + parameters + ")\n";
         Reg++;
+    }
+
+    public static string GetId(string id)
+    {
+        return "%" + id;
+    }
+    
+    public static string GetReg()
+    {
+        return "%" + Reg;
+    }
+    
+    public static string GetReg(int sub)
+    {
+        return "%" + (Reg - sub);
     }
 }
