@@ -143,33 +143,11 @@ public class Generator
         HeaderText += StringGenerator.AllocateConstantString(id, value);
     }
     
-    // And
-    public static void AndBool(String value1, String value2)
-    {
-        MainText += "%" + Reg + " = and i1 " + value1 + ", " + value2 + "\n";
-        Reg++;
-    }
-
-    // Or
-    public static void OrBool(String value1, String value2)
-    {
-        MainText += "%" + Reg + " = or i1 " + value1 + ", " + value2 + "\n";
-        Reg++;
-    }
-
-
-    // Xor
-    public static void XorBool(String value1, String value2)
-    {
-        MainText += "%" + Reg + " = xor i1 " + value1 + ", " + value2 + "\n";
-        Reg++;
-    }
-
     // If
     public static void IfStart()
     {
         Br++;
-        MainText += "br i1 %" + (Reg - 1) + ", label %true" + Br + ", label %false" + Br + "\n";
+        MainText += "br i1 " + Generator.GetReg(1) + ", label %true" + Br + ", label %false" + Br + "\n";
         MainText += "true" + Br + ":\n";
         BrStack.Push(Br);
     }
@@ -193,7 +171,7 @@ public class Generator
     public static void WhileConditionEnd()
     {
         int b = BrStack.Peek();
-        MainText += "br i1 %" + (Reg - 1) + ", label %whileTrue" + b + ", label %whileFalse" + b + "\n";
+        MainText += "br i1 " + Generator.GetReg(1) + ", label %whileTrue" + b + ", label %whileFalse" + b + "\n";
         MainText += "whileTrue" + b + ":\n";
     }
 
@@ -208,37 +186,37 @@ public class Generator
 
     public static void Equal(string operation)
     {
-        MainText += "%" + Reg + " = " + operation + " %" + (Reg - 2) + ", %" + (Reg - 1) + "\n";
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + Generator.GetReg(1) + "\n";
         Reg++;
     }
 
     public static void NotEqual(string operation)
     {
-        MainText += "%" + Reg + " = " + operation + " %" + (Reg - 2) + ", %" + (Reg - 1) + "\n";
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
         Reg++;
     }
 
     public static void LessThan(string operation)
     {
-        MainText += "%" + Reg + " = " + operation + " %" + (Reg - 2) + ", %" + (Reg - 1) + "\n";
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
         Reg++;
     }
 
     public static void GreaterThan(string operation)
     {
-        MainText += "%" + Reg + " = " + operation + " %" + (Reg - 2) + ", %" + (Reg - 1) + "\n";
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
         Reg++;
     }
 
     public static void LessOrEqual(string operation)
     {
-        MainText += "%" + Reg + " = " + operation + " %" + (Reg - 2) + ", %" + (Reg - 1) + "\n";
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
         Reg++;
     }
 
     public static void GreaterOrEqual(string operation)
     {
-        MainText += "%" + Reg + " = " + operation + " %" + (Reg - 2) + ", %" + (Reg - 1) + "\n";
+        MainText += GetReg() + " = " + operation + " " + GetReg(2) + ", %" + (Generator.GetReg(1)) + "\n";
         Reg++;
     }
 
@@ -314,7 +292,7 @@ public class Generator
 
     // public static void FuncCall(String id, String parameters)
     // {
-    //     MainText += "%" + Reg + " = call i32 @" + id + "(" + parameters + ")\n";
+    //     MainText += GetReg() + " = call i32 @" + id + "(" + parameters + ")\n";
     //     Reg++;
     // }
 
@@ -327,7 +305,7 @@ public class Generator
     {
         if (IsMain)
         {
-            return "%" + Reg;
+            return GetReg();
         }
 
         if (IsFunction)

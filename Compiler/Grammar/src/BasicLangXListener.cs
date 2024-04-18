@@ -240,37 +240,37 @@ public class BasicLangXListener : KermitLangBaseListener
             if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
             {
                 Generator.Equal(OperationManager.EqualsConvertToLLVMOperation(VariableType.SHORT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.SHORT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.SHORT));
             }
 
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
             {
                 Generator.Equal(OperationManager.EqualsConvertToLLVMOperation(VariableType.INT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.INT));
             }
 
             if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
             {
                 Generator.Equal(OperationManager.EqualsConvertToLLVMOperation(VariableType.FLOAT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.FLOAT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
             {
                 Generator.Equal(OperationManager.EqualsConvertToLLVMOperation(VariableType.DOUBLE));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.DOUBLE));
             }
 
             if (left.Type == VariableType.BOOL && right.Type == VariableType.BOOL && isValid)
             {
                 Generator.Equal(OperationManager.EqualsConvertToLLVMOperation(VariableType.BOOL));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.BOOL));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.BOOL));
             }
 
             if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
             {
                 Generator.Equal(OperationManager.EqualsConvertToLLVMOperation(VariableType.LOGNLONG));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.LOGNLONG));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.LOGNLONG));
             }
         }
         catch (Exception e)
@@ -295,37 +295,37 @@ public class BasicLangXListener : KermitLangBaseListener
             if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
             {
                 Generator.NotEqual(OperationManager.NotEqualConvertToLLVMOperation(VariableType.SHORT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.SHORT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.SHORT));
             }
 
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
             {
                 Generator.NotEqual(OperationManager.NotEqualConvertToLLVMOperation(VariableType.INT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.INT));
             }
 
             if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
             {
                 Generator.NotEqual(OperationManager.NotEqualConvertToLLVMOperation(VariableType.FLOAT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.FLOAT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
             {
                 Generator.NotEqual(OperationManager.NotEqualConvertToLLVMOperation(VariableType.DOUBLE));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.DOUBLE));
             }
 
             if (left.Type == VariableType.BOOL && right.Type == VariableType.BOOL && isValid)
             {
                 Generator.NotEqual(OperationManager.NotEqualConvertToLLVMOperation(VariableType.BOOL));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.BOOL));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.BOOL));
             }
 
             if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
             {
                 Generator.NotEqual(OperationManager.NotEqualConvertToLLVMOperation(VariableType.LOGNLONG));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.LOGNLONG));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.LOGNLONG));
             }
         }
         catch (Exception e)
@@ -351,31 +351,31 @@ public class BasicLangXListener : KermitLangBaseListener
             if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
             {
                 Generator.LessThan(OperationManager.LessThanConvertToLLVMOperation(VariableType.SHORT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.SHORT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.SHORT));
             }
 
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
             {
                 Generator.LessThan(OperationManager.LessThanConvertToLLVMOperation(VariableType.INT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.INT));
             }
 
             if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
             {
                 Generator.LessThan(OperationManager.LessThanConvertToLLVMOperation(VariableType.FLOAT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.FLOAT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
             {
                 Generator.LessThan(OperationManager.LessThanConvertToLLVMOperation(VariableType.DOUBLE));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.DOUBLE));
             }
 
             if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
             {
                 Generator.LessThan(OperationManager.LessThanConvertToLLVMOperation(VariableType.LOGNLONG));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.LOGNLONG));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.LOGNLONG));
             }
         }
         catch (Exception e)
@@ -401,31 +401,31 @@ public class BasicLangXListener : KermitLangBaseListener
             if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
             {
                 Generator.GreaterThan(OperationManager.GreaterThanConvertToLLVMOperation(VariableType.SHORT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.SHORT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.SHORT));
             }
 
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
             {
                 Generator.GreaterThan(OperationManager.GreaterThanConvertToLLVMOperation(VariableType.INT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.INT));
             }
 
             if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
             {
                 Generator.GreaterThan(OperationManager.GreaterThanConvertToLLVMOperation(VariableType.FLOAT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.FLOAT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
             {
                 Generator.GreaterThan(OperationManager.GreaterThanConvertToLLVMOperation(VariableType.DOUBLE));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.DOUBLE));
             }
 
             if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
             {
                 Generator.GreaterThan(OperationManager.GreaterThanConvertToLLVMOperation(VariableType.LOGNLONG));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.LOGNLONG));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.LOGNLONG));
             }
         }
         catch (Exception e)
@@ -451,31 +451,31 @@ public class BasicLangXListener : KermitLangBaseListener
             if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
             {
                 Generator.LessOrEqual(OperationManager.LessOrEqualConvertToLLVMOperation(VariableType.SHORT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.SHORT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.SHORT));
             }
 
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
             {
                 Generator.LessOrEqual(OperationManager.LessOrEqualConvertToLLVMOperation(VariableType.INT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.INT));
             }
 
             if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
             {
                 Generator.LessOrEqual(OperationManager.LessOrEqualConvertToLLVMOperation(VariableType.FLOAT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.FLOAT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
             {
                 Generator.LessOrEqual(OperationManager.LessOrEqualConvertToLLVMOperation(VariableType.DOUBLE));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.DOUBLE));
             }
 
             if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
             {
                 Generator.LessOrEqual(OperationManager.LessOrEqualConvertToLLVMOperation(VariableType.LOGNLONG));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.LOGNLONG));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.LOGNLONG));
             }
         }
         catch (Exception e)
@@ -501,31 +501,31 @@ public class BasicLangXListener : KermitLangBaseListener
             if (left.Type == VariableType.SHORT && right.Type == VariableType.SHORT && isValid)
             {
                 Generator.GreaterOrEqual(OperationManager.GreaterOrEqualConvertToLLVMOperation(VariableType.SHORT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.SHORT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.SHORT));
             }
 
             if (left.Type == VariableType.INT && right.Type == VariableType.INT && isValid)
             {
                 Generator.GreaterOrEqual(OperationManager.GreaterOrEqualConvertToLLVMOperation(VariableType.INT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.INT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.INT));
             }
 
             if (left.Type == VariableType.FLOAT && right.Type == VariableType.FLOAT && isValid)
             {
                 Generator.GreaterOrEqual(OperationManager.GreaterOrEqualConvertToLLVMOperation(VariableType.FLOAT));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.FLOAT));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.FLOAT));
             }
 
             if (left.Type == VariableType.DOUBLE && right.Type == VariableType.DOUBLE && isValid)
             {
                 Generator.GreaterOrEqual(OperationManager.GreaterOrEqualConvertToLLVMOperation(VariableType.DOUBLE));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.DOUBLE));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.DOUBLE));
             }
 
             if (left.Type == VariableType.LOGNLONG && right.Type == VariableType.LOGNLONG && isValid)
             {
                 Generator.GreaterOrEqual(OperationManager.GreaterOrEqualConvertToLLVMOperation(VariableType.LOGNLONG));
-                _stack.Push(new Variable((Generator.Reg - 1).ToString(), VariableType.LOGNLONG));
+                _stack.Push(new Variable(Generator.GetReg(1), VariableType.LOGNLONG));
             }
         }
         catch (Exception e)

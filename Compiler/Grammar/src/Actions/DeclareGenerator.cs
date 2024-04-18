@@ -25,14 +25,22 @@ public class DeclareGenerator
             case VariableType.FLOAT:
                 res += FloatGenerator.AllocateFloat(variable.GetId());
                 res += FloatGenerator.AssignFloat(variable.GetId(), value.GetId());
-                break;  
+                break;
             case VariableType.DOUBLE:
                 res += DoubleGenerator.AllocateDouble(variable.GetId());
                 res += DoubleGenerator.AssignDouble(variable.GetId(), value.GetId());
                 break;
             case VariableType.BOOL:
                 res += BoolGenerator.AllocateBool(variable.GetId());
-                res += BoolGenerator.AssignBool(variable.GetId(), value.GetId());
+                var boolValue = value.GetId();
+                if (boolValue.Equals("true"))
+                {
+                    res += BoolGenerator.AssignBool(variable.GetId(), "1");
+                }
+                else
+                {
+                    res += BoolGenerator.AssignBool(variable.GetId(), "0");
+                }
                 break;
             case VariableType.STRING or VariableType.STRING_CONST:
                 if (variable is StringVariable stringVariable)
