@@ -10,7 +10,7 @@ public class Program()
     {
         var sep = Path.DirectorySeparatorChar;
         var path = $"..{sep}..{sep}..{sep}Grammar{sep}";
-        var input = File.ReadAllText(path + "langX.test");
+        var input = File.ReadAllText(path + "langX-big.test");
 
         var inputStream = new AntlrInputStream(input);
         var lexer = new KermitLangLexer(inputStream);

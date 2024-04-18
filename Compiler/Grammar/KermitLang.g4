@@ -5,7 +5,7 @@ start: base_statement*;
 base_statement: statement;
 
 statement:
-	type ID (expression) ';'				# declare
+	type ID ('=' expression)? ';'			# declare
 	| ID '=' (expression) ';'				# assign
 	| PRINT L_PAR (expression) P_PAR ';'	# print
 	| READ L_PAR ID P_PAR ';'				# read
@@ -33,10 +33,10 @@ expression1:
 	| expression2 DIV expression1	# expressionBaseDiv
 	| expression2					# expression2Empty;
 expression2:
-	expression3 'AND' expression2	# and
-	| expression3 'OR' expression2	# or
-	| expression3 'XOR' expression2	# xor
-	| expression3 'NEG' expression2	# neg
+	expression3 'and' expression2	# and
+	| expression3 'or' expression2	# or
+	| expression3 'xor' expression2	# xor
+	| expression3 'neg' expression2	# neg
 	| expression3					# expression4Empty;
 expression3:
 	ID							# id
@@ -47,7 +47,15 @@ expression3:
 	| function_call				# functionCall;
 
 if_statement:
-	IF L_PAR (ID | BOOL) P_PAR L_CURL statement_block P_CURL # ifStatement;
+	IF L_PAR (compareStatement | BOOL | ID) P_PAR L_CURL statement_block P_CURL # ifStatement;
+
+compareStatement:
+	expression '==' expression		# equal
+	| expression '!=' expression	# notEqual
+	| expression '<' expression		# lessThan
+	| expression '>' expression		# greaterThan
+	| expression '<=' expression	# lessThanEqual
+	| expression '>=' expression	# greaterThanEqual;
 
 while_statement:
 	WHILE L_PAR (expression) P_PAR L_CURL statement_block P_CURL # whileLoop;
