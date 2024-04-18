@@ -2,6 +2,7 @@ using Compiler.Grammar.model;
 using Compiler.Grammar.src.Actions;
 using Compiler.Grammar.src.Actions.Expression;
 using Compiler.Grammar.src.Methods;
+using Compiler.Grammar.src.Structs;
 using Compiler.Grammar.src.Variables;
 
 namespace Compiler.Grammar.src;
@@ -365,5 +366,37 @@ public class Generator
         }
         
         return "";
+    }
+
+    public static void DeclareStruct(Struct currentStruct)
+    {
+        HeaderText += StructDeclareGenerator.DeclareStruct(currentStruct.Name);
+    }
+
+    public static void DeclareStructField(Struct currentStruct, Variable[] variables)
+    {
+        HeaderText += StructDeclareGenerator.DeclareStructFields(currentStruct.Name, variables);
+    }
+
+    public static void DeclareStructEmpty(String id, Struct @struct)
+    {
+        MainText += StructCallGenerator.AllocateStruct(id, @struct.Name);
+        MainText += StructCallGenerator.AllocateStructSize(@struct.CountSize());
+        MainText += StructCallGenerator.BitcastStruct(GetReg(1), @struct.Name);
+        MainText += StructCallGenerator.StoreStruct(id, @struct.Name, GetReg(1));
+    }
+
+    public static void AssignStructField(Struct @struct, StructVariable variable, Variable value, int filedIndex)
+    {
+        MainText += StructCallGenerator.LoadStruct(variable.GetId(), @struct.Name);
+        MainText += StructCallGenerator.LoadStructField(GetReg(1), @struct.Name, filedIndex.ToString());
+        MainText += AssignGenerator.Assign(new Variable(GetReg(1), variable.Struct.Fields[filedIndex].Type), value);
+    }
+
+    public static void LoadStructField(Struct structType, StructVariable variable, int filedIndex)
+    {
+        MainText += StructCallGenerator.LoadStruct(variable.GetId(), structType.Name);
+        MainText += StructCallGenerator.LoadStructField(GetReg(1), structType.Name, filedIndex.ToString());
+        MainText += LoadVariableGenerator.LoadVariable(new Variable(GetReg(1), variable.Struct.Fields[filedIndex].Type));
     }
 }

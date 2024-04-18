@@ -1,0 +1,16 @@
+struct temp {
+    int a;
+    int b;
+    double d;
+}
+
+int main() {
+    struct temp ele;
+    ele.a = 123;
+    ele.b = 456;
+    ele.d = 789.123;
+    print(ele.a);
+    print(ele.b);
+    print(ele.b + ele.a);
+    return 0;
+}

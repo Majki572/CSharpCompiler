@@ -14,6 +14,9 @@ public class BasicLangXListener : KermitLangBaseListener
     private readonly Dictionary<string, Method> _methods = new Dictionary<string, Method>();
     private Method _currentMethod;
     
+    private readonly Dictionary<string, Struct> _structs = new Dictionary<string, Struct>();
+    private Struct _currentStruct;
+    
     private readonly Dictionary<string, string> _constants = new Dictionary<string, string>();
     private readonly Stack<Variable> _stack = new Stack<Variable>();
     private VariableType _currentType;
@@ -883,10 +886,6 @@ public class BasicLangXListener : KermitLangBaseListener
         Generator.FunctionCall(method, arguments.ToArray());
         _stack.Push(new Variable(Generator.GetReg(1), method.ReturnType));
     }
-    
-    void ExitStatement_block([NotNull] KermitLangParser.Statement_blockContext context) { }
-    void ExitStructDef([NotNull] KermitLangParser.StructDefContext context) { }
-    void ExitStructMembers([NotNull] KermitLangParser.StructMembersContext context) { }
 
     public virtual void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context) { }
     public virtual void EnterEveryRule([NotNull] ParserRuleContext context) { }
@@ -894,6 +893,139 @@ public class BasicLangXListener : KermitLangBaseListener
     public virtual void VisitTerminal([NotNull] ITerminalNode node) { }
     public virtual void VisitErrorNode([NotNull] IErrorNode node) { }
 
+    #region struct
+
+    public override void EnterStructDef(KermitLangParser.StructDefContext context)
+    {
+        var structName = GetStructName(context.ID().GetText());
+        _currentStruct = new Struct(structName);
+        Generator.DeclareStruct(_currentStruct);
+    }
+
+    public override void ExitStructMembers(KermitLangParser.StructMembersContext context)
+    {
+        var types = context.type();
+        var ids = context.ID();
+        
+        for (var i = 0; i < types.Length; i++)
+        {
+            var type = Util.Util.MapType(types[i].GetText());
+            var id = ids[i].GetText();
+            _currentStruct.Fields.Add(new Variable(id, type));
+        }
+        
+        Generator.DeclareStructField(_currentStruct, _currentStruct.Fields.ToArray());
+    }
+    
+    public override void ExitStructDef(KermitLangParser.StructDefContext context)
+    {
+        _structs.Add(_currentStruct.Name, _currentStruct);
+    }
+
+    public override void ExitStructEmpty(KermitLangParser.StructEmptyContext context)
+    {
+        var structName = GetStructName(context.ID(0).GetText());
+        var structId = MakeId(context.ID(1).GetText());
+        _structs.TryGetValue(structName, out var @struct);
+        if (@struct == null)
+        {
+            AddError(context.Start.Line, $"Struct {structName} is not defined.");
+            return;
+        }
+
+        Generator.DeclareStructEmpty(structId, @struct);
+        _scopedVariables.DeclareVariable(structId, new StructVariable(structId, @struct));
+    }
+
+    public override void EnterStructAssign(KermitLangParser.StructAssignContext context)
+    {
+        var structId = MakeId(context.ID(0).GetText());
+        var structVariable = _scopedVariables.LookupVariable(structId);
+        if (structVariable == null)
+        {
+            AddError(context.Start.Line, $"Struct {structId} is not defined.");
+            return;
+        }
+
+        if (structVariable.Type != VariableType.STRUCT)
+        {
+            AddError(context.Start.Line, $"Variable {structId} is not a struct.");
+            return;
+        }
+        
+        _currentType = ((StructVariable) structVariable).Struct.Fields.FirstOrDefault(x => x.Id == context.ID(1).GetText())!.Type;
+    }
+
+    public override void ExitStructAssign(KermitLangParser.StructAssignContext context)
+    {
+        var structId = MakeId(context.ID(0).GetText());
+        var fieldId = context.ID(1).GetText();
+        var structVariable = _scopedVariables.LookupVariable(structId);
+        if (structVariable == null)
+        {
+            AddError(context.Start.Line, $"Struct {structId} is not defined.");
+            return;
+        }
+
+        if (structVariable.Type != VariableType.STRUCT)
+        {
+            AddError(context.Start.Line, $"Variable {structId} is not a struct.");
+            return;
+        }
+
+        var structType = ((StructVariable) structVariable).Struct;
+        var field = structType.Fields.FirstOrDefault(x => x.Id == fieldId);
+        if (field == null)
+        {
+            AddError(context.Start.Line, $"Field {fieldId} is not defined in struct {structId}.");
+            return;
+        }
+
+        var value = _stack.Pop();
+        if (value.Type != field.Type)
+        {
+            AddError(context.Start.Line, $"Type mismatch when trying to assign {value.Type} to {field.Type}.");
+            return;
+        }
+        
+        var filedIndex = structType.Fields.IndexOf(field);
+        
+        Generator.AssignStructField(structType, (StructVariable) structVariable, value, filedIndex);
+    }
+
+    public override void ExitStructMember(KermitLangParser.StructMemberContext context)
+    {
+        var structId = MakeId(context.ID(0).GetText());
+        var fieldId = context.ID(1).GetText();
+        var structVariable = _scopedVariables.LookupVariable(structId);
+        if (structVariable == null)
+        {
+            AddError(context.Start.Line, $"Struct {structId} is not defined.");
+            return;
+        }
+
+        if (structVariable.Type != VariableType.STRUCT)
+        {
+            AddError(context.Start.Line, $"Variable {structId} is not a struct.");
+            return;
+        }
+
+        var structType = ((StructVariable) structVariable).Struct;
+        var field = structType.Fields.FirstOrDefault(x => x.Id == fieldId);
+        if (field == null)
+        {
+            AddError(context.Start.Line, $"Field {fieldId} is not defined in struct {structId}.");
+            return;
+        }
+        
+        var filedIndex = structType.Fields.IndexOf(field);
+
+        Generator.LoadStructField(structType, (StructVariable) structVariable, filedIndex);
+        _stack.Push(new Variable(Generator.GetReg(1), field.Type));
+    }
+
+    #endregion
+    
     private void AddError(int line, string msg)
     {
         Errors.Add($"Error in line {line}: {msg}");
@@ -902,5 +1034,10 @@ public class BasicLangXListener : KermitLangBaseListener
     private string MakeId(string id)
     {
         return "%" + id;
+    }
+    
+    private string GetStructName(string id)
+    {
+        return "%struct." + id;
     }
 }

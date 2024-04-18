@@ -13,7 +13,10 @@ statement:
 	| if_statement							# if
 	| while_statement						# while
 	| function_definition					# function
-	| struct_definition						# struct;
+	| struct_definition						# struct
+	| 'struct' ID ID ';'					# structEmpty
+	| ID '.' ID '=' expression ';'			# structAssign
+	;
 
 type:
 	INTEGER_NAME
@@ -45,6 +48,7 @@ expression3:
 	| NUMBER					# number
 	| STRING					# string
 	| L_PAR expression P_PAR	# expressionInParens
+	| ID '.' ID					# structMember
 	| function_call				# functionCall;
 
 if_statement:

@@ -107,6 +107,20 @@ public interface IKermitLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitStruct([NotNull] KermitLangParser.StructContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>structEmpty</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructEmpty([NotNull] KermitLangParser.StructEmptyContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>structAssign</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructAssign([NotNull] KermitLangParser.StructAssignContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="KermitLangParser.type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -224,6 +238,13 @@ public interface IKermitLangVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>structMember</c>
+	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStructMember([NotNull] KermitLangParser.StructMemberContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>functionCall</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.

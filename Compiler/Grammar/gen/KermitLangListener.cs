@@ -159,6 +159,30 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitStruct([NotNull] KermitLangParser.StructContext context);
 	/// <summary>
+	/// Enter a parse tree produced by the <c>structEmpty</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStructEmpty([NotNull] KermitLangParser.StructEmptyContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>structEmpty</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStructEmpty([NotNull] KermitLangParser.StructEmptyContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>structAssign</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStructAssign([NotNull] KermitLangParser.StructAssignContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>structAssign</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStructAssign([NotNull] KermitLangParser.StructAssignContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="KermitLangParser.type"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -360,6 +384,18 @@ public interface IKermitLangListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitExpressionInParens([NotNull] KermitLangParser.ExpressionInParensContext context);
+	/// <summary>
+	/// Enter a parse tree produced by the <c>structMember</c>
+	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterStructMember([NotNull] KermitLangParser.StructMemberContext context);
+	/// <summary>
+	/// Exit a parse tree produced by the <c>structMember</c>
+	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitStructMember([NotNull] KermitLangParser.StructMemberContext context);
 	/// <summary>
 	/// Enter a parse tree produced by the <c>functionCall</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.
