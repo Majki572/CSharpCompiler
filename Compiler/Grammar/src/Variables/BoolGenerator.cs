@@ -9,12 +9,12 @@ public class BoolGenerator
 
     public static string AssignBool(string id, string value)
     {
-        return "store i1 " + value + ", ii* " + id + "\n";
+        return "store i1 " + value + ", i1* " + id + "\n";
     }
 
     public static string LoadBool(string id)
     {
-        return Generator.GetRegInc() + " = load ii, ii* " + id + "\n";
+        return Generator.GetRegInc() + " = load i1, i1* " + id + "\n";
     }
 
     public static string MapBool(string id)

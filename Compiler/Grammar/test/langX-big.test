@@ -1,8 +1,9 @@
 double main(){
 
-    bool trulizna = true;
+    int a = 1;
+    int b = 7;
 
-    if(trulizna){
+    if(a < b){
        print("mama");
     }
     return 0.0;
