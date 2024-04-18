@@ -9,10 +9,10 @@ statement:
 	| ID '=' (expression) ';'				# assign
 	| PRINT L_PAR (expression) P_PAR ';'	# print
 	| READ L_PAR ID P_PAR ';'				# read
-	| if_statement ';'						# ifBlock
-	| while_statement ';'					# whileBlock
-	| function_definition ';'				# functionBlock
-	| struct_definition ';'					# structBlock;
+	| if_statement							# ifBlock
+	| while_statement						# whileBlock
+	| function_definition					# functionBlock
+	| struct_definition						# structBlock;
 
 type:
 	INTEGER_NAME
@@ -37,7 +37,7 @@ expression2:
 	| expression3 'or' expression2	# or
 	| expression3 'xor' expression2	# xor
 	| expression3 'neg' expression2	# neg
-	| expression3					# expression4Empty;
+	| expression3					# expression3Empty;
 expression3:
 	ID							# id
 	| BOOL						# bool
@@ -47,7 +47,7 @@ expression3:
 	| function_call				# functionCall;
 
 if_statement:
-	IF L_PAR (compareStatement | BOOL | ID) P_PAR L_CURL statement_block P_CURL # ifStatement;
+	IF L_PAR (compareStatement | BOOL | ID) P_PAR statement_block_if # ifStatement;
 
 compareStatement:
 	expression '==' expression		# equal
@@ -58,10 +58,10 @@ compareStatement:
 	| expression '>=' expression	# greaterThanEqual;
 
 while_statement:
-	WHILE L_PAR (expression) P_PAR L_CURL statement_block P_CURL # whileLoop;
+	WHILE L_PAR (expression) P_PAR statement_block # whileLoop;
 
 function_definition:
-	type ID L_PAR parameter_list P_PAR L_CURL statement_block P_CURL # functionDef;
+	type ID L_PAR parameter_list P_PAR statement_block # functionDef;
 
 parameter_list:
 									# noParameters
@@ -74,6 +74,9 @@ function_call: ID L_PAR argument_list? P_PAR # functionInvoke;
 argument_list: expression (',' expression)* # argumentList;
 
 statement_block: L_CURL base_statement* P_CURL;
+
+statement_block_if:
+	L_CURL base_statement* P_CURL # ifStatementBlock;
 
 struct_definition:
 	'struct' ID L_CURL (struct_body) P_CURL # structDef;
@@ -102,10 +105,9 @@ ELSE: 'else';
 WHILE: 'while';
 STRUCT: 'struct';
 
-STRING_NAME: 'STRING'; // Marked for string type handling
+STRING_NAME: 'string';
 
-NUMBER_NAME:
-	'NUMBER'; // Marked for float32, float64, double, and decimal
+NUMBER_NAME: 'number';
 
 ID: ('a' ..'z' | '_')+;
 

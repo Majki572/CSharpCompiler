@@ -8,7 +8,7 @@ public class Generator
     public static string MainText = "";
     public static int Reg = 1;
     public static int Reg2 = 2;
-    public static int Buff = 0;
+    public static int Br = 0;
     public static string Buffer = "";
     public static Stack<int> BrStack = new Stack<int>();
 
@@ -199,21 +199,21 @@ public class Generator
     public static void PrintShort(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 " +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 %" +
                     id + ")\n";
         Reg++;
     }
     public static void PrintInteger(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 " +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strpd, i64 0, i64 0), i32 %" +
                     (id) + ")\n";
         Reg++;
     }
     public static void PrintLong(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @strplld, i64 0, i64 0), i64 " +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @strplld, i64 0, i64 0), i64 %" +
                     (id) + ")\n";
         Reg++;
     }
@@ -229,7 +229,7 @@ public class Generator
     public static void PrintDouble(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @strplf, i64 0, i64 0), double " +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @strplf, i64 0, i64 0), double %" +
                     id + ")\n";
         Reg++;
     }
@@ -246,7 +246,7 @@ public class Generator
     public static void PrintString(String id)
     {
         MainText += "%" + Reg +
-                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* " +
+                    " = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @strps, i64 0, i64 0), i8* %" +
                     id + ")\n";
         Reg++;
     }
@@ -450,13 +450,12 @@ public class Generator
     }
 
     // If
-    public static void IfStart(String conditionVariable)
+    public static void IfStart()
     {
-        MainText += "br i1" + conditionVariable + ", label %true" + Buff + ", label %false" + Buff + "\n";
-        MainText += "true" + Buff + ":\n";
-        var b = Buff;
-        BrStack.Push(b);
-        Buff++;
+        Br++;
+        MainText += "br i1 %" + (Reg - 1) + ", label %true" + Br + ", label %false" + Br + "\n";
+        MainText += "true" + Br + ":\n";
+        BrStack.Push(Br);
     }
 
     public static void IfEnd()

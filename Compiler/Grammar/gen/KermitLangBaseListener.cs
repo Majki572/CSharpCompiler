@@ -324,19 +324,19 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitNeg([NotNull] KermitLangParser.NegContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by the <c>expression4Empty</c>
+	/// Enter a parse tree produced by the <c>expression3Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterExpression4Empty([NotNull] KermitLangParser.Expression4EmptyContext context) { }
+	public virtual void EnterExpression3Empty([NotNull] KermitLangParser.Expression3EmptyContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by the <c>expression4Empty</c>
+	/// Exit a parse tree produced by the <c>expression3Empty</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression2"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitExpression4Empty([NotNull] KermitLangParser.Expression4EmptyContext context) { }
+	public virtual void ExitExpression3Empty([NotNull] KermitLangParser.Expression3EmptyContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>id</c>
 	/// labeled alternative in <see cref="KermitLangParser.expression3"/>.
@@ -629,6 +629,20 @@ public partial class KermitLangBaseListener : IKermitLangListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitStatement_block([NotNull] KermitLangParser.Statement_blockContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by the <c>ifStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_if"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterIfStatementBlock([NotNull] KermitLangParser.IfStatementBlockContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by the <c>ifStatementBlock</c>
+	/// labeled alternative in <see cref="KermitLangParser.statement_block_if"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitIfStatementBlock([NotNull] KermitLangParser.IfStatementBlockContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by the <c>structDef</c>
 	/// labeled alternative in <see cref="KermitLangParser.struct_definition"/>.
