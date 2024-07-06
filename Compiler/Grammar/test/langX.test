@@ -1,59 +1,15 @@
-short b = 1;
-print(b);
-b = 2;
-print(b);
-read(b);
-print(b + b);
-print(b - b);
-print(b / b);
-print(b * b);
+int ma() {
+    int i = 5;
+    return 0;
+}
 
-int a = 5;
-print(a);
-a = 16;
-print(a);
-read(a);
-print(a + a);
-print(a - a);
-print(a / a);
-print(a * a);
-
-long c = 10000000;
-print(c);
-c = 200000000;
-print(c);
-read(c);
-print(c + c);
-print(c - c);
-print(c / c);
-print(c * c);
-
-float d = 1.5;
-print(d);
-d = 2.5;
-print(d);
-read(d);
-print(d + d);
-print(d - d);
-print(d / d);
-print(d * d);
-
-double e = 1.5;
-print(e);
-e = 2.5;
-print(e);
-read(e);
-print(e + e);
-print(e - e);
-print(e / e);
-print(e * e);
-
-string f = "Hello";
-print(f);
-f = "World";
-print(f);
-read(f);
-print(f);
-print(f + f);
-print(f + " " + f);
-print(f + " " + f + " " + f);
+int main() {
+        int i = 3;
+        if (i == 3) {
+            int a = ma();
+        }  
+       
+        print(i);
+        
+        return 0;
+}

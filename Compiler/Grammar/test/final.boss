@@ -21,6 +21,7 @@ int mama(int a, int b){
 
 double ma(double a, double b){
     double c = a + b;
+    int testowa = 5;
     return c;
 }
 
@@ -68,6 +69,7 @@ int mammamia(){
 double main(){
     int atete = mammamia();
 
+int testowa = 3;
     int dddd = 5;
     print(dddd);
     int eeee = mama(dddd, 100);
@@ -75,6 +77,10 @@ double main(){
     print(eeee);
     print(ffff);
 
+    print(testowa);
+    
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    
     int aaaa = 999;
     print(aaaa);
     read(aaaa);
